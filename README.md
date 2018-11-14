@@ -32,6 +32,6 @@ Swagger docs will not display without also running [vets-api](https://github.com
 
 The developer portal is automatically deployed to both [dev](https://dev-developer.va.gov/) and [staging](https://staging-developer.va.gov/) whenever changes are made to the master branch.
 
-Deploys to production are done manually in Jenkins.
+Deploys to production are done manually in Jenkins by starting a Release Developer Portal job.
 
 
