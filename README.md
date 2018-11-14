@@ -1,10 +1,10 @@
 # Developer Portal
 
-The developer portal serves documentation for the VA API platform at https://developer.va.gov/ and allows developers to request an API key.
+The Developer Portal is the documentation and help portal for the VA API Platform. The repo hosts the code base that the website it built on.
 
-## Local setup
+## Getting Started
 
-The developer portal was bootstrapped with [create-react-app](https://github.com/facebook/create-react-app) and depends on `npm`.
+The Developer Portal was bootstrapped with [create-react-app](https://github.com/facebook/create-react-app) and depends on `npm`.
 
 First install the dependencies:
 ```
@@ -19,7 +19,7 @@ REACT_APP_DEVELOPER_PORTAL_SELF_SERVICE_URL=https://dev-api.vets.gov
 REACT_APP_SALESFORCE_ENV=VICDEV
 ``` 
 
-## Running the app
+## Running Locally
 ```
 npm start
 ```
@@ -28,9 +28,9 @@ This will start the app on port 3001 as well as the webpack dev server to automa
 
 Swagger docs will not display without also running [vets-api](https://github.com/department-of-veterans-affairs/vets-api) at localhost:3000
 
-## Deployments
+## Deploying
 
-The developer portal is automatically deployed to both [dev](https://dev-developer.va.gov/) and [staging](https://staging-developer.va.gov/) whenever changes are made to the master branch.
+The Developer Portal is automatically deployed to both [dev](https://dev-developer.va.gov/) and [staging](https://staging-developer.va.gov/) whenever changes are made to the master branch.
 
 Deploys to production are done manually in Jenkins by starting a Release Developer Portal job.
 
