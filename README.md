@@ -26,7 +26,7 @@ npm start
 
 This will start the app on port 3001 as well as the webpack dev server to automatically rebuild and display your changes in the browser.
 
-Swagger docs will not display without also running [vets-api](https://github.com/department-of-veterans-affairs/vets-api) at localhost:3000
+Swagger docs will not display without also running [vets-api](https://github.com/department-of-veterans-affairs/vets-api#base-setup) at localhost:3000
 
 ## Deploying
 
