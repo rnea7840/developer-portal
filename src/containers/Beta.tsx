@@ -125,7 +125,7 @@ export class BetaPage extends React.Component<{}, IBetaPageState> {
         </section>
         <div className="usa-grid form-container">
           <h1 className="underlined-header">Tell us about yourself. <small className="small-header-text">(All responses required unless noted.)</small></h1>
-          <form className="usa-width-one-whole" action="https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
+          <form className="usa-width-one-whole" action={env === 'VICPROD' ? "https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" : "https://test.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8"} method="POST">
             <input hidden={true} name="oid" defaultValue={idMappings[env].oid} />
             <input hidden={true} name="retURL" defaultValue={process.env.REACT_APP_SALESFORCE_RETURN_URL} />
             <input id="company" maxLength={40} name="company" hidden={true} defaultValue="Intake Form" />
