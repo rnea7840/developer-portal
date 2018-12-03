@@ -62,15 +62,9 @@ class Explore extends React.Component<IExploreProps, { }> {
                 );
                 break;
             case 'argonaut':
-                if (this.props.argonaut.fetched) {
-                    docs = (
-                        <SwaggerDocs json={this.props.argonaut.swagger} />
-                    );
-                } else {
-                    docs = (
-                        <div>Loading...</div>
-                    );
-                }
+                docs = (
+                    <SwaggerDocs url="https://staging-api.va.gov/services/health/v0/openapi.json" />
+                );
                 break;
             default:
                 docs = this.renderIndex();
