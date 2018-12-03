@@ -1,6 +1,6 @@
 ## Overview
 
-VA’s Health Information APIs support industry standards (e.g., Fast Healthcare Interoperable Resources (FHIR)) and provide access to healthcare data via an EHR-agnostic RESTful web services abstraction layer. 
+VA’s Health Information APIs support industry standards (e.g., Fast Healthcare Interoperability Resources [FHIR]) and provide access to healthcare data via an EHR-agnostic RESTful web services abstraction layer. 
 
 The application of this technology means our Veterans can use third-party digital tools to do things like view their medical records, schedule an appointment, verify their Veteran status, find a specialty facility -- all without having to log on to a VA-specific tool or leave the third-party website/app.
 
