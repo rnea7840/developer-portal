@@ -63,7 +63,7 @@ class Explore extends React.Component<IExploreProps, { }> {
                 break;
             case 'argonaut':
                 docs = (
-                    <SwaggerDocs url="https://staging-api.va.gov/services/health/v0/openapi.json" />
+                    <SwaggerDocs url="https://staging-api.va.gov/services/argonaut/v0/openapi.json" />
                 );
                 break;
             default:
