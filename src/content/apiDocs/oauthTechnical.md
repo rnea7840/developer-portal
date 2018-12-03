@@ -6,7 +6,7 @@ The VA API Platform uses the [OpenID Connect](https://openid.net/specs/openid-co
 
 ## Getting Started
 
-While we test our OpenID Connect flow to ensure the best experience for Veterans and developers, we're approving teams to work with our OpenID Connect and associated APIs on a case-by-case basis. If you would like to help us build these services out, please submit an [application](/apply) to request access to the Veteran Verification API.
+While we test our OpenID Connect flow to ensure the best experience for Veterans and developers, we're approving teams to work with our OpenID Connect and associated APIs on a case-by-case basis. If you would like to help us build these services out, please submit an [application](/apply) to request access.
 
 In order to get approval of your application, you'll need to supply the following information:
 
@@ -148,7 +148,7 @@ Authorization: Basic {base64 encoded *client id* + ':' + *client secret*}
 grant_type=refresh_token&refresh_token={your refresh_token}&scope={space separated scopes}
 ```
 
-You will receive the same kind of response as above and be able to use your new `acsess_token` normally.
+You will receive the same kind of response as above and be able to use your new `access_token` normally.
 
 ### Hybrid Flow
 
