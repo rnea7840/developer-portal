@@ -18,7 +18,7 @@ The database is populated with synthetic Veteran data provided by MITRE Corporat
 
 #### Development API Access
 
-The Health APIs are devleloped using SMART on FHIR authentication, [refer to this guide.](http://hl7.org/fhir/smart-app-launch/)
+The Health APIs are developed using SMART on FHIR authentication, [refer to this guide.](http://hl7.org/fhir/smart-app-launch/)
 
 VA uses token-based authentication. Clients must provide a token with each HTTP request as a header called apiKey. This token is issued by the VA. To receive a developer token to access this API in a test environment, [request access here.](https://developer.va.gov/apply)
 
