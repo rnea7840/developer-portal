@@ -191,6 +191,18 @@ Scopes define the API endpoint your application is allowed to access. The VA API
 Existing Scopes are:
 
 * `profile` - granted by default allows access to a Veteran's first and last name and email.
+* `launch/patient` - a permission setting to obtain launch context when app is launched from an EHR.
+* `patient/*` - view a Veteran's VA Health records and patient information, see specific read only scopes below.
+  * `patient/Patient.read`
+  * `patient/AllergyIntolerance.read`
+  * `patient/Condition.read`
+  * `patient/DiagnosticReport.read`
+  * `patient/Immunization.read`
+  * `patient/Medication.read`
+  * `patient/MedicationOrder.read`
+  * `patient/MedicationStatement.read`
+  * `patient/Observation.read`
+  * `patient/Procedure.read`
 * `service_history.read` - view a Veteran's service history including deployments and discharge status
 * `disability_rating.read` - view a Veteran's VA disability ratings and the effective date of the rating
 * `veteran_status.read` - confirm the Veteran status of an individual
