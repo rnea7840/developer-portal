@@ -53,13 +53,22 @@ function Apply ({ apis, description, email, firstName, lastName, organization, .
   const requestedMoreThanHealth = apis.health && (apis.facilities || apis.verification || apis.benefits)
 
   const healthNotice = (
-    <p className="usa-font-lead">TEXT HERE</p>
+    <div>
+    <p className="usa-font-lead">Thank you for your interest in VA Health API. You should received an email message shortly for further instructions.</p>
+    <p>Need assistance? Email us at <a href="mailto:api@va.gov">api@va.gov</a></p>
+    </div>
   );
   const tokenNotice = (
+    <div>
     <p className="usa-font-lead"><strong>Your API token is:</strong> {props.token}</p>
+    <p>Need assistance? Email us at <a href="mailto:api@va.gov">api@va.gov</a></p>
+    </div>
   );
   const errorNotice = (
+    <div>
     <p className="usa-font-lead">We encountered a server error while saving your form. Please try again later.</p>
+    <p>Need assistance? Email us at <a href="mailto:api@va.gov">api@va.gov</a></p>
+    </div>
   );
   return (
     <div role="region" aria-labelledby="apply-region" className="usa-grid api-application">
