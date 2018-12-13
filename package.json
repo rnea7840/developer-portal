@@ -122,8 +122,5 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "config": {
-    "audit-level": "high"
   }
 }
