@@ -114,7 +114,7 @@ function ApiSection({ apiCategory, sectionRef } : { apiCategory : string, sectio
     if (apis.length > 0) {
         const links = apis.map(({ name, shortDescription, urlFragment }, idx) => {
             return (
-                <div key={idx} className="usa-width-one-half api-link">
+                <div key={idx} className="api-link">
                   <Link to={`/explore/${apiCategory}/docs/${urlFragment}`}>
                     <span>{name}</span>
                     <p>{shortDescription}</p>
@@ -276,6 +276,7 @@ export function SideNav({ match: { url } } : RouteComponentProps<IApiNameParam>)
                   <NavLink exact={true} to={`/explore/${apiCategory}/docs/${urlFragment}`} activeClassName="usa-current">
                     {name}
                   </NavLink>
+                  <br />
                 </li>
             );
         });
