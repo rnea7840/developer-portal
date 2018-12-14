@@ -46,6 +46,11 @@ const apiDefs : IApiCategories = {
                 shortDescription: 'Track appeals',
                 urlFragment: 'appeals',
             },
+            {
+                name: 'Claims Status',
+                shortDescription: 'Track claims',
+                urlFragment: 'claims',
+            },
         ],
         buttonText: "Get Your Key",
         name: 'Benefits',
