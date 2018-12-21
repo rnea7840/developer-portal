@@ -61,6 +61,7 @@ node('vetsgov-general-purpose') {
 
   stage('Setup') {
     try {
+      deleteDir()
       checkout scm
 
       ref = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
@@ -70,12 +71,7 @@ node('vetsgov-general-purpose') {
       imageTag = java.net.URLDecoder.decode(env.BUILD_TAG).replaceAll("[^A-Za-z0-9\\-\\_]", "-")
 
       dockerImage = docker.build("developer-portal:${imageTag}")
-      args = "-v ${pwd()}:/application"
-      retry(5) {
-        dockerImage.inside(args) {
-          sh "cd /application && npm install --production=false"
-        }
-      }
+      args = "-v ${pwd()}:/application -v /application/node_modules"
     } catch (error) {
       notify()
       throw error
@@ -84,12 +80,19 @@ node('vetsgov-general-purpose') {
 
   stage('Security') {
     try {
-      dir("developer-portal") {
-        retry(3) {
-          dockerImage.inside(args) {
-            sh "cd /application && npm config set audit-level high && npm audit"
-          }
-        }
+      dockerImage.inside(args) {
+        sh "cd /application && npm config set audit-level high && npm audit"
+      }
+    } catch (error) {
+      notify()
+      throw error
+    }
+  }
+
+  stage('Visual Regression Test') {
+    try {
+      dockerImage.inside(args) {
+        sh 'cd /application && npm run test:visual'
       }
     } catch (error) {
       notify()
@@ -110,7 +113,7 @@ node('vetsgov-general-purpose') {
 
         builds[envName] = {
           dockerImage.inside(args) {
-            sh "cd /application && BUILD_ENV=${envName} npm run-script build ${envName}"
+            sh "cd /application && NODE_ENV=production BUILD_ENV=${envName} npm run-script build ${envName}"
             sh "cd /application && echo \"${buildDetails('buildtype': envName, 'ref': ref)}\" > build/${envName}/BUILD.txt"
           }
         }
