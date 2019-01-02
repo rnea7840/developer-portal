@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Flag } from 'flag';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { ThunkDispatch } from 'redux-thunk';
@@ -54,6 +55,13 @@ class Explore extends React.Component<IExploreProps, { }> {
             case 'appeals':
                 docs = (
                     <SwaggerDocs url={`${process.env.REACT_APP_VETSGOV_SWAGGER_API}/services/appeals/docs/v0/api`} />
+                );
+                break;
+            case 'loan_guarantees':
+                docs = (
+                    <Flag name="hosted_apis.loan_guarantees">
+                        <SwaggerDocs url={`${process.env.REACT_APP_VETSGOV_SWAGGER_API}/services/loan_guarantees/docs/v0/api`} />
+                    </Flag>
                 );
                 break;
             case 'claims':
