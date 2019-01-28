@@ -250,7 +250,12 @@ module.exports = {
             use: [
               'babel-loader',
               {
-                loader: 'markdown-component-loader'
+                loader: 'markdown-component-loader',
+                options: {
+                  markdownItPlugins: [
+                    [require('markdown-it-anchor'), { level: 2 }],
+                  ],
+                },
               }
             ]
           },
