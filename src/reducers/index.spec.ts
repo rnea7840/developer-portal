@@ -5,6 +5,8 @@ import * as constants from '../types/constants';
 import { application } from './index';
 
 const app : IApplication = {
+  clientID: '',
+  clientSecret: '',
   inputs: {
     apis: {
       appeals: false,
@@ -166,8 +168,15 @@ describe('application', () => {
 
   it('should set token on application send errors', () => {
     const newApp = application(app, { type: constants.SUBMIT_APPLICATION_BEGIN });
-    expect(application(newApp, { token: 'test-token', type: constants.SUBMIT_APPLICATION_SUCCESS }))
+    expect(application(newApp, {
+      clientID: 'clientID',
+      clientSecret: 'clientSecret',
+      token: 'test-token',
+      type: constants.SUBMIT_APPLICATION_SUCCESS,
+    }))
       .toEqual(expect.objectContaining({
+        clientID: 'clientID',
+        clientSecret: 'clientSecret',
         sending: false,
         token: 'test-token',
       }));
