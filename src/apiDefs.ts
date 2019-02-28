@@ -30,7 +30,7 @@ export const apiDefs : IApiCategories = {
     apis: [
       {
         name: 'Benefits Intake',
-        shortDescription: 'Submit claims',
+        shortDescription: 'Submit PDF claims',
         urlFragment: 'benefits',
         vaInternalOnly: false,
       },
@@ -41,8 +41,8 @@ export const apiDefs : IApiCategories = {
         vaInternalOnly: false,
       },
       {
-        name: 'Claims Status',
-        shortDescription: 'Track claims',
+        name: 'Benefits Claims',
+        shortDescription: 'Submit and track claims',
         urlFragment: 'claims',
         vaInternalOnly: false,
       },
