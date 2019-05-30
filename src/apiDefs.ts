@@ -102,6 +102,13 @@ export const apiDefs : IApiCategories = {
         urlFragment: 'argonaut',
         vaInternalOnly: false,
       },
+      {
+        name: 'Community Care Eligibility API',
+        openApiDocUrl: "",
+        shortDescription: "",
+        urlFragment: 'community_care',
+        vaInternalOnly: false,
+      },
     ],
     buttonText: "Get Your Key",
     longDescription: "Use our APIs to build tools that help Veterans manage their health, view their medical records, schedule an appointment, find a specialty facility, and share their information with caregivers and providers.",
@@ -165,7 +172,7 @@ export const apiCategoryOrder: string[] = [
 // either the return value of the callback function or `null` if no such API
 // exists.
 export function withApiDescription(urlFragment: string, fn: (apiDesc: IApiDescription) => any): any {
-  const api = lookupApi(urlFragment);
+  const api = lookupApiByFragment(urlFragment);
   if (api == null) {
     return null;
   }
@@ -173,7 +180,7 @@ export function withApiDescription(urlFragment: string, fn: (apiDesc: IApiDescri
   return fn(api);
 }
 
-export function lookupApi(urlFragment: string): IApiDescription | null {
+export function lookupApiByFragment(urlFragment: string): IApiDescription | null {
   for (const cat of Object.values(apiDefs)) {
     for (const api of cat.apis) {
       if (api.urlFragment === urlFragment) {
@@ -189,3 +196,18 @@ export function lookupApiCategory(categoryKey: string): IApiCategory | null {
   return apiDefs[categoryKey];
 }
 
+function categoriesFor(apiList: string[]): IApiCategory[] {
+  const categories = new Set();
+  for (const cat of Object.values(apiDefs)) {
+    for (const api of cat.apis) {
+      if (apiList.includes(api.urlFragment)) {
+        categories.add(cat);
+      }
+    }
+  }
+  return Array.from(categories);
+}
+
+export function includesOauthAPI(apiList: string[]): boolean {
+  return categoriesFor(apiList).some(category => !category.apiKey)
+}
