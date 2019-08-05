@@ -16,7 +16,7 @@ import UrgentCareApiIntro from './health/urgentCareApiIntro.mdx';
 import VerificationIntro from './verification/verificationIntro.mdx';
 import VerificationOverview from './verification/verificationOverview.mdx';
 
-const isNewFhirApiEnabled = process.env.REACT_APP_FHIR_API_ENABLED === 'true';
+const isNewFhirApiEnabled = process.env.REACT_APP_FHIR_API_ENABLED === 'false' || true;
 
 const benefitsContent: IApiCategoryContent = {
   intro: BenefitsIntro,

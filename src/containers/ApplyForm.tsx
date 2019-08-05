@@ -1,11 +1,7 @@
 import * as React from 'react';
-
 import { connect } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
-
 import { Link } from 'react-router-dom';
-
-import { Flag } from 'flag';
+import { ThunkDispatch } from 'redux-thunk';
 
 import AlertBox from '@department-of-veterans-affairs/formation/AlertBox';
 import ErrorableCheckbox from '@department-of-veterans-affairs/formation/ErrorableCheckbox';
@@ -188,17 +184,15 @@ class ApplyForm extends React.Component<IApplyProps> {
                 <label htmlFor="health">VA Health API</label>
               </div>
 
-              <Flag key='community_care' name='hosted_apis.community_care'>
-                <div className="form-checkbox">
-                  <input
-                    type="checkbox"
-                    id="communityCare"
-                    name="communityCare"
-                    checked={apis.communityCare}
-                    onChange={props.toggleCommunityCare} />
-                  <label htmlFor="communityCare">Community Care Eligibility API</label>
-                </div>
-              </Flag>
+              <div className="form-checkbox">
+                <input
+                  type="checkbox"
+                  id="communityCare"
+                  name="communityCare"
+                  checked={apis.communityCare}
+                  onChange={props.toggleCommunityCare} />
+                <label htmlFor="communityCare">Community Care Eligibility API</label>
+              </div>
 
               <div className="form-checkbox">
                 <input
