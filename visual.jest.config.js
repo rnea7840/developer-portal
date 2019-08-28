@@ -4,7 +4,6 @@ module.exports = {
   preset: "jest-puppeteer",
   testURL: process.env.TEST_HOST || "http://localhost:4444",
   testMatch: [
-    "<rootDir>/src/**/?(*.)(e2e).(j|t)s?(x)",
     "<rootDir>/src/visualRegressionTest.ts"
   ],
   setupFiles: [

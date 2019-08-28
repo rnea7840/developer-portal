@@ -1,6 +1,6 @@
 import { Page } from 'puppeteer';
 
-import { axeCheck, mockSwagger, puppeteerHost, testPaths } from './e2eHelpers';
+import { mockSwagger, puppeteerHost, testPaths } from './e2eHelpers';
 
 jest.setTimeout(100000);
 
@@ -24,47 +24,40 @@ const checkScreenshots = async (page: Page, selector: string) => {
   }
 };
 
-describe('header and footer', async () => {
-  beforeAll(async () => {
+const paths = testPaths.filter(path => path !== '/');
+
+describe('Visual regression test', async () => {
+  it('renders the homepage properly', async() => {
     // Set unlimited timeout on first request, since it may timeout while webpack is compiling.
     await page.goto(`${puppeteerHost}`, { waitUntil: 'networkidle0', timeout: 0 });
+
+    // Hide problematic video on homepage
+    await page.evaluate('document.querySelector("iframe").style="visibility: hidden;"');
+
+    await checkScreenshots(page, '.main');
   });
 
   it('renders the header properly', async() => {
+    await page.goto(`${puppeteerHost}`, { waitUntil: 'networkidle0' });
     await checkScreenshots(page, 'header');
   });
 
   it('renders the footer properly', async() => {
+    await page.goto(`${puppeteerHost}`, { waitUntil: 'networkidle0' });
     await checkScreenshots(page, 'footer');
   })
-});
 
-for (const path of testPaths) {
-  describe(`${path} e2e tests`, async () => {
-    beforeAll(async () => {
+  for (const path of paths) {
+    it(`renders ${path} properly`, async () => {
       // Mock swagger requests on docs pages so those pages aren't blank
-      if (/^\/explore\/[^\/]+\/docs\/.+/.test(path)) {
+      if (/^\/explore\/[^\/]+\/docs/.test(path)) {
         await page.setRequestInterception(true);
         page.removeAllListeners('request');
         page.on('request', mockSwagger);
       }
 
       await page.goto(`${puppeteerHost}${path}`, { waitUntil: 'networkidle0' });
-
-      if (path === '/') {
-        // Hide problematic video on homepage
-        await page.evaluate('document.querySelector("iframe").style="visibility: hidden;"');
-      }
-    });
-
-    it(`matches the stored screenshots`, async () => {
       await checkScreenshots(page, '.main');
     });
-
-    it('has no aXe violations', async () => {
-      await page.addScriptTag({ path: require.resolve('axe-core') });
-      const result = await page.evaluate(axeCheck);
-      expect(result).toHaveNoViolations();
-    })
-  });
-}
+  }
+});
