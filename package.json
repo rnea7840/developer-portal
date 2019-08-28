@@ -120,7 +120,7 @@
     "test:monitoring": "node scripts/test.js --projects=e2e.jest.config.js --testMatch='<rootDir>/src/App.e2e.ts'",
     "test:accessibility": "node scripts/test.js --projects=e2e.jest.config.js --testMatch='<rootDir>/src/**/?(*.)(accessibility).(j|t)s?(x)'",
     "test:accessibility:ci": "node scripts/test.js --projects=e2e.jest.config.js --testMatch='<rootDir>/src/**/?(*.)(accessibility).(j|t)s?(x)' --ci --testResultsProcessor='./node_modules/jest-junit-reporter' --forceExit",
-    "test:visual": "node scripts/test.js --projects=visual.jest.config.js"
+    "test:visual": "node scripts/test.js --projects=visual.jest.config.js --runInBand"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.0",
