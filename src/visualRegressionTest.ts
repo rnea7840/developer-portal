@@ -24,7 +24,7 @@ const checkScreenshots = async (page: Page, selector: string) => {
   }
 };
 
-describe('header visual regression tests', async () => {
+describe('header and footer', async () => {
   beforeAll(async () => {
     // Set unlimited timeout on first request, since it may timeout while webpack is compiling.
     await page.goto(`${puppeteerHost}`, { waitUntil: 'networkidle0', timeout: 0 });
@@ -37,34 +37,34 @@ describe('header visual regression tests', async () => {
   it('renders the footer properly', async() => {
     await checkScreenshots(page, 'footer');
   })
-
-  for (const path of testPaths) {
-    describe(`${path} e2e tests`, async () => {
-      beforeAll(async () => {
-        // Mock swagger requests on docs pages so those pages aren't blank
-        if (/^\/explore\/[^\/]+\/docs\/.+/.test(path)) {
-          await page.setRequestInterception(true);
-          page.removeAllListeners('request');
-          page.on('request', mockSwagger);
-        }
-
-        await page.goto(`${puppeteerHost}${path}`, { waitUntil: 'networkidle0' });
-
-        if (path === '/') {
-          // Hide problematic video on homepage
-          await page.evaluate('document.querySelector("iframe").style="visibility: hidden;"');
-        }
-      });
-
-      it(`matches the stored screenshots`, async () => {
-        await checkScreenshots(page, '.main');
-      });
-
-      it('has no aXe violations', async () => {
-        await page.addScriptTag({ path: require.resolve('axe-core') });
-        const result = await page.evaluate(axeCheck);
-        expect(result).toHaveNoViolations();
-      })
-    });
-  }
 });
+
+for (const path of testPaths) {
+  describe(`${path} e2e tests`, async () => {
+    beforeAll(async () => {
+      // Mock swagger requests on docs pages so those pages aren't blank
+      if (/^\/explore\/[^\/]+\/docs\/.+/.test(path)) {
+        await page.setRequestInterception(true);
+        page.removeAllListeners('request');
+        page.on('request', mockSwagger);
+      }
+
+      await page.goto(`${puppeteerHost}${path}`, { waitUntil: 'networkidle0' });
+
+      if (path === '/') {
+        // Hide problematic video on homepage
+        await page.evaluate('document.querySelector("iframe").style="visibility: hidden;"');
+      }
+    });
+
+    it(`matches the stored screenshots`, async () => {
+      await checkScreenshots(page, '.main');
+    });
+
+    it('has no aXe violations', async () => {
+      await page.addScriptTag({ path: require.resolve('axe-core') });
+      const result = await page.evaluate(axeCheck);
+      expect(result).toHaveNoViolations();
+    })
+  });
+}
