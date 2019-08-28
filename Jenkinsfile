@@ -163,6 +163,14 @@ node('vetsgov-general-purpose') {
     }
   }
 
+  stage('e2e test') {
+    sh 'empty stage'
+  }
+
+  stage('Accessibility Test'){
+    sh 'empty stage'
+  }
+
   stage('Visual Regression Test') {
     if (supercededByConcurrentBuild()) { return }
     try {
