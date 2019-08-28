@@ -164,11 +164,11 @@ node('vetsgov-general-purpose') {
   }
 
   stage('e2e test') {
-    sh 'empty stage'
+    sh 'echo "empty stage"'
   }
 
   stage('Accessibility Test'){
-    sh 'empty stage'
+    sh 'echo "empty stage"'
   }
 
   stage('Visual Regression Test') {
