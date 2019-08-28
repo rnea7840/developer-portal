@@ -163,34 +163,6 @@ node('vetsgov-general-purpose') {
     }
   }
 
-  stage('e2e test') {
-    try {
-      dockerImage.inside(args) {
-        sh 'cd /application && npm run-script test:e2e:ci'
-      }
-    } catch (error) {
-      notify()
-      dir(pwd()) {
-        step([$class: 'JUnitResultArchiver', testResults: 'test-report.xml'])
-      }
-      throw error
-    }
-  }
-
-  stage('Accessibility Test'){
-    try {
-      dockerImage.inside(args) {
-        sh 'cd /application && npm run-script test:accessibility:ci'
-      }
-    } catch (error) {
-      notify()
-      dir(pwd()) {
-        step([$class: 'JUnitResultArchiver', testResults: 'test-report.xml'])
-      }
-      throw error
-    }
-  }
-
   stage('Visual Regression Test') {
     if (supercededByConcurrentBuild()) { return }
     try {
@@ -200,18 +172,20 @@ node('vetsgov-general-purpose') {
     } catch (error) {
       dir('src/__image_snapshots__/__diff_output__') {
         withEnv(["ref=${ref}",'bucket=developer-portal-screenshots']) {
-          // Upload diffs to S3
-          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'vetsgov-website-builds-s3-upload', usernameVariable: 'AWS_ACCESS_KEY', passwordVariable: 'AWS_SECRET_KEY']]) {
-            sh 'aws --region us-gov-west-1 s3 sync --no-progress . "s3://${bucket}/${ref}/"'
-          }
-          // Create github comment
           files = sh(script: 'ls', returnStdout: true).tokenize()
-          links = files.collect {
-            "[${it - 'visual-regression-test-ts-visual-regression-test-'}](https://s3-us-gov-west-1.amazonaws.com/${bucket}/${ref}/${it})"
-          }.join(' <br>')
-          docsLink = 'https://github.com/department-of-veterans-affairs/developer-portal/blob/master/docs/testing.md#visual-regression-testing'
-          comment = "Visual regression testing failed. Review these diffs and then [update the snapshots](${docsLink}). <br><br> ${links}"
-          pullRequestComment(comment)
+          if (!files.isEmpty()) {
+            // Upload diffs to S3
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'vetsgov-website-builds-s3-upload', usernameVariable: 'AWS_ACCESS_KEY', passwordVariable: 'AWS_SECRET_KEY']]) {
+              sh 'aws --region us-gov-west-1 s3 sync --no-progress . "s3://${bucket}/${ref}/"'
+            }
+            // Create github comment
+            links = files.collect {
+              "[${it - 'visual-regression-test-ts-visual-regression-test-'}](https://s3-us-gov-west-1.amazonaws.com/${bucket}/${ref}/${it})"
+            }.join(' <br>')
+            docsLink = 'https://github.com/department-of-veterans-affairs/developer-portal/blob/master/docs/testing.md#visual-regression-testing'
+            comment = "Visual regression testing failed. Review these diffs and then [update the snapshots](${docsLink}). <br><br> ${links}"
+            pullRequestComment(comment)
+          }
         }
       }
       notify()
