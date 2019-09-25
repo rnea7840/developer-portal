@@ -4,14 +4,14 @@ import { Flag } from 'flag';
 import { RouteComponentProps } from 'react-router';
 import { Route } from 'react-router-dom';
 
-import { ApiPageReleaseNotes } from '../components';
-import { IApiNameParam } from '../types';
+import { IApiNameParam } from '../../types';
+import CategoryReleaseNotesPage from './CategoryReleaseNotesPage';
 import ReleaseNotesOverview from './ReleaseNotesOverview';
 
-import { apiCategoryOrder, apiDefs, IApiCategory, IApiDescription } from '../apiDefs';
-import { SideNav, SideNavEntry } from '../components/SideNav';
+import { apiCategoryOrder, apiDefs, IApiCategory, IApiDescription } from '../../apiDefs';
+import { SideNav, SideNavEntry } from '../../components/SideNav';
 
-import './Explore.scss';
+import '../Documentation.scss';
 
 function VaInternalTag() {
   return (
@@ -98,7 +98,7 @@ export class ReleaseNotes extends React.Component<RouteComponentProps<IApiNamePa
             <ReleaseNotesSideNav />
             <div className="usa-width-two-thirds">
               <Route exact={true} path="/release-notes/" render={(routeProps) => renderOverview(routeProps, this.overviewProps)} />
-              <Route exact={true} path="/release-notes/:apiCategoryKey" component={ApiPageReleaseNotes} />
+              <Route exact={true} path="/release-notes/:apiCategoryKey" component={CategoryReleaseNotesPage} />
             </div>
           </div>
         </section>
