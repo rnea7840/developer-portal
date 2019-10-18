@@ -37,7 +37,7 @@ input.va-api-search-autocomplete {
   padding: 8px;
   margin: 0;
 
-  @include media($large-screen) {
+  @include media($medium-screen) {
     width: 240px;
     max-width: inherit;
   }

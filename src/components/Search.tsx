@@ -29,15 +29,19 @@ export default class Search extends React.Component<{inMenu?: boolean, className
               {"va-api-search-form--transparent-submit": !inMenu},
             )}>
           <input name="utf8" type="hidden" value="&#x2713;" />
-          <input type="hidden" name="affiliate" id="affiliate" value="developer.va.gov" />
+          <input type="hidden" name="affiliate" value="developer.va.gov" />
           <input type="text"
             name="query"
-            id="query"
             autoComplete="off"
             className="va-api-search-autocomplete"
             placeholder={inMenu ? "" : "Search..."}
             aria-label="Search developer.va.gov" />
-          <button type="submit" name="commit" className={classNames({"va-api-search-submit": inMenu})}>
+          <button type="submit"
+            name="commit"
+            className={classNames({"va-api-search-submit": inMenu})}
+            value="Search"
+            aria-label="Search"
+          >
             <FontAwesomeIcon className={classNames({"va-api-search-icon": !inMenu})} icon={faSearch} />
           </button>
         </form>
