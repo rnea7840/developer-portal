@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { defaultFlexContainer, desktopOnly, mobileOnly } from '../styles/vadsUtils';
 import Banner from './Banner';
+import VeteransCrisisLine from './crisisLine/VeteransCrisisLine';
 import NavBar from './NavBar';
 import Search from './Search';
 
@@ -28,6 +29,7 @@ export default class Header extends React.Component<{}, INavBarState> {
     return (
       <header role="banner" className="vads-u-background-color--primary-darkest">
         <Banner />
+        <VeteransCrisisLine />
         <div className={classNames(
           defaultFlexContainer(true),
           'vads-u-justify-content--space-between',
