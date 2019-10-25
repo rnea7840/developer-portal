@@ -15,6 +15,7 @@ export interface ICurlFormProps {
 export interface ICurlFormState {
   apiKey: string;
   bearerToken: string;
+  env: string;
   params: object[];
 }
 
@@ -25,14 +26,24 @@ export class CurlForm extends React.Component<ICurlFormProps, ICurlFormState> {
     const state = {
       apiKey: '',
       bearerToken: '',
+      env: 'dev',
       params: this.props.operation.parameters,
     };
+
+    if (!this.isSwagger2()) {
+      state.env = this.jsonSpec().servers[0].url;
+    }
+
     if (state.params) {
       state.params.map((parameter: any) => {
         state[parameter.name] = parameter.example || '';
       });
     }
     this.state = state;
+  }
+
+  public jsonSpec() {
+    return this.props.system.spec().toJS().json;
   }
 
   public handleInputChange(parameterName: string, value: string) {
@@ -59,15 +70,35 @@ export class CurlForm extends React.Component<ICurlFormProps, ICurlFormState> {
       </div>
     );
   }
+
   public buildCurl() {
-    const spec = this.props.system.spec().toJS().json;
-    spec.host = `dev-${spec.host}`;
+    const spec = this.jsonSpec();
     const options = {
       operationId: this.props.operation.operationId,
       parameters: this.state,
       securities: {},
-      spec,
+      server: '',
+      serverVariables: {},
+      spec: {},
     };
+
+    if (this.isSwagger2()) {
+      spec.host = this.state.env ? `${this.state.env}-${spec.host}` : spec.host;
+    } else {
+      let version = this.props.system.versionSelectors.apiVersion();
+      if (!version) {
+        version = '0';
+      } else {
+        version = version.substring(0, 1);
+      }
+
+      options.server = this.state.env;
+      options.serverVariables = {
+        version: `v${version}`,
+      };
+    }
+    options.spec = spec;
+
     if (this.state.apiKey.length > 0) {
       options.securities = {
         authorized: {
@@ -75,9 +106,12 @@ export class CurlForm extends React.Component<ICurlFormProps, ICurlFormState> {
         },
       };
     } else {
+      const token = this.isSwagger2()
+        ? `Bearer: ${this.state.bearerToken}`
+        : this.state.bearerToken;
       options.securities = {
         authorized: {
-          bearer_token: this.state.bearerToken,
+          bearer_token: token,
         },
       };
     }
@@ -95,6 +129,10 @@ export class CurlForm extends React.Component<ICurlFormProps, ICurlFormState> {
     } else {
       return null;
     }
+  }
+
+  public isSwagger2() {
+    return this.jsonSpec().swagger === '2.0';
   }
 
   public authParameterContainer() {
@@ -135,14 +173,77 @@ export class CurlForm extends React.Component<ICurlFormProps, ICurlFormState> {
     }
   }
 
+  public environmentOptions() {
+    if (this.isSwagger2()) {
+      const options = [
+        { value: 'dev', display: 'Development' },
+        { value: 'staging', display: 'Staging' },
+        { value: '', display: 'Production' },
+      ];
+      return options.map((optionValues, i) => {
+        return (
+          <option value={optionValues.value} key={i}>
+            {optionValues.display}
+          </option>
+        );
+      });
+    } else {
+      return this.jsonSpec().servers.map((server: any, i: number) => {
+        return (
+          <option value={server.url} key={i}>
+            {server.description}
+          </option>
+        );
+      });
+    }
+  }
+
+  public containsServerInformation() {
+    return this.jsonSpec().servers.length === 3;
+  }
+
+  public environmentSelector() {
+    if (this.isSwagger2() || (!this.isSwagger2() && this.containsServerInformation())) {
+      return (
+        <div>
+          <h3> Environment: </h3>
+          <select // tslint:disable-next-line:react-a11y-no-onchange
+            value={this.state.env}
+            onChange={e => {
+              this.handleInputChange('env', e.target.value);
+            }}
+          >
+            {this.environmentOptions()}
+          </select>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
   public render() {
     if (Object.keys(this.props.operation).includes('security')) {
       return (
-        <div className={classNames("vads-u-margin-top--0", "vads-u-margin-x--4", "vads-u-margin-bottom--4", "vads-u-padding-top--2")}>
+        <div
+          className={classNames(
+            'vads-u-margin-top--0',
+            'vads-u-margin-x--4',
+            'vads-u-margin-bottom--4',
+            'vads-u-padding-top--2',
+          )}
+        >
           <h2 className="vads-u-margin-y--0">Example Curl</h2>
-          <div className={classNames("va-api-curl-form", "vads-u-background-color--gray-light-alt", "vads-u-border--3px")}>
+          <div
+            className={classNames(
+              'va-api-curl-form',
+              'vads-u-background-color--gray-light-alt',
+              'vads-u-border--3px',
+            )}
+          >
             <div className="vads-u-margin--2">
               {this.authParameterContainer()}
+              {this.environmentSelector()}
               {this.parameterContainer()}
               <br />
               <h3>Generated Curl</h3>
