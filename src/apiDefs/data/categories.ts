@@ -29,8 +29,8 @@ const apiDefinitions: IApiCategories = {
     apis: benefitsApis,
     buttonText: 'Get Your Key',
     content: benefitsContent,
-    name: 'Benefits API',
-    properName: 'Benefits Intake API',
+    name: 'Benefits APIs',
+    properName: 'Benefits APIs',
   },
   facilities: {
     apiKey: true,
@@ -46,7 +46,8 @@ const apiDefinitions: IApiCategories = {
     buttonText: 'Get Your Key',
     content: healthContent,
     name: 'Health API',
-    properName: 'Health API',
+    name: 'Health APIs',
+    properName: 'Health APIs',
     tabBlurb:
       "The VA's FHIR Health APIs allow consumers to develop applications using Veteran data. Please see the tabs below for the specific FHIR implementations.",
   },
