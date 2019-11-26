@@ -45,7 +45,6 @@ const apiDefinitions: IApiCategories = {
     apis: healthApis,
     buttonText: 'Get Your Key',
     content: healthContent,
-    name: 'Health API',
     name: 'Health APIs',
     properName: 'Health APIs',
     tabBlurb:

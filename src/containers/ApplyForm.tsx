@@ -177,7 +177,7 @@ class ApplyForm extends React.Component<IApplyProps> {
                   checked={apis.benefits}
                   onChange={props.toggleBenefits}
                 />
-                <label htmlFor="benefits">VA Benefits API</label>
+                <label htmlFor="benefits">VA Benefits Intake API</label>
               </div>
 
               <div className="form-checkbox">
