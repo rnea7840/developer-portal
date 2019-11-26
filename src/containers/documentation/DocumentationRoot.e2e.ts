@@ -63,11 +63,11 @@ describe('position sticky', () => {
     await page.goto(`${puppeteerHost}/explore`, {
       waitUntil: ['domcontentloaded', 'networkidle0'],
     });
-    await clickCard('Health API');
+    await clickCard('Health APIs');
     await clickCard('Authorization');
     const haloText = await page.$eval('.header-halo', elem => {
       return elem.textContent;
     });
-    expect(haloText).toEqual('Health API');
+    expect(haloText).toEqual('Health APIs');
   });
 });
