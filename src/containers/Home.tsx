@@ -48,7 +48,7 @@ function ApiList() {
                   <Flag name={`categories.${apiCategoryKey}`} key={apiCategoryKey}>
                     <CardLink
                       className="medium-screen:vads-l-col--5"
-                      name={`VA ${name}`}
+                      name={`${name}`}
                       url={`/explore/${apiCategoryKey}`}
                     >
                       {content.placardText}

@@ -177,7 +177,7 @@ class ApplyForm extends React.Component<IApplyProps> {
                   checked={apis.benefits}
                   onChange={props.toggleBenefits}
                 />
-                <label htmlFor="benefits">VA Benefits Intake API</label>
+                <label htmlFor="benefits">Benefits Intake API</label>
               </div>
 
               <div className="form-checkbox">
@@ -212,7 +212,7 @@ class ApplyForm extends React.Component<IApplyProps> {
                   checked={apis.claims}
                   onChange={props.toggleClaims}
                 />
-                <label htmlFor="claims">VA Claims API</label>
+                <label htmlFor="claims">Benefits Claims API</label>
               </div>
 
               <div className="form-checkbox">
@@ -223,7 +223,7 @@ class ApplyForm extends React.Component<IApplyProps> {
                   checked={apis.health}
                   onChange={props.toggleHealth}
                 />
-                <label htmlFor="health">VA Health API</label>
+                <label htmlFor="health">Veterans Health API (FHIR)</label>
               </div>
 
               <div className="form-checkbox">
@@ -245,7 +245,7 @@ class ApplyForm extends React.Component<IApplyProps> {
                   checked={apis.verification}
                   onChange={props.toggleVerification}
                 />
-                <label htmlFor="verification">VA Veteran Verification API</label>
+                <label htmlFor="verification">Veteran Verification API</label>
               </div>
 
               {this.anyOAuthApisSelected() && (
