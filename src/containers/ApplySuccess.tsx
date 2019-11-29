@@ -37,7 +37,7 @@ interface IOAuthCredentialsNoticeProps {
 const apisToEnglishOauthList = {
   claims: 'Benefits Claims API',
   community_care: 'Community Care API',
-  health: 'VA Health API',
+  health: 'Veterans Health API (FHIR)',
   verification: 'Veteran Verfication API',
 };
 

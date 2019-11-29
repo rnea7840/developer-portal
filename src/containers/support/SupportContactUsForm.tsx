@@ -110,7 +110,7 @@ export default class SupportContactUsForm extends React.Component<ISupportContac
           <ErrorableCheckboxGroup
             additionalFieldsetClass='vads-u-margin-top--4'
             additionalLegendClass={legendDescClasses}
-            label='If applicable, please select any of the APIs pertaining to your issue.'
+            label='If applicable, please select the API categories pertaining to your issue.'
             onValueChange={this.toggleApis}
             id='default'
             required={false}
