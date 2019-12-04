@@ -20,6 +20,9 @@ import HealthOverview from './health/healthOverview.mdx';
 import HealthQuickstart from './health/healthQuickstart.mdx';
 import HealthReleaseNotes from './health/healthReleaseNotes.mdx';
 import UrgentCareApiIntro from './health/urgentCareApiIntro.mdx';
+import UtilityIntro from './utility/utilityIntro.mdx';
+import UtilityOverview from './utility/utilityIntro.mdx';
+import UtilityReleaseNotes from './utility/utilityReleaseNotes.mdx';
 import vaFormsIntro from './vaForms/vaFormsIntro.mdx';
 import vaFormsOverview from './vaForms/vaFormsOverview.mdx';
 import vaFormsReleaseNotes from './vaForms/vaFormsReleaseNotes.mdx';
@@ -80,11 +83,21 @@ const verificationContent: IApiCategoryContent = {
   shortDescription: 'Empowering Veterans to take control of their data and put it to work.',
 };
 
+const utilityContent: IApiCategoryContent = {
+  intro: UtilityIntro,
+  overview: UtilityOverview,
+  placardText: 'General purpose APIs', 
+  releaseNotes: UtilityReleaseNotes,
+  shortDescription: 'General purpose APIs that make it easier to serve Veterans using other VA APIs.',
+};
+
+
 export {
   appealsContent,
   benefitsContent,
   facilitiesContent,
   healthContent,
+  utilityContent,
   vaFormsContent,
   verificationContent,
   CommunityCareApiIntro,

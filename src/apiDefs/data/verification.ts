@@ -3,52 +3,28 @@ import { IApiDescription } from '../schema';
 const swaggerHost : string = process.env.REACT_APP_VETSGOV_SWAGGER_API!;
 const verificationApis : IApiDescription[] = [
   {
-    description: "Get a Veteran's disability rating",
+    description: "Obtain data about a Veteran",
     docSources: [
       {
+        key: 'disability_rating',
+        label: 'Disability Rating',
         openApiUrl: `${swaggerHost}/services/veteran_verification/docs/v0/disability_rating`,
       },
-    ],
-    enabledByDefault: true,
-    name: 'Disability Rating',
-    urlFragment: 'disability_rating',
-    vaInternalOnly: false,
-  },
-  {
-    description: "Get a Veteran's service history",
-    docSources: [
       {
+        key: 'service_history',
+        label: 'Service History',
         openApiUrl: `${swaggerHost}/services/veteran_verification/docs/v0/service_history`,
       },
-    ],
-    enabledByDefault: true,
-    name: 'Service History',
-    urlFragment: 'service_history',
-    vaInternalOnly: false,
-  },
-  {
-    description: "Get confirmation of a Veteran's status",
-    docSources: [
       {
+        key: 'veteran_confirmation',
+        label: 'Veteran Confirmation',
         openApiUrl: `${swaggerHost}/services/veteran_verification/docs/v0/status`,
       },
     ],
     enabledByDefault: true,
-    name: 'Veteran Confirmation',
-    urlFragment: 'veteran_confirmation',
+    name: 'Veteran Verification',
+    urlFragment: 'veteran_verification',
     vaInternalOnly: false,
-  },
-  {
-    description: 'Provides methods to standardize and validate addresses.',
-    docSources: [
-      {
-        openApiUrl: `${swaggerHost}/services/address_validation/docs/v1/api`,
-      },
-    ],
-    enabledByDefault: true,
-    name: 'Address Validation',
-    urlFragment: 'address_validation',
-    vaInternalOnly: true,
   },
 ];
 

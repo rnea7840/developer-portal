@@ -3,7 +3,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Flag } from 'flag';
 import { RouteComponentProps } from 'react-router';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { getApiCategoryOrder, getApiDefinitions } from '../../apiDefs/query';
 import { IApiCategory, IApiDescription } from '../../apiDefs/schema';
@@ -111,6 +111,21 @@ export default class DocumentationRoot extends React.Component<RouteComponentPro
                   exact={true}
                   path="/explore/:apiCategoryKey/docs/quickstart"
                   component={QuickstartPage}
+                  />
+                <Route
+                  exact={true}
+                  path="/explore/verification/docs/disability_rating"
+                  render={() => <Redirect to={{pathname: "/explore/verification/docs/veteran_verification", search: "?tab=disability_rating"}} />}
+                  />
+                <Route
+                  exact={true}
+                  path="/explore/verification/docs/service_history"
+                  render={() => <Redirect to={{pathname: "/explore/verification/docs/veteran_verification", search: "?tab=service_history"}} />}
+                  />
+                <Route
+                  exact={true}
+                  path="/explore/verification/docs/veteran_confirmation"
+                  render={() => <Redirect to={{pathname: "/explore/verification/docs/veteran_verification", search: "?tab=veteran_confirmation"}} />}
                   />
                 <Route
                   exact={true}

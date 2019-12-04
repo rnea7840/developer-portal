@@ -3,6 +3,7 @@ import {
   benefitsContent,
   facilitiesContent,
   healthContent,
+  utilityContent,
   vaFormsContent,
   verificationContent,
 } from '../../content/apiDocs';
@@ -12,6 +13,7 @@ import appealsApis from './appeals';
 import benefitsApis from './benefits';
 import facilitiesApis from './facilities';
 import healthApis from './health';
+import utilityApis from './utility';
 import vaForms from './vaForms';
 import verificationApis from './verification';
 
@@ -50,6 +52,14 @@ const apiDefinitions: IApiCategories = {
     tabBlurb:
       "The VA's FHIR Health APIs allow consumers to develop applications using Veteran data. Please see the tabs below for the specific FHIR implementations.",
   },
+  utility: {
+    apiKey: true,
+    apis: utilityApis,
+    buttonText: 'Stay Informed',
+    content: utilityContent,
+    name: 'Utility APIs',
+    properName: 'Utility APIs',
+  },
   vaForms: {
     apiKey: true,
     apis: vaForms,
@@ -75,5 +85,6 @@ export const apiCategoryOrder: string[] = [
   'health',
   'vaForms',
   'verification',
+  'utility',
 ];
 export default apiDefinitions;
