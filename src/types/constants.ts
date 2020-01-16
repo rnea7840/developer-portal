@@ -31,6 +31,9 @@ export type TOGGLE_HEALTH_CHECKED = typeof TOGGLE_HEALTH_CHECKED;
 export const TOGGLE_COMMUNITY_CARE_CHECKED = 'TOGGLE_COMMUNITY_CARE_CHECKED';
 export type TOGGLE_COMMUNITY_CARE_CHECKED = typeof TOGGLE_COMMUNITY_CARE_CHECKED;
 
+export const TOGGLE_CONFIRMATION_CHECKED = 'TOGGLE_CONFIRMATION_CHECKED';
+export type TOGGLE_CONFIRMATION_CHECKED = typeof TOGGLE_CONFIRMATION_CHECKED;
+
 export const TOGGLE_VA_FORMS_CHECKED = 'TOGGLE_VA_FORMS_CHECKED';
 export type TOGGLE_VA_FORMS_CHECKED = typeof TOGGLE_VA_FORMS_CHECKED;
 
@@ -59,3 +62,14 @@ export const SET_INITIAL_VERSIONING = 'SET_INITIAL_VERSIONING';
 export type SET_INITIAL_VERSIONING = typeof SET_INITIAL_VERSIONING;
 
 export const CURRENT_VERSION_IDENTIFIER = 'current';
+
+export const FORM_FIELDS_TO_URL_FRAGMENTS = {
+  benefits: 'benefits',
+  claims: 'claims',
+  communityCare: 'community_care',
+  confirmation: 'veteran_confirmation',
+  facilities: 'facilities',
+  health: 'fhir',
+  vaForms: 'vaForms',
+  verification: 'veteran_verification',
+};

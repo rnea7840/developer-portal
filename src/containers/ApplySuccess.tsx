@@ -41,22 +41,19 @@ const apisToEnglishOauthList = {
   verification: 'Veteran Verfication API',
 };
 
-// this isn't great but we need to do it in the short term since Apply isn't based on the API definitions
-const formFieldsToCategories = {
-  benefits: 'benefits',
-  claims: 'benefits',
-  communityCare: 'health',
-  facilities: 'facilities',
-  health: 'health',
-  vaForms: 'benefits',
-  verification: 'verification',
+const apisToEnglishApiKeyList = () => {
+  const apiDefs = getApiDefinitions();
+  return {
+    benefits: apiDefs.benefits.properName,
+    confirmation: 'Veteran Confirmation API',
+    facilities: apiDefs.facilities.properName,
+    vaForms: apiDefs.vaForms.properName,
+  };
 };
 
+
 const apisToEnglishList = (apis: string[]): string => {
-  const apiDefs = getApiDefinitions();
-  return sentenceJoin(apis.map((k) => {
-    return apiDefs[formFieldsToCategories[k]].properName;
-  }));
+  return sentenceJoin(apis.map(api => apisToEnglishApiKeyList()[api]));
 };
 
 function OAuthCredentialsNotice({ clientID, clientSecret, email, selectedApis } : IOAuthCredentialsNoticeProps) {
@@ -77,8 +74,8 @@ function OAuthCredentialsNotice({ clientID, clientSecret, email, selectedApis } 
 }
 
 function ApiKeyNotice({ token, email, selectedApis } : IApiKeyNoticeProps) {
-  const apiDefs = getApiDefinitions();
-  const apiListSnippet = apisToEnglishList(selectedApis.filter((k) => apiDefs[formFieldsToCategories[k]].apiKey));
+  const apiList = selectedApis.filter((k) => apisToEnglishApiKeyList()[k]);
+  const apiListSnippet = apisToEnglishList(apiList);
 
   return (
     <div>
@@ -115,6 +112,7 @@ function ApplySuccess(props: IApplication) {
     && (selectedApis.indexOf('facilities') === -1)
     && (selectedApis.indexOf('appeals') === -1)
     && (selectedApis.indexOf('vaForms') === -1)
+    && (selectedApis.indexOf('confirmation') === -1)
   );
 
   const oAuthNotice = ((apis.health || apis.verification || apis.claims) && clientID && clientSecret)

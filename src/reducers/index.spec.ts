@@ -13,6 +13,7 @@ const app: IApplication = {
       benefits: false,
       claims: false,
       communityCare: false,
+      confirmation: false,
       facilities: false,
       health: false,
       vaForms: false,
