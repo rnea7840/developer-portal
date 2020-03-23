@@ -22,7 +22,7 @@ We use separate authorization servers for our development and production environ
 Initiate the OpenID Connect authorization by directing your application's users to 
 
 ```plaintext
-https://dev-api.va.gov/oauth2/authorization
+https://sandbox-api.va.gov/oauth2/authorization
 ``` 
 
 with the following query parameters:
@@ -39,11 +39,48 @@ with the following query parameters:
 
 Example Authorization URL:
 ```plaintext
-https://dev-api.va.gov/oauth2/authorization?client_id=0oa1c01m77heEXUZt2p7&redirect_uri=<yourRedirectURL>&response_type=id_token token&response_mode=fragment&state=1AOQK33KIfH2g0ADHvU1oWAb7xQY7p6qWnUFiG1ffcUdrbCY1DBAZ3NffrjaoBGQ&nonce=o5jYpLSe29RBHBsn5iAnMKYpYw2Iw9XRBweacc001hRo5xxJEbHuniEbhuxHfVZy&scope=openid offline_access profile email veteran_status.read
+https://sandbox-api.va.gov/oauth2/authorization?client_id=0oa1c01m77heEXUZt2p7&redirect_uri=<yourRedirectURL>&response_type=id_token token&response_mode=fragment&state=1AOQK33KIfH2g0ADHvU1oWAb7xQY7p6qWnUFiG1ffcUdrbCY1DBAZ3NffrjaoBGQ&nonce=o5jYpLSe29RBHBsn5iAnMKYpYw2Iw9XRBweacc001hRo5xxJEbHuniEbhuxHfVZy&scope=openid offline_access profile email veteran_status.read
 ```
 (⚠️Be sure to replace `<yourRedirectURL>` with the redirect URL that you provided during registration)
 
 The user will be taken through a flow where they are authenticated by VA.gov and then asked to consent to allowing your application access to the data it is requesting (as defined by your scopes). After authorizing, your application will receive slightly different responses based on the `response_type` you requested.
+
+### Implicit Flow
+
+This flow works for applications that aren't able to keep a *client secret* protected &mdash; such as single-page webapps or mobile applications. This flow is selected by using either the `id_token` or `token` value for the `response_type` parameter.
+
+Your application will need to redirect the user's browser to our OpenID authorization server with a request like this:
+
+```http
+HTTP/1.1 302 Found
+Location: https://sandbox-api.va.gov/oauth2/authorization?
+  client_id=s6BhdRkqt3
+  &response_type=id_token
+  &response_mode=fragment
+  &redirect_uri=<yourRedirectURL>
+  &scope=openid%20profile%20email
+```
+(⚠️Be sure to replace `<yourRedirectURL>` with the redirect URL that you provided during registration)
+
+In the request above the `response_mode` value determines how the token is provided when the user's browser is redirected back to your application. It can be either `fragment` (the default) or `query`.
+
+After the user confirms they want to authorize your application to access their data, their browser will be redirected to your application with a request like this:
+
+```http
+GET <yourRedirectURL>#
+  id_token=SlAV32hkKG
+  &access_token=SlAV32hkKG
+  &token_type=Bearer
+  &expires_in=3600
+  &scope=openid%20profile%20email
+  &state=af0ifjsldkj
+Host: <yourRedirectHost>
+```
+(⚠️Be sure to replace `<yourRedirectURL>` with the redirect URL that you provided during registration, and `<yourRedirectHost>` with the host part of the redirect URL that you provided during registration)
+
+If you requested an `id_token` it will be returned as a parameter called `id_token`. If you requested a `token`, it will be returned as a parameter called `access_token`.
+
+The `access_token` can be used to authorize requests to the VA API Platform by including them in HTTP requests to the Platform by including it in the `Authorization` header as `Authorization: Bearer {token}`. When using the `id_token` to identify a user, you should validate that the token is properly signed and has the expected `audience` and `nonce`, see [id_token](#id-token) for more information.
 
 ### Authorization Code Flow
 
@@ -53,7 +90,7 @@ Your application will need to redirect the user's browser to our OpenID authoriz
 
 ```http
 HTTP/1.1 302 Found
-Location: https://dev-api.va.gov/oauth2/authorization?
+Location: https://sandbox-api.va.gov/oauth2/authorization?
   response_type=code
   &scope=openid%20profile%20email%20offline_access
   &client_id=s6BhdRkqt3
@@ -76,7 +113,7 @@ Your application then makes a request to our authorization service using the ret
 
 ```http
 POST /oauth2/token HTTP/1.1
-Host: dev-api.va.gov
+Host: sandbox-api.va.gov
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic {base64 encoded *client id* + ':' + *client secret*}
 
@@ -121,7 +158,7 @@ The `refresh_token` can be used to obtain a new `access_token` after its expiry 
 
 ```http
 POST /oauth2/token HTTP/1.1
-Host: dev-api.va.gov
+Host: sandbox-api.va.gov
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic {base64 encoded *client id* + ':' + *client secret*}
 
@@ -158,7 +195,7 @@ Unlike the token returned by an authorization_code grant, which is simply a rand
 
 ### Header
 
-The JWT's header has two fields `alg` and `kid`. `alg` indicates the algorithm that was used the sign the JWT, and `kid` identifies the key that was used to sign the JWT. Signing keys and associated metadata are accessible from `https://dev-api.va.gov/oauth2/.well-known/openid-configuration`.
+The JWT's header has two fields `alg` and `kid`. `alg` indicates the algorithm that was used the sign the JWT, and `kid` identifies the key that was used to sign the JWT. Signing keys and associated metadata are accessible from `https://sandbox-api.va.gov/oauth2/.well-known/openid-configuration`.
 
 ### Payload
 
@@ -270,7 +307,7 @@ Open up a file called `index.js` in your editor of choice and add the following:
 ```JavaScript
 const { Issuer } = require('openid-client');
 
-const ROOT_URL = 'https://dev-api.va.gov/oauth2/.well-known/openid-configuration';
+const ROOT_URL = 'https://sandbox-api.va.gov/oauth2/.well-known/openid-configuration';
 const client_id = 'your_client_id';
 const client_secret = 'your_client_secret';
 
@@ -398,7 +435,7 @@ const verifyVeteranStatus = async (req, res, next) => {
   if (req.session && req.session.passport && req.session.passport.user) {
     const veteranStatus = await new Promise((resolve, reject) => {
       https.get(
-        'https://dev-api.va.gov/services/veteran_verification/v0/status',
+        'https://sandbox-api.va.gov/services/veteran_verification/v0/status',
         { headers: {'Authorization': `Bearer ${req.session.passport.user.tokenset.access_token}`} },
         (res) => {
           let rawData = '';
