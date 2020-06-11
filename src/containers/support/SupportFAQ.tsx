@@ -15,7 +15,7 @@ const generalQuestions: ISupportQuestion[] = [
           the VA Inquiry Routing &amp; Information System <a href="https://iris.custhelp.va.gov/app/answers/list">(IRIS)</a>.
         </p>
         <p>
-          If you are a Veteran trying to access VA records in the iPhone Health app, please visit this Apple support page:
+          If you are a Veteran trying to access VA records in the Apple (iPhone or iPad) Health app, please visit this Apple support page:
           <a href="https://support.apple.com/en-us/HT208680">View health records on your iPhone</a>.
         </p>
       </React.Fragment>
