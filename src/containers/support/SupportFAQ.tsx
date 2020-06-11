@@ -6,19 +6,19 @@ import PageHeader from '../../components/PageHeader';
 const generalQuestions: ISupportQuestion[] = [
   {
     answer: (
-      <>
-      <p>
-        No - this is a support page for software developers utilizing the Veterans Affairs (VA)
-        Application Programming Interface (API). If you are a veteran seeking assistance, please visit
-        the <a href="http://www.va.gov">US Department of Veterans Affairs website</a> to access and
-        manage your VA benefits and health care. There are also helpful reference links and Q&amp;A at
-        the VA Inquiry Routing &amp; Information System <a href="https://iris.custhelp.va.gov/app/answers/list">(IRIS)</a>.
-      </p>
-      <p>
-        If you are a Veteran trying to access VA records in the iPhone Health app, please visit this Apple support page:
-        <a href="https://support.apple.com/en-us/HT208680">View health records on your iPhone</a>.
-      </p>
-      </>
+      <React.Fragment>
+        <p>
+          No - this is a support page for software developers utilizing the Veterans Affairs (VA)
+          Application Programming Interface (API). If you are a veteran seeking assistance, please visit
+          the <a href="http://www.va.gov">US Department of Veterans Affairs website</a> to access and
+          manage your VA benefits and health care. There are also helpful reference links and Q&amp;A at
+          the VA Inquiry Routing &amp; Information System <a href="https://iris.custhelp.va.gov/app/answers/list">(IRIS)</a>.
+        </p>
+        <p>
+          If you are a Veteran trying to access VA records in the iPhone Health app, please visit this Apple support page:
+          <a href="https://support.apple.com/en-us/HT208680">View health records on your iPhone</a>.
+        </p>
+      </React.Fragment>
     ),
     question: 'Is this where I apply for VA Benefits and access to my health records?',
   },
