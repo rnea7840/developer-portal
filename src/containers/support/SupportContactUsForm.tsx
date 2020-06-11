@@ -63,7 +63,7 @@ export default class SupportContactUsForm extends React.Component<ISupportContac
             <p className={legendDescClasses}>
               Have a question? Use the form below to send us an email and we'll do the best to answer your question
               and get you headed in the right direction. NOTE: If you are a Veteran seeking support for VA records 
-              in the iPhone Health app, please visit this Apple support page:
+              in the Apple (iPhone or iPad) Health app, please visit this Apple support page:
               <a href="https://support.apple.com/en-us/HT208680">View health records on your iPhone</a>.
             </p>
           </legend>
