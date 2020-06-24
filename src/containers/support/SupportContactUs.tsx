@@ -33,7 +33,7 @@ export default class SupportContactUs extends React.Component<{}, ISupportContac
 
   public render() {
     const headerProps = {
-      description: "Greetings! Need assistance, or have questions about the VA Lighthouse APIs? You can submit an issue on GitHub (requires an account) or contact us by using the form below. Please provide as much detail as possible. Your concerns and feedback are important to us, and you can expect a reply within one business day.",
+      description: "If you have questions about the VA Lighthouse APIs that are not answered by reviewing our FAQs, please use the Contact Us form below and we will get back to you within one business day.",
       halo: "Support",
       header: "Contact Us",
     };
