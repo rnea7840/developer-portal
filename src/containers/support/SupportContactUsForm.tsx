@@ -61,10 +61,7 @@ export default class SupportContactUsForm extends React.Component<ISupportContac
           <legend className="vads-u-font-size--lg">
             Contact Us
             <p className={legendDescClasses}>
-              Have a question? Use the form below to send us an email and we'll do the best to answer your question
-              and get you headed in the right direction. NOTE: If you are a Veteran seeking support for VA records 
-              in the Apple (iPhone or iPad) Health app, please visit this Apple support page:
-              <a href="https://support.apple.com/en-us/HT208680">View health records on your iPhone</a>.
+              Be sure to complete each field as thoroughly and accurately as possible before hitting the Submit button. Required fields are indicated in red.
             </p>
           </legend>
 
@@ -123,7 +120,7 @@ export default class SupportContactUsForm extends React.Component<ISupportContac
 
           <ErrorableTextArea
             errorMessage={this.state.description.validation}
-            label="Please describe your question or issue in as much detail as you can provide. Steps to reproduce or any specific error messages are helpful if applicable."
+            label="Please describe your question or issue in as much detail as possible. If applicable and feasible, include any error messages or steps needed to reproduce the error."
             onValueChange={(field: IErrorableInput) => this.setState({ description: validatePresence(field, 'Description') })}
             name="description"
             field={this.state.description}
