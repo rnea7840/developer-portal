@@ -33,7 +33,9 @@ export default class SupportContactUs extends React.Component<{}, ISupportContac
 
   public render() {
     const headerProps = {
-      description: "If you have questions about the VA Lighthouse APIs that are not answered by reviewing our FAQs, please use the Contact Us form below and we will get back to you within one business day.",
+      description: "If you have questions about the VA Lighthouse APIs that are not answered by reviewing our FAQs, please use the Contact Us form below and we will get back to you within one business day. NOTE: If you are a Veteran seeking support for VA records 
+              in the Apple Health app, please visit this Apple support page:
+              <a href="https://support.apple.com/en-us/HT208680">View health records on your iPhone</a>.",
       halo: "Support",
       header: "Contact Us",
     };
