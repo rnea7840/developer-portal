@@ -6,10 +6,11 @@ import * as actions from '../../actions';
 import { Flag } from 'flag';
 import { Location } from 'history';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
-import SwaggerDocs from './SwaggerDocs';
+// import SwaggerDocs from './SwaggerDocs';
 
 import { lookupApiCategory } from '../../apiDefs/query';
 import { IApiDescription, IApiDocSource } from '../../apiDefs/schema';
+import OpenAPISpec from '../../openAPISpec';
 import { history } from '../../store';
 
 import '../../../node_modules/react-tabs/style/react-tabs.scss';
@@ -63,7 +64,9 @@ class ApiDocumentation extends React.Component<IApiDocumentationProps, IApiDocum
     return (
       <Flag name={`hosted_apis.${apiDefinition.urlFragment}`}>
         {apiDefinition.docSources.length === 1 
-          ? <SwaggerDocs docSource={apiDefinition.docSources[0]} apiName={apiDefinition.urlFragment} />
+          ? <OpenAPISpec 
+              apiId={apiDefinition.urlFragment} 
+              endpoint={apiDefinition.docSources[0].openApiUrl} />
           : (
             <React.Fragment>
               {category!.tabBlurb}
@@ -80,7 +83,10 @@ class ApiDocumentation extends React.Component<IApiDocumentationProps, IApiDocum
                 {apiDefinition.docSources.map(apiDocSource => {
                   return (
                     <TabPanel key={apiDocSource.label}>
-                      <SwaggerDocs docSource={apiDocSource} apiName={apiDefinition.urlFragment} />
+                      <OpenAPISpec 
+                        apiId={`${apiDefinition.urlFragment}-${apiDocSource.key}`}
+                        endpoint={apiDocSource.openApiUrl} 
+                      />
                     </TabPanel>
                   );
                 })}

@@ -3,6 +3,7 @@ import { routerMiddleware, routerReducer as routing } from 'react-router-redux';
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk, { ThunkMiddleware } from 'redux-thunk';
 
+import { specsReducer } from './openAPISpec';
 import { IApplication, IRootState } from './types';
 
 import createBrowserHistory from 'history/createBrowserHistory';
@@ -52,6 +53,7 @@ const store = createStore(
     apiVersioning,
     application,
     routing,
+    specs: specsReducer,
   }),
   {
     application: loadApplicationState().application,

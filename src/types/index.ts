@@ -1,4 +1,5 @@
 import { RouterState } from 'react-router-redux';
+import { AppRootState } from '../openAPISpec';
 import { IApplication } from './apply';
 
 export * from './apply';
@@ -15,8 +16,9 @@ export interface IApiVersioning {
   requestedApiVersion: string;
 }
 
-export interface IRootState {
+export interface IRootState extends AppRootState {
   apiVersioning: IApiVersioning;
   application: IApplication;
   routing: RouterState;
+  // specs: OpenAPISpecState;
 }
