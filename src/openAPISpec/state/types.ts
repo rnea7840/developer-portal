@@ -1,3 +1,7 @@
+export interface OpenAPIInfo {
+  description: string;
+}
+
 export interface Operation {
   tags: string[];
   summary?: string;
@@ -23,6 +27,7 @@ export interface Paths {
 }
 
 export interface OpenAPISpecDefinition {
+  info: OpenAPIInfo;
   paths: Paths;
 }
 
