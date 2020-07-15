@@ -1,10 +1,10 @@
+import { OpenAPISpecItem, OpenAPISpecState } from '../types';
 import {
   LOAD_OPENAPI_SPEC_ERROR,
   LOAD_OPENAPI_SPEC_START,
   LOAD_OPENAPI_SPEC_SUCCESS,
   LoadOpenAPISpecSyncAction,
 } from './actions';
-import { OpenAPISpecItem, OpenAPISpecState } from './types';
 
 const specsReducer = (
   state: OpenAPISpecState = {},

@@ -1,5 +1,5 @@
 export * from './actions';
-export * from './types';
+export * from './selectors';
 
 import specsReducer from './reducers';
 export { specsReducer };

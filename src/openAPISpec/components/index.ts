@@ -1,3 +1,4 @@
+import Endpoints from './Endpoints';
 import OpenAPIContents from './OpenAPIContents';
 
-export { OpenAPIContents };
+export { Endpoints, OpenAPIContents };

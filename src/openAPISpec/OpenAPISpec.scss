@@ -1,0 +1,80 @@
+@import '../styles/base.scss';
+
+h5.open-api {
+  @extend .vads-u-margin-bottom--2p5;
+  @extend .vads-u-font-size--base;
+}
+
+h6.open-api {
+  @extend .vads-u-font-size--base;
+}
+
+.open-api-endpoint {
+  @extend .vads-u-margin-y--4;
+}
+
+.http-badge {
+  @extend .vads-u-padding--1;
+  @extend .vads-u-color--white;
+  @extend .vads-u-font-weight--normal;
+  @extend .vads-u-margin-right--1;
+  border-radius: 5px;
+}
+
+.get {
+  @extend .vads-u-background-color--green-light;
+}
+
+.post {
+  @extend .vads-u-background-color--primary-alt-dark;
+}
+
+.put {
+  @extend .vads-u-background-color--gold;
+}
+
+.patch {
+  @extend .vads-u-background-color--orange;
+}
+
+.delete {
+  @extend .vads-u-background-color--secondary;
+}
+
+.options {
+  @extend .vads-u-background-color--gray-warm-dark;
+}
+
+.head {
+  @extend .vads-u-background-color--cool-blue;
+}
+
+.trace {
+  @extend .vads-u-background-color--orange;
+}
+
+.param-name {
+  @extend .vads-u-color--primary-alt-darkest;
+}
+
+.required-param-badge {
+  @extend .vads-u-color--white;
+  @extend .vads-u-background-color--gray-medium;
+  @extend .vads-u-padding--0p5;
+  @extend .vads-u-margin-left--1p5;
+  @extend .vads-u-font-weight--normal;
+  border-radius: 3px;
+  font-size: 1.4rem;
+}
+
+.param-description {
+  @extend .vads-u-margin-y--1p5;
+
+  p {
+    @extend .vads-u-margin-y--0;
+  }
+}
+
+// .open-api-collapsible-title {
+//   display: block;
+// }

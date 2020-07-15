@@ -1,9 +1,6 @@
 import { Action, ActionCreator } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { 
-  AppRootState,
-  OpenAPISpecDefinition, 
-} from './types';
+import { AppRootState, OpenAPISpecDefinition } from '../types';
 
 export const LOAD_OPENAPI_SPEC_START = 'LOAD_OPENAPI_SPEC_START';
 export const LOAD_OPENAPI_SPEC_SUCCESS = 'LOAD_OPENAPI_SPEC_SUCCESS';
@@ -29,8 +26,10 @@ export interface LoadOpenAPISpecErrorAction extends Action {
   apiId: string;
 }
 
-export type LoadOpenAPISpecSyncAction = 
-  LoadOpenAPISpecStartAction | LoadOpenAPISpecSuccessAction | LoadOpenAPISpecErrorAction;
+export type LoadOpenAPISpecSyncAction =
+  | LoadOpenAPISpecStartAction
+  | LoadOpenAPISpecSuccessAction
+  | LoadOpenAPISpecErrorAction;
 
 export type LoadOpenAPISpecAction = ThunkAction<
   Promise<LoadOpenAPISpecSyncAction>,
@@ -61,20 +60,14 @@ export const loadOpenAPISpecSuccess: ActionCreator<LoadOpenAPISpecSuccessAction>
   };
 };
 
-export const loadOpenAPISpecError: ActionCreator<LoadOpenAPISpecErrorAction> = (
-  apiId: string,
-) => {
+export const loadOpenAPISpecError: ActionCreator<LoadOpenAPISpecErrorAction> = (apiId: string) => {
   return {
     apiId,
     type: LOAD_OPENAPI_SPEC_ERROR,
   };
 };
 
-export type OpenAPIDispatch = ThunkDispatch<
-  AppRootState,
-  undefined,
-  LoadOpenAPISpecSyncAction
->;
+export type OpenAPIDispatch = ThunkDispatch<AppRootState, undefined, LoadOpenAPISpecSyncAction>;
 
 export const loadOpenAPISpec: ActionCreator<LoadOpenAPISpecAction> = (
   apiId: string,
@@ -93,7 +86,7 @@ export const loadOpenAPISpec: ActionCreator<LoadOpenAPISpecAction> = (
         accept: 'application/json',
       },
     });
-    
+
     return fetch(request)
       .then(response => {
         if (!response.ok) {
