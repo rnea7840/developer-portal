@@ -79,13 +79,13 @@ const navItemStyles = (isFirstChild: boolean = false) => classNames(
   'medium-screen:vads-u-padding-y--0',
   !isFirstChild && ['vads-u-border-top--1px', 'vads-u-border-color--gray-lighter', 'medium-screen:vads-u-border-top--0'],
   );
-  
+
 const navLinkStyles = classNames(
   'vads-u-color--gray-dark',
   'vads-u-display--block',
   'vads-u-line-height--4',
   'vads-u-padding--1',
-  'vads-u-text-decoration--none',
+  'vads-u-text-decoration--underline',
   'medium-screen:vads-u-padding--1p5',
 );
 
@@ -126,7 +126,7 @@ export default class NavBar extends React.Component<INavBarProps, INavBarState> 
           'medium-screen:vads-u-display--flex',
         )}>
           <div className={mobileOnly()}>
-            <button 
+            <button
               className={classNames(
                 'va-api-mobile-nav-close',
                 'vads-u-display--block',
@@ -134,11 +134,11 @@ export default class NavBar extends React.Component<INavBarProps, INavBarState> 
                 'vads-u-margin-right--neg1',
                 'vads-u-margin-bottom--2',
                 'vads-u-padding--0',
-              )} 
+              )}
               onClick={this.props.onClose}
             >
-              <img 
-                src={closeButton} alt="Close button" 
+              <img
+                src={closeButton} alt="Close button"
                 className={classNames('vads-u-color--gray-dark', 'vads-u-max-width--none')} />
             </button>
             <Search inMenu={true} className={classNames('vads-u-margin-y--2', 'vads-u-padding-y--0', 'vads-u-width--full')} />
@@ -149,18 +149,18 @@ export default class NavBar extends React.Component<INavBarProps, INavBarState> 
             'medium-screen:vads-u-display--inline',
           )}>
             <li className={navItemStyles(true)}>
-              <MainNavItem 
-                targetUrl="/explore" 
-                largeScreenProps={sharedNavItemProps} 
+              <MainNavItem
+                targetUrl="/explore"
+                largeScreenProps={sharedNavItemProps}
                 excludeSmallScreen={true}
                 className={navLinkStyles}
               >
                 Documentation
               </MainNavItem>
               <div className={mobileOnly()}>
-                <button 
+                <button
                   className={classNames(
-                    'va-api-nav-button', 
+                    'va-api-nav-button',
                     navLinkStyles,
                     'vads-u-display--flex',
                     'vads-u-flex-wrap--nowrap',
@@ -205,7 +205,7 @@ export default class NavBar extends React.Component<INavBarProps, INavBarState> 
             "va-api-u-margin-y--auto",
             "vads-u-margin-left--auto",
             "vads-u-color--white",
-            "vads-u-text-decoration--none",
+            "vads-u-text-decoration--underline",
             "vads-u-font-size--base",
           )} href="https://valighthouse.statuspage.io">API Status <FontAwesomeIcon icon={faExternalLinkAlt} /></a>
           <div className={mobileOnly()}>

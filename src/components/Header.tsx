@@ -63,7 +63,7 @@ export default class Header extends React.Component<{}, IHeaderState> {
                   'medium-screen:vads-u-font-size--2xl',
                 )}
               >
-                <span className="vads-u-font-weight--bold">VA</span> | Lighthouse
+                <span className={"vads-u-font-weight--bold"}>VA</span> | Lighthouse
               </Link>
             </div>
             <div className={desktopOnly()}>
