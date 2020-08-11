@@ -1,3 +1,4 @@
+// tslint:disable:no-console
 import { OpenAPISpecItem, OpenAPISpecState } from '../types';
 import {
   LOAD_OPENAPI_SPEC_ERROR,
