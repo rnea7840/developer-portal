@@ -8,7 +8,6 @@
 */
 
 import * as moment from 'moment';
-
 import {
   ArgonautReleaseNotes,
   CommunityCareApiIntro,
@@ -16,22 +15,21 @@ import {
   FhirApiReleaseNotes,
   FhirArgonautApiIntro,
   FhirDSTU2ApiIntro,
-  FhirR4ApiIntro,
-  HealthArgonautPostDeprecation,
-  HealthArgonautPreDeprecation,
+  FHIRMultiOpenAPIIntro,
+  HealthArgonautDeactivationNotice,
+  HealthArgonautDeprecationNotice,
   UrgentCareApiIntro,
+  UrgentCareDeactivationNotice,
+  UrgentCareDeprecationNotice,
   UrgentCareReleaseNotes,
 } from '../../content/apiDocs/health';
-import { IApiDescription } from "../schema";
+import { IApiDescription } from '../schema';
 
-const swaggerHost : string = process.env.REACT_APP_VETSGOV_SECONDARY_SWAGGER_API!;
-const argonautDeprecatedDesc = 'Both the legacy API endpoints and this legacy documentation will no longer be accessible beginning Oct 1, 2019.';
-const argonautDeprecationDate = moment('01 Oct 2019 00:00 EDT');
-const isArgonautDeprecated = moment().isAfter(argonautDeprecationDate);
-
-const healthApis : IApiDescription[] = [
+const swaggerHost: string = process.env.REACT_APP_VETSGOV_SECONDARY_SWAGGER_API!;
+const healthApis: IApiDescription[] = [
   {
-    description: "VA's Community Care Eligibility API utilizes VA's Facility API, VA's Enrollment & Eligibility system and others to satisfy requirements found in the VA's MISSION Act of 2018.",
+    description:
+      "VA's Community Care Eligibility API utilizes VA's Facility API, VA's Enrollment & Eligibility system and others to satisfy requirements found in the VA's MISSION Act of 2018.",
     docSources: [
       {
         apiIntro: CommunityCareApiIntro,
@@ -47,7 +45,14 @@ const healthApis : IApiDescription[] = [
     vaInternalOnly: false,
   },
   {
-    description: "The VA's Health Urgent Care Eligibility API supports industry standards (e.g., Fast Healthcare Interoperability Resources [FHIR]) and provides access to a Veteran's urgent care eligibility status.",
+    deactivationInfo: {
+      deactivationContent: UrgentCareDeactivationNotice,
+      deactivationDate: moment('20 Jul 2020 00:00 EDT'),
+      deprecationContent: UrgentCareDeprecationNotice,
+      deprecationDate: moment('13 Jul 2020 00:00 EDT'),
+    },
+    description:
+      "The VA's Health Urgent Care Eligibility API supports industry standards (e.g., Fast Healthcare Interoperability Resources [FHIR]) and provides access to a Veteran's urgent care eligibility status.",
     docSources: [
       {
         apiIntro: UrgentCareApiIntro,
@@ -63,7 +68,8 @@ const healthApis : IApiDescription[] = [
     vaInternalOnly: false,
   },
   {
-    description: 'Use the OpenID Connect and SMART on FHIR standards to allow Veterans to authorize third-party applications to access data on their behalf.',
+    description:
+      'Use the OpenID Connect and SMART on FHIR standards to allow Veterans to authorize third-party applications to access data on their behalf.',
     docSources: [
       {
         apiIntro: FhirArgonautApiIntro,
@@ -72,7 +78,6 @@ const healthApis : IApiDescription[] = [
         openApiUrl: `${swaggerHost}/services/fhir/v0/argonaut/data-query/openapi.json`,
       },
       {
-        apiIntro: FhirR4ApiIntro,
         key: 'r4',
         label: 'R4',
         openApiUrl: `${swaggerHost}/services/fhir/v0/r4/openapi.json`,
@@ -85,6 +90,7 @@ const healthApis : IApiDescription[] = [
       },
     ],
     enabledByDefault: true,
+    multiOpenAPIIntro: FHIRMultiOpenAPIIntro,
     name: 'Veterans Health API (FHIR)',
     oAuth: true,
     releaseNotes: FhirApiReleaseNotes,
@@ -93,10 +99,15 @@ const healthApis : IApiDescription[] = [
     vaInternalOnly: false,
   },
   {
-    // see the RFC 2822 date format section here: https://momentjs.com/docs/#/parsing/string-format/
-    deprecated: argonautDeprecationDate,
-    deprecationContent: isArgonautDeprecated ? HealthArgonautPostDeprecation : HealthArgonautPreDeprecation,
-    description: isArgonautDeprecated ? '' : argonautDeprecatedDesc,
+    deactivationInfo: {
+      deactivationContent: HealthArgonautDeactivationNotice,
+      // see the RFC 2822 date format section here: https://momentjs.com/docs/#/parsing/string-format/
+      deactivationDate: moment('01 Oct 2019 00:00 EDT'),
+      deprecationContent: HealthArgonautDeprecationNotice,
+      deprecationDate: moment('15 Sep 2019 00:00 EDT'),
+    },
+    description:
+      'Both the legacy API endpoints and this legacy documentation will no longer be accessible beginning Oct 1, 2019.',
     docSources: [
       {
         openApiUrl: `${swaggerHost}/services/argonaut/v0/openapi.json`,

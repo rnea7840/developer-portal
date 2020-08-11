@@ -37,19 +37,19 @@ with the following query parameters:
 | --------------- | ------------ | ------ |
 | `client_id`     | **Required** | The `client_id` issued by the VA API Platform team |
 | `redirect_uri`  | **Required** | The URL you supplied. The user will be redirected to this URL after authorizing your application. |
-| `response_type` | **Required** | One or two of `id_token`, and `code`. |
+| `response_type` | **Required** | Supported response types: `code` |
 | `state`         | **Required** | Ensures authorization flow integrity. See [security](#security-considerations). |
 | `nonce`         | Optional     | Used with `id_token` to verify token integrity. Ensure the nonce in your `id_token` is the same as this value. See [security](#security-considerations). |
 | `response_mode` | Optional     | Either `fragment` or `query`, recommended not to use unless you have a specific reason. Defaults to fragment. |
 | `scope`         | Optional     | Will use your application's default scopes unless you specify a smaller subset of scopes separated by a space. |
-| `prompt`        | Optional     | Supported prompts: `login`. If specified, the user will be forced to provide credentials regardless of session state. If omitted, an existing active session with the identity provider may not require the user to provide credentials.|
+| `prompt`        | Optional     | Supported prompts: `login`, `consent` and `none`.<p>If `login` is specified, the user will be forced to provide credentials regardless of session state. If omitted, an existing active session with the identity provider may not require the user to provide credentials.</p><p>If `consent` is specified, the user will be asked to consent to their scopes being used regardless of prior consent.</p><p>If `none` is specified, an application will attempt an authorization request without user interaction. When the session is invalid or there are scopes the user has not consented to, one of the following errors will be thrown: `login_required` or `consent_required`.</p> |
 
 Example Authorization URL:
 ```http
 https://sandbox-api.va.gov/oauth2/authorization?
   client_id=0oa1c01m77heEXUZt2p7
   &redirect_uri=<yourRedirectURL>
-  &response_type=id_token code
+  &response_type=code
   &scope=openid offline_access profile email veteran_status.read launch/patient
   &state=1AOQK33KIfH2g0ADHvU1oWAb7xQY7p6qWnUFiG1ffcUdrbCY1DBAZ3NffrjaoBGQ&nonce=o5jYpLSe29RBHBsn5iAnMKYpYw2Iw9XRBweacc001hRo5xxJEbHuniEbhuxHfVZy
 ```
@@ -150,6 +150,37 @@ token={your refresh token}&token_type_hint=refresh_token
 
 Clients may only revoke their own tokens.
 
+#### Revoking Grants
+
+A user will only be prompted once to consent to each client's use of their data, and the grants will remain in effect unless revoked. Revoke grants for a specified user and client in the Sandbox environment with the following endpoint:
+
+```HTTP
+DELETE /oauth2/grants HTTP/1.1
+Host: sandbox-api.va.gov
+Content-Type: application/x-www-form-urlencoded
+
+{
+	"client_id": {client_id},
+	"email": {test account email}
+}
+```
+ 
+The user's email address (test account email) and application client ID (client_id) must be passed into the body of the request. Bad requests will be returned with an error response and description of the error.
+
+```HTTP
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+  "error": "invalid_request",
+  "error_description": "Invalid email address."
+}
+```
+
+**Note:** This endpoint is not available in the Production environment and excludes identity provider grants. 
+
 #### Manage Account
 
 The manage endpoint directs end users to a URL where they can view which applications currently have access to their data and can make adjustments to these access rights (grants).
@@ -182,7 +213,7 @@ with the following query parameters:
 | `code_challenge_method` | **Required** | Supported code challenges: `S256` |
 | `state`                 | **Required** | Ensures authorization flow integrity. See [security](#security-considerations). |
 | `scope`                 | Optional     | Will use your application's default scopes unless you specify a smaller subset of scopes separated by a space. |
-| `prompt`                | Optional     | Supported prompts: `login`. If specified, the user will be forced to provide credentials regardless of session state. If omitted, an existing active session with the identity provider may not require the user to provide credentials.|
+| `prompt`                | Optional     | Supported prompts: `login`, `consent` and `none`.<p>If `login` is specified, the user will be forced to provide credentials regardless of session state. If omitted, an existing active session with the identity provider may not require the user to provide credentials.</p><p>If `consent` is specified, the user will be asked to consent to their scopes being used regardless of prior consent.</p><p>If `none` is specified, an application will attempt an authorization request without user interaction. When the session is invalid or there are scopes the user has not consented to, one of the following errors will be thrown: `login_required` or `consent_required`.</p> |
 
 Example Authorization URL:
 ```http
@@ -285,7 +316,7 @@ Scopes define the API endpoint your application is allowed to access. The VA API
 These are subject to change while the VA API Platform OpenID Connect feature is under development.
 
 ## ID Token
-Unlike the token returned by an authorization_code grant, which is simply a random value, an `id_token` is a [JSON Web Token](https://jwt.io) or JWT. A JWT consists of three parts: a header, a payload, and a signature. This provides an extremely brief overview of a JWT.
+Unlike the access token returned by an authorization_code grant, which is simply a random value, an `id_token` is a [JSON Web Token](https://jwt.io) or JWT. A JWT consists of three parts: a header, a payload, and a signature. This provides an extremely brief overview of a JWT. An `id_token` is available in the authorization code flow (response_type = code) token response when the 'openid' scope is used.
 
 ### Header
 

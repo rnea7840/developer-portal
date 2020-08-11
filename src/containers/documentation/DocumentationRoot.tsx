@@ -112,6 +112,10 @@ const oldRouteToNew = [
     from: '/explore/verification/docs/service_history',
     to: '/explore/verification/docs/veteran_verification',
   },
+  {
+    from: '/explore/benefits/docs/appeals',
+    to: '/explore/appeals/docs/appeals',
+  },
 ];
 
 export default class DocumentationRoot extends React.Component<
