@@ -39,7 +39,7 @@ with the following query parameters:
 | `redirect_uri`  | **Required** | The URL you supplied. The user will be redirected to this URL after authorizing your application. |
 | `response_type` | **Required** | Supported response types: `code` |
 | `state`         | **Required** | Ensures authorization flow integrity. See [security](#security-considerations). |
-| `aud`           | **Required** | The FHIR resource server an application is making API calls to. See [security](#security-considerations). |
+| `aud`           | **Required** | Supported audiences: `api://default`. <p>The resource server an application is making API calls to. See [security](#security-considerations)</p>. |
 | `nonce`         | Optional     | Used with `id_token` to verify token integrity. Ensure the nonce in your `id_token` is the same as this value. See [security](#security-considerations). |
 | `response_mode` | Optional     | Either `fragment` or `query`, recommended not to use unless you have a specific reason. Defaults to fragment. |
 | `scope`         | Optional     | Will use your application's default scopes unless you specify a smaller subset of scopes separated by a space. |
@@ -214,7 +214,7 @@ with the following query parameters:
 | `code_challenge`        | **Required** | Base64 encoded challenge generated from your `code_verifier` |
 | `code_challenge_method` | **Required** | Supported code challenges: `S256` |
 | `state`                 | **Required** | Ensures authorization flow integrity. See [security](#security-considerations). |
-| `aud`                   | **Required** | The FHIR resource server an application is making API calls to. See [security](#security-considerations). |
+| `aud`                   | **Required** | Supported audiences: `api://default`. <p>The resource server an application is making API calls to. See [security](#security-considerations)</p>. |
 | `scope`                 | Optional     | Will use your application's default scopes unless you specify a smaller subset of scopes separated by a space. |
 | `prompt`                | Optional     | Supported prompts: `login`, `consent` and `none`.<p>If `login` is specified, the user will be forced to provide credentials regardless of session state. If omitted, an existing active session with the identity provider may not require the user to provide credentials.</p><p>If `consent` is specified, the user will be asked to consent to their scopes being used regardless of prior consent.</p><p>If `none` is specified, an application will attempt an authorization request without user interaction. When the session is invalid or there are scopes the user has not consented to, one of the following errors will be thrown: `login_required` or `consent_required`.</p> |
 
