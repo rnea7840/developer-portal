@@ -373,13 +373,13 @@ The [OpenID Connect documentation](https://openid.net/specs/openid-connect-core-
 
 > The nonce parameter value needs to include per-session state and be unguessable to attackers. One method to achieve this for Web Server Clients is to store a cryptographically random value as an HttpOnly session cookie and use a cryptographic hash of the value as the nonce parameter. In that case, the nonce in the returned ID Token is compared to the hash of the session cookie to detect ID Token replay by third parties. A related method applicable to JavaScript Clients is to store the cryptographically random value in HTML5 local storage and use a cryptographic hash of this value.
 
-### JWT Signature validation
-
-Your application must validate JWT signatures. This allows your application to verify that the provided JWT originates from our authorization servers and prevents your application from accepting a JWT with claims that are attempting to impersonate one of your users.
-
 ### aud
 
 The `aud` query parameter is the FHIR resource server an application makes API calls to. Specifying this parameter in the authorization request prevents applications from leaking `access_tokens` to conterfeit resource servers.
+
+### JWT Signature validation
+
+Your application must validate JWT signatures. This allows your application to verify that the provided JWT originates from our authorization servers and prevents your application from accepting a JWT with claims that are attempting to impersonate one of your users.
 
 ## Support
 
