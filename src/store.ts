@@ -22,7 +22,9 @@ function loadApplicationState(): { application: IApplication } {
       return { application: initialApplicationState };
     } else {
       const state = JSON.parse(serializedState);
-      if (isEqual(Object.keys(state.application.inputs), Object.keys(initialApplicationState.inputs))) {
+      if (
+        isEqual(Object.keys(state.application.inputs), Object.keys(initialApplicationState.inputs))
+      ) {
         return { application: state.application };
       } else {
         return { application: initialApplicationState };
@@ -55,9 +57,12 @@ const store = createStore(
   }),
   {
     application: loadApplicationState().application,
-    routing: undefined,
+    routing: { location: history.location },
   },
-  compose(applyMiddleware(middleware), applyMiddleware(thunk as ThunkMiddleware<IRootState>)),
+  compose(
+    applyMiddleware(middleware),
+    applyMiddleware(thunk as ThunkMiddleware<IRootState>),
+  ),
 );
 
 store.subscribe(

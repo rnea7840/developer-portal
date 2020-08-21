@@ -97,13 +97,19 @@ const apisToList = (apis: IApiList) => {
 function buildApplicationBody({ application }: IRootState) {
   const applicationBody: any = {};
   applicationBody.apis = apisToList(application.inputs.apis);
-  ['description', 'email', 'firstName', 'lastName', 'oAuthApplicationType', 'oAuthRedirectURI', 'organization'].forEach(
-    property => {
-      if (application.inputs[property]) {
-        applicationBody[property] = application.inputs[property].value;
-      }
-    },
-  );
+  [
+    'description',
+    'email',
+    'firstName',
+    'lastName',
+    'oAuthApplicationType',
+    'oAuthRedirectURI',
+    'organization',
+  ].forEach(property => {
+    if (application.inputs[property]) {
+      applicationBody[property] = application.inputs[property].value;
+    }
+  });
   applicationBody.termsOfService = application.inputs.termsOfService;
   return applicationBody;
 }
@@ -114,19 +120,14 @@ export const submitForm: ActionCreator<SubmitFormThunk> = () => {
 
     const applicationBody = buildApplicationBody(state());
 
-    const request = new Request(
-      `${
-        process.env.REACT_APP_DEVELOPER_PORTAL_SELF_SERVICE_URL
-      }/internal/developer-portal-backend/developer_application`,
-      {
-        body: JSON.stringify(applicationBody),
-        headers: {
-          accept: 'application/json',
-          'content-type': 'application/json',
-        },
-        method: 'POST',
+    const request = new Request(constants.APPLY_URL, {
+      body: JSON.stringify(applicationBody),
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
       },
-    );
+      method: 'POST',
+    });
     return fetch(request)
       .then(response => {
         if (!response.ok) {
@@ -287,9 +288,7 @@ export const updateApplicationOrganization: ActionCreator<IUpdateApplicationOrga
   };
 };
 
-export const toggleSelectedApi: ActionCreator<IToggleSelectedApi> = (
-  apiId: string,
-) => {
+export const toggleSelectedApi: ActionCreator<IToggleSelectedApi> = (apiId: string) => {
   return {
     apiId,
     type: constants.TOGGLE_SELECTED_API,
