@@ -3,7 +3,7 @@ import { findByRole, fireEvent, getByText, render, screen } from '@testing-libra
 import { FlagsProvider } from 'flag';
 import 'jest';
 import { MockedRequest, rest, restContext } from 'msw';
-import { ResponseComposition, MockedResponse } from 'msw/lib/types/response';
+import { MockedResponse, ResponseComposition } from 'msw/lib/types/response';
 import { setupServer } from 'msw/node';
 import * as React from 'react';
 import { Provider } from 'react-redux';
