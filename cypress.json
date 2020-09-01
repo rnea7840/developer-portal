@@ -1,0 +1,5 @@
+{
+  "integrationFolder": "src",
+  "pluginsFile": "test/cypress/plugins",
+  "testFiles": "**/*.integration.ts"
+}
