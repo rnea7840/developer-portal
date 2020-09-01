@@ -18,6 +18,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true
   },
+  "include": ["src/**/*"],
   "exclude": [
     "node_modules",
     "build",
@@ -28,6 +29,9 @@
     "src/setupTests.ts",
     "src/e2eHelpers.ts",
     "*.jest.config.js",
-    "jest-puppeteer.config.js"
+    "jest-puppeteer.config.js",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts"
   ]
 }

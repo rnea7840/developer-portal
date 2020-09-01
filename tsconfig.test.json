@@ -2,5 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "commonjs"
-  }
+  },
+  "include": ["setupJest.ts", "src/**/*"],
+  "exclude": []
 }
