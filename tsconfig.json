@@ -20,20 +20,10 @@
   },
   "include": ["src/**/*"],
   "exclude": [
-    "node_modules",
-    "build",
-    "config",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest",
-    "src/setupTests.ts",
     "src/e2eHelpers.ts",
-    "*.jest.config.js",
-    "jest-puppeteer.config.js",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "src/**/*.spec.ts",
-    "SitemapBuilderWebpackPlugin.js"
+    "src/**/*.integration.ts"
   ]
 }
