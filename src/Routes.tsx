@@ -16,6 +16,7 @@ import BetaSuccess from './containers/BetaSuccess';
 import DisabledApplyForm from './containers/DisabledApplyForm';
 import DocumentationRoot from './containers/documentation/DocumentationRoot';
 import ProviderIntegrationGuide from './containers/documentation/ProviderIntegrationGuide';
+import ProviderIntegrationGuideSwaggerPreview from './containers/documentation/ProviderIntegrationGuideSwaggerPreview';
 import Home from './containers/Home';
 import News from './containers/News';
 import NotFound from './containers/NotFound';
@@ -59,6 +60,10 @@ export function SiteRoutes() {
       <Route path="/release-notes/:apiCategoryKey?" component={ReleaseNotes} />
       <Route path="/news" component={News} />
       <Route path="/support" component={Support} />
+      <Route
+        path="/providers/integration-guide/swagger-preview"
+        component={ProviderIntegrationGuideSwaggerPreview}
+      />
       <Route path="/providers/integration-guide" component={ProviderIntegrationGuide} />
       <Route component={NotFound} />
     </Switch>
