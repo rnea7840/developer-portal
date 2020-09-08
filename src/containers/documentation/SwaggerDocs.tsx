@@ -128,7 +128,7 @@ class SwaggerDocs extends React.Component<ISwaggerDocsProps> {
         plugins: [plugins],
         url: this.props.docUrl,
       });
-      ui.versionActions.setApiVersion(this.props.versionNumber);
+      ui.versionActions.setApiVersion(this.props.versionNumber);    
       ui.versionActions.setApiMetadata(this.props.metadata);
     }
   }
