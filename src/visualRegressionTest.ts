@@ -17,7 +17,9 @@ const checkScreenshots = async (page: Page, selector: string) => {
     const content = await page.$(selector);
     if(content) {
       const screenshot = await content.screenshot({});
-      expect(screenshot).toMatchImageSnapshot();
+      expect(screenshot).toMatchImageSnapshot({customSnapshotIdentifier: ({ testPath, currentTestName, counter, defaultIdentifier}) => {
+          return `${defaultIdentifier}_viewport-w${viewport.width}_x_h${viewport.height}`;
+        }});
     } else {
       fail(`Selector ${selector} not found on the page.`);
     }

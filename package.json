@@ -158,6 +158,10 @@
       "e2e.jest.config.js",
       "unit.jest.config.js",
       "visual.jest.config.js"
+    ],
+    "reporters": [
+      "default",
+      "jest-image-snapshot/src/outdated-snapshot-reporter.js"
     ]
   },
   "eslintConfig": {
