@@ -1,4 +1,5 @@
 import { mount } from 'enzyme';
+import 'jest-fetch-mock';
 import * as React from 'react';
 
 import SupportContactUsForm from './SupportContactUsForm';
