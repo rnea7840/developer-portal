@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { cleanup, getByRole, queryByRole, render, screen } from '@testing-library/react';
 import { FlagsProvider } from 'flag';
-import 'jest';
 import * as React from 'react';
 import { MemoryRouter, Route } from 'react-router';
 import {

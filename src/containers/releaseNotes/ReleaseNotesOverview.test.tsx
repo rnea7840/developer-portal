@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { cleanup, render, screen } from '@testing-library/react';
 import { FlagsProvider } from 'flag';
-import 'jest';
 import * as React from 'react';
 import { MemoryRouter } from 'react-router';
 import { fakeAPIs, fakeCategories, fakeCategoryOrder } from '../../__mocks__/fakeCategories';
