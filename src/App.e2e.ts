@@ -5,7 +5,6 @@
   better way to ensure the site is rendering correctly, so we may add a monitoring
   specific test in the future.
 */
-import 'jest';
 
 import { puppeteerHost } from './e2eHelpers';
 

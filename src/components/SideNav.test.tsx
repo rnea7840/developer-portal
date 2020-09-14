@@ -1,5 +1,4 @@
 import { render } from 'enzyme';
-import 'jest';
 import * as React from 'react';
 
 import { LocationDescriptor } from 'history';

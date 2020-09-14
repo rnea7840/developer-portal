@@ -1,4 +1,3 @@
-import 'jest';
 import * as moment from 'moment';
 
 // we just need a Markdown component for  our test IApiDescription
@@ -18,15 +17,15 @@ describe('deprecated API module', () => {
     urlFragment: 'my_api',
     vaInternalOnly: false,
   };
-  
+
   describe('isApiDeprecated', () => {
     it('returns false if deactivationInfo is undefined', () => {
       expect(isApiDeprecated(apiValues)).toBe(false);
     });
 
     it('returns false if the deprecation date is in the future', () => {
-      const api : IApiDescription = {
-        ... apiValues,
+      const api: IApiDescription = {
+        ...apiValues,
         deactivationInfo: {
           deactivationContent: UrgentCareDeprecationNotice,
           deactivationDate: moment().add(2, 'month'),
@@ -38,8 +37,8 @@ describe('deprecated API module', () => {
     });
 
     it('returns true if the deprecation date is in the past', () => {
-      const api : IApiDescription = {
-        ... apiValues,
+      const api: IApiDescription = {
+        ...apiValues,
         deactivationInfo: {
           deactivationContent: UrgentCareDeprecationNotice,
           deactivationDate: moment().add(2, 'month'),
@@ -51,8 +50,8 @@ describe('deprecated API module', () => {
     });
 
     it('returns true if the API is deactivated', () => {
-      const api : IApiDescription = {
-        ... apiValues,
+      const api: IApiDescription = {
+        ...apiValues,
         deactivationInfo: {
           deactivationContent: UrgentCareDeprecationNotice,
           deactivationDate: moment().subtract(1, 'month'),
@@ -70,8 +69,8 @@ describe('deprecated API module', () => {
     });
 
     it('returns false if the API is not deprecated yet', () => {
-      const api : IApiDescription = {
-        ... apiValues,
+      const api: IApiDescription = {
+        ...apiValues,
         deactivationInfo: {
           deactivationContent: UrgentCareDeprecationNotice,
           deactivationDate: moment().add(2, 'month'),
@@ -83,8 +82,8 @@ describe('deprecated API module', () => {
     });
 
     it('returns false if the API is deprecated but the deactivation date is in the future', () => {
-      const api : IApiDescription = {
-        ... apiValues,
+      const api: IApiDescription = {
+        ...apiValues,
         deactivationInfo: {
           deactivationContent: UrgentCareDeprecationNotice,
           deactivationDate: moment().add(2, 'month'),
@@ -96,8 +95,8 @@ describe('deprecated API module', () => {
     });
 
     it('returns true if the removal date is in the past', () => {
-      const api : IApiDescription = {
-        ... apiValues,
+      const api: IApiDescription = {
+        ...apiValues,
         deactivationInfo: {
           deactivationContent: UrgentCareDeprecationNotice,
           deactivationDate: moment().subtract(1, 'month'),

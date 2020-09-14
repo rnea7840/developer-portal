@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import 'jest';
 import { noop } from 'lodash';
 import * as React from 'react';
 
@@ -7,7 +6,9 @@ import NavBar from './NavBar';
 
 describe('NavBar', () => {
   it('should render the navbar', () => {
-    const documentation = shallow(<NavBar isMobileMenuVisible={true} onMobileNavClose={noop} />).contains('Documentation');
+    const documentation = shallow(
+      <NavBar isMobileMenuVisible={true} onMobileNavClose={noop} />,
+    ).contains('Documentation');
     expect(documentation).toBeTruthy();
   });
 

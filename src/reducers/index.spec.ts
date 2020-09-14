@@ -1,5 +1,3 @@
-import 'jest';
-
 import { IToggleSelectedApi } from '../actions';
 import { IApplication } from '../types';
 import * as constants from '../types/constants';
@@ -93,7 +91,7 @@ describe('application', () => {
           }),
         }),
       );
-      
+
       newApp = application(newApp, toggleAction);
       expect(newApp.inputs).toEqual(
         expect.objectContaining({

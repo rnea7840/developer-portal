@@ -1,5 +1,4 @@
 import { mount, shallow } from 'enzyme';
-import 'jest';
 import * as React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -26,16 +25,13 @@ describe('MainNavItem', () => {
     // this test is applicable only to mobile
     const MobileComponentMock = (
       <Router>
-        <MainNavItem
-          excludeLargeScreen={true}
-          {...mockProps}
-        >
+        <MainNavItem excludeLargeScreen={true} {...mockProps}>
           Mock
         </MainNavItem>
       </Router>
     );
     const wrapper = mount(MobileComponentMock);
-    wrapper.find("NavLink").simulate('click');
+    wrapper.find('NavLink').simulate('click');
     expect(mockProps.onClick).toHaveBeenCalled();
   });
 });

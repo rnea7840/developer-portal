@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import 'jest';
 import * as React from 'react';
 
 import OnlyTags from './OnlyTags';

@@ -1,5 +1,3 @@
-import 'jest';
-
 import { puppeteerHost } from '../../e2eHelpers';
 
 describe('position sticky', () => {

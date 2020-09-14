@@ -1,9 +1,7 @@
-import 'jest';
 import { IApiVersioning } from '../types';
 import { getDocURL, getVersion } from './api-versioning';
 
 describe('get doc url', () => {
-
   it('should return initial doc url when no metadata', () => {
     const state: IApiVersioning = {
       docUrl: 'http://google.com',
@@ -19,13 +17,15 @@ describe('get doc url', () => {
       docUrl: 'http://google.com',
       metadata: {
         meta: {
-          versions: [{
-            healthcheck: 'healthcheck',
-            internal_only: false,
-            path: 'mypath',
-            status: 'Current Version',
-            version: '1.0.0',
-          }],
+          versions: [
+            {
+              healthcheck: 'healthcheck',
+              internal_only: false,
+              path: 'mypath',
+              status: 'Current Version',
+              version: '1.0.0',
+            },
+          ],
         },
       },
       requestedApiVersion: '1.0.0',
@@ -36,7 +36,7 @@ describe('get doc url', () => {
 });
 
 describe('get version', () => {
-  it('should return \'current\' when metadata is not present', () => {
+  it("should return 'current' when metadata is not present", () => {
     const state: IApiVersioning = {
       docUrl: 'http://google.com',
       metadata: null,
@@ -46,18 +46,20 @@ describe('get version', () => {
     expect(getVersion(state)).toEqual('current');
   });
 
-  it('should return \'current\' when metadata is present and version is current version', () => {
+  it("should return 'current' when metadata is present and version is current version", () => {
     const state: IApiVersioning = {
       docUrl: 'http://google.com',
       metadata: {
         meta: {
-          versions: [{
-            healthcheck: 'healthcheck',
-            internal_only: false,
-            path: 'mypath',
-            status: 'Current Version',
-            version: '1.0.0',
-          }],
+          versions: [
+            {
+              healthcheck: 'healthcheck',
+              internal_only: false,
+              path: 'mypath',
+              status: 'Current Version',
+              version: '1.0.0',
+            },
+          ],
         },
       },
       requestedApiVersion: '1.0.0',
@@ -71,13 +73,15 @@ describe('get version', () => {
       docUrl: 'http://google.com',
       metadata: {
         meta: {
-          versions: [{
-            healthcheck: 'healthcheck',
-            internal_only: false,
-            path: 'mypath',
-            status: 'Previous Version',
-            version: '1.0.0',
-          }],
+          versions: [
+            {
+              healthcheck: 'healthcheck',
+              internal_only: false,
+              path: 'mypath',
+              status: 'Previous Version',
+              version: '1.0.0',
+            },
+          ],
         },
       },
       requestedApiVersion: '1.0.0',

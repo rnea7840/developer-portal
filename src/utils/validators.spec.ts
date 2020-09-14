@@ -1,5 +1,3 @@
-import 'jest';
-
 import { validateEmail, validateOAuthRedirectURI, validatePresence } from '../utils/validators';
 
 describe('validateEmail', () => {
@@ -55,19 +53,25 @@ describe('validateOAuthRedirectURI', () => {
 describe('validatePresence', () => {
   it('should add validation filed to newValue when field is not valid', () => {
     expect(
-      validatePresence({
-        dirty: true,
-        value: '',
-      }, 'email'),
+      validatePresence(
+        {
+          dirty: true,
+          value: '',
+        },
+        'email',
+      ),
     ).toEqual(expect.objectContaining({ validation: 'email must not be blank.' }));
   });
 
   it('should not add validation if the email is valid', () => {
     expect(
-      validatePresence({
-        dirty: true,
-        value: 'goodemail@example.com',
-      }, 'email'),
+      validatePresence(
+        {
+          dirty: true,
+          value: 'goodemail@example.com',
+        },
+        'email',
+      ),
     ).toEqual(
       expect.not.objectContaining({
         validation: 'email must not be blank.',

@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import 'jest';
-
 import { shallow } from 'enzyme';
 import Banner from './Banner';
 
@@ -9,8 +7,11 @@ describe('Banner', () => {
   it('should render the site notice text', () => {
     const wrapper = shallow(<Banner />);
     expect(wrapper.find('.site-notice-text').length).toBe(1);
-    expect(wrapper.find('.site-notice-text')
-      .contains('An official website of the United States government.')).toBeTruthy();
+    expect(
+      wrapper
+        .find('.site-notice-text')
+        .contains('An official website of the United States government.'),
+    ).toBeTruthy();
   });
 
   it('should render the dot gov guidance', () => {
