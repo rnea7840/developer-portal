@@ -16,6 +16,8 @@ env:
     S3_REVIEW_BUCKET: "liberty-review-bucket"
     ## move to paramstore
     REACT_APP_SENTRY_DSN: "https://dc7d5ebec20e474c80f8150c399d2955@dev-developer.va.gov/sentry/26"
+    # Setting REPO
+    REPO: "department-of-veterans-affairs/developer-portal"
   parameter-store:
     GITHUB_TOKEN: "/dvp/devops/va_bot_github_token"
     # This goes to the DVSA workspack we will change this prior to merge
@@ -44,7 +46,6 @@ phases:
           echo No branch found... setting to \"default\"
           BRANCH=default
         fi
-      - REPO=$(echo ${CODEBUILD_SOURCE_REPO_URL} | sed -e 's#^https://github.com/##')
       - COMMIT_HASH=${CODEBUILD_RESOLVED_SOURCE_VERSION}
       - git lfs pull
       - mkdir -p reports
