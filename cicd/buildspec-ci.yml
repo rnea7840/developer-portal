@@ -32,7 +32,7 @@ phases:
       # set variables
       # Bypass tests if a PR is created
       - if [[ $CODEBUILD_WEBHOOK_EVENT == "PULL_REQUEST_CREATED"  ]]; then TESTS=""; fi
-      - GET_BRANCH=$(echo ${CODEBUILD_WEBHOOK_HEAD_REF} | awk -F'/' '{print $3}')
+      - GET_BRANCH=$(CODEBUILD_WEBHOOK_HEAD_REF#"refs/heads/")
       # set branch
       - |
         if [[ $BRANCH ]]; then
