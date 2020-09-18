@@ -1,0 +1,142 @@
+version: 0.2
+env:
+  variables:
+    GITHUB_USERNAME: "va-bot"
+    # These are the test make targets. 
+    TESTS: "lint security e2e visual accesbility unit"
+    # These are the build environments
+    ENVS: "dev staging production"
+    # Bucket for archiving deployments
+    S3_ARCHIVE_BUCKET: "developer-portal-builds-s3-upload"
+    # Bucket for uploading visual regression failures.
+    S3_VISUAL_BUCKET: "developer-portal-screenshots"
+    # Bucket for uploading build failure artifacts
+    S3_ERRORS_BUCKET: "review-developer-va-gov"
+    # Bucket for uploading PR deploy previews.
+    S3_REVIEW_BUCKET: "liberty-review-bucket"
+    ## move to paramstore
+    REACT_APP_SENTRY_DSN: "https://dc7d5ebec20e474c80f8150c399d2955@dev-developer.va.gov/sentry/26"
+  parameter-store:
+    GITHUB_TOKEN: "/dvp/devops/va_bot_github_token"
+    # This goes to the DVSA workspack we will change this prior to merge
+    SLACK_WEBHOOK: "/dvp/devops/codebuild_slack_webhook"
+phases:
+  install:
+    commands:
+      # There is considerable slow down in the provisioning phase when using Amazon provided images.
+      # Therefore we use our own Alpine based image. In order to activate the Docker Daemon these lines are needed.
+      - /usr/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2 &
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+  pre_build:
+    commands:
+      # set variables
+      # Bypass tests if a PR is created
+      - if [[ $CODEBUILD_WEBHOOK_EVENT == "PULL_REQUEST_CREATED"  ]]; then TESTS=""; fi
+      - GET_BRANCH=$(echo ${CODEBUILD_WEBHOOK_HEAD_REF} | awk -F'/' '{print $3}')
+      # set branch
+      - |
+        if [[ $BRANCH ]]; then
+          echo branch set as -- ${BRANCH} -- from console
+        elif [[ ${GET_BRANCH} ]]; then
+          echo branch set as -- ${GET_BRANCH} -- from webhook
+          BRANCH=${GET_BRANCH}
+        else
+          echo No branch found... setting to \"default\"
+          BRANCH=default
+        fi
+      - REPO=$(echo ${CODEBUILD_SOURCE_REPO_URL} | sed -e 's#^https://github.com/##')
+      - COMMIT_HASH=${CODEBUILD_RESOLVED_SOURCE_VERSION}
+      - git lfs pull
+      - mkdir -p reports
+      - PR_NUM=$(prnum.sh ${REPO} ${BRANCH:-default})
+      # Create the required dot files prior to build for proper deployment to review bucket
+      - |
+        if [[ ${PR_NUM} ]]; then
+          for env in ${ENVS}; do
+        cat <<EOF > .env.${env}.local
+        PUBLIC_URL=/${S3_REVIEW_BUCKET}/${BRANCH}/${COMMIT_HASH}/${env}
+        REACT_APP_SENTRY_DSN=${REACT_APP_SENTRY_DSN}
+        EOF
+          done
+        fi
+      - make build
+  build:
+    # We use a phase variable to tell where we are in case of failure. This will allow us to handle the POST_BUILD stage with (some) grace.
+    commands:
+      - phase=image_scan
+      - ./prohibit_image_files.sh origin/master HEAD
+      # Run tests
+      # We will run these in a loop so we can handle the build failures correctly utilizing the phase variable.
+      # Instead of checking for a combination of CODEBUILD_BUILD_SUCCEDING and some other variable we will assume
+      # the phase variable is an indiation of the where the build failed and act accordingly in the POST_BUILD section.
+      - phase=test
+      - |
+        for test in ${TESTS}; do
+          phase=${test}
+          make ${test}
+        done
+      # Run builds if all tests are good. We run all builds but we could shorten the CI part for branches by only building on push.
+      - phase=build_app
+      - |
+        for env in ${ENVS}; do
+          make build_app ENV=${env}
+        done
+      # Check if we archive the build
+      - |
+        if [[ $BRANCH == 'master' ]]; then
+          phase=archive
+          for env in ${ENVS}; do
+            make archive ENV=${env}
+            aws s3 cp --no-progress --acl public-read ${env}.tar.bz2 s3://${S3_ARCHIVE_BUCKET}/${BRANCH}/${COMMIT_HASH}/${env}.tar.bz2
+          done
+        fi
+      # Check if we deploy to the review bucket
+      - |
+        if [[ ${PR_NUM} ]]; then
+          phase=deploy
+          mkdir -p build
+          links=""
+          for env in ${ENVS}; do
+            mv ${env} build
+            links="${links}[${env}](https://s3-us-gov-west-1.amazonaws.com/${S3_REVIEW_BUCKET}/${BRANCH}/${COMMIT_HASH}/${env}/index.html) <br>"
+          done
+          aws s3 sync --acl public-read build/ s3://${S3_REVIEW_BUCKET}/${BRANCH}/${COMMIT_HASH}/
+          comment="These changes have been deployed to an S3 bucket. A build for each environment is available: <br><br> ${links} <br><br> Due to S3 website hosting limitations in govcloud you need to first navigate to index.html explicitly." 
+        fi
+      - phase=success
+  post_build:
+    commands:
+      # Handle phase errors. 
+      - |
+        case ${phase} in
+        visual) 
+          links=""
+          for f in report/*; do
+            new_f=$(echo $f | sed -e "s/reports\///g")
+            links="$links[$new_f](https://s3-us-gov-west-1.amazonaws.com/${S3_BUCKET}/${BRANCH}/${COMMIT_HASH}/$new_f)"
+          done
+          aws s3 sync --no-progress reports/ s3://${S3_BUCKET}/${BRANCH}/${COMMIT_HASH}/
+          docsLink = 'https://github.com/department-of-veterans-affairs/developer-portal/blob/master/docs/testing.md#visual-regression-testing'
+          comment="Visual regression testing failed. Review these diffs and then [update the snapshots](${docsLink}). <br><br> ${links}"
+          ;;
+        unit|lint|security|e2e|accessibilty)
+          aws s3 sync --no-progress reports/ s3://${S3_BUCKET}/${BRANCH}/${COMMIT_HASH}/
+          link="[report](https://s3-us-gov-west-1.amazonaws.com/${S3_BUCKET}/${BRANCH}/${COMMIT_HASH}/)"
+          comment="There was an error during the ${phase}. View your ${link} for more information."
+          ;;
+        build)
+          slackpost.sh "developer-portal ${BRANCH} branch CI failed." 
+          ;;
+        success)
+            echo Everything went acoring to plan no output necessary....
+          ;;
+        *)
+          comment="An unhandled error occured with the build process. This is most likely a failure with the build pipeline. A post has been made in Slack"
+          slackpost.sh "Pipeline failure for the developer portal" 
+          ;;
+        esac
+      # Handle comments.
+      - |
+        if [[ ${PR_NUM} ]]; then
+          prcomment.sh ${REPO} ${PR_NUM} "${comment:-"CI success"}"
+        fi
