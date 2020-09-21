@@ -20,7 +20,6 @@ env:
     REPO: "department-of-veterans-affairs/developer-portal"
   parameter-store:
     GITHUB_TOKEN: "/dvp/devops/va_bot_github_token"
-    # This goes to the DVSA workspack we will change this prior to merge
     SLACK_WEBHOOK: "/dvp/devops/codebuild_slack_webhook"
 phases:
   install:
