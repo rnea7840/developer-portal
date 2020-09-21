@@ -131,7 +131,7 @@ phases:
           slackpost.sh "developer-portal ${BRANCH} branch CI failed." 
           ;;
         success)
-            echo Everything went acoring to plan no output necessary....
+            echo Everything went according to plan no output necessary....
           ;;
         *)
           comment="An unhandled error occured with the build process. This is most likely a failure with the build pipeline. A post has been made in Slack"
