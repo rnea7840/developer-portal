@@ -90,7 +90,7 @@ phases:
           phase=archive
           for env in ${ENVS}; do
             make archive ENV=${env}
-            aws s3 cp --no-progress --acl public-read ${env}.tar.bz2 s3://${S3_ARCHIVE_BUCKET}/${COMMIT_HASH}/${env}.tar.bz2
+            aws s3 cp --no-progress --acl public-read ${env}.tar.bz2 s3://${S3_ARCHIVE_BUCKET}/cb-${COMMIT_HASH}/${env}.tar.bz2
           done
         fi
       # Check if we deploy to the review bucket
