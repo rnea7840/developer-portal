@@ -87,6 +87,11 @@ accessibility:
 	exit 1; }
 	docker container rm accessibility
 
+## images:	checks if you are using git-lfs.	
+.PHONY: images 
+images:
+	./prohibit_image_files.sh origin/master HEAD
+
 ## build_app:	builds the developer-portal website, and copies to host
 .PHONY: build_app 
 build_app:
