@@ -11,7 +11,7 @@ env:
     # Bucket for uploading visual regression failures.
     S3_VISUAL_BUCKET: "developer-portal-screenshots"
     # Bucket for uploading build failure artifacts
-    S3_ERROR_BUCKET: ""
+    S3_ERROR_BUCKET: "developer-portal-ci-error-artifacts"
     # Bucket for uploading PR deploy previews.
     S3_REVIEW_BUCKET: "review-developer-va-gov"
     ## move to paramstore
