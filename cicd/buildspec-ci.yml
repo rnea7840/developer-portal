@@ -122,7 +122,7 @@ phases:
         unit|lint|security|e2e|accessibilty)
           aws s3 sync --no-progress reports/ s3://${S3_ERROR_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/
           link="[report](https://s3-us-gov-west-1.amazonaws.com/${S3_ERROR_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/)"
-          comment="There was an error during the ${phase}. View your ${link} for more information."
+          comment="There was an error during the ${phase} test. View your ${link} for more information."
           ;;
         build)
           slackpost.sh "developer-portal ${BRANCH} branch CI failed." 
