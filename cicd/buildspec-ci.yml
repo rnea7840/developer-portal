@@ -72,21 +72,20 @@ phases:
       - phase=test
       - |
         for test in ${TESTS}; do
-          phase=${test}
-          make ${test} || exit 1
+          make ${test} || phase=${test}; exit 1
         done
       # Run builds if all tests are good. We run all builds but we could shorten the CI part for branches by only building on push.
       - phase=build_app
       - |
         for env in ${ENVS}; do
-          make build_app ENV=${env}
+          make build_app ENV=${env} || exit 1
         done
       # Check if we archive the build
       - |
         if [[ $BRANCH == 'master' ]]; then
           phase=archive
           for env in ${ENVS}; do
-            make archive ENV=${env}
+            make archive ENV=${env} || exit 1
             aws s3 cp --no-progress --acl public-read ${env}.tar.bz2 s3://${S3_ARCHIVE_BUCKET}/cb-${COMMIT_HASH}/${env}.tar.bz2
           done
         fi
