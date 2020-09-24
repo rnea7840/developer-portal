@@ -72,11 +72,12 @@ phases:
       - phase=test
       - |
         for test in ${TESTS}; do
+          phase=${test}
           make ${test} || break
+          phase=success
         done
-        echo ${test}
-        phase=${test}
-        exit 1
+      - echo ${phase}
+      - exit 1
       # Run builds if all tests are good. We run all builds but we could shorten the CI part for branches by only building on push.
       - phase=build_app
       - |
