@@ -72,7 +72,7 @@ phases:
       - phase=test
       - |
         for test in ${TESTS}; do
-          make ${test} || export phase=${test}; exit 1
+          make ${test} || exit 1
         done
       # Run builds if all tests are good. We run all builds but we could shorten the CI part for branches by only building on push.
       - phase=build_app
@@ -106,7 +106,7 @@ phases:
   post_build:
     commands:
       # Handle phase errors. 
-      - echo ${phase}
+      - echo ${test}
       - |
         case ${phase} in
         visual) 
