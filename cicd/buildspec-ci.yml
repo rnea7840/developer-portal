@@ -106,6 +106,7 @@ phases:
   post_build:
     commands:
       # Handle phase errors. 
+      - echo ${phase}
       - |
         case ${phase} in
         visual) 
