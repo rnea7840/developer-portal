@@ -74,10 +74,9 @@ phases:
         for test in ${TESTS}; do
           phase=${test}
           make ${test} || break
-          phase=success
+          phase=test_success
         done
-      - echo ${phase}
-      - exit 1
+      - if [[ ${phase} != "test_success" ]]; then exit 1
       # Run builds if all tests are good. We run all builds but we could shorten the CI part for branches by only building on push.
       - phase=build_app
       - |
@@ -110,7 +109,6 @@ phases:
   post_build:
     commands:
       # Handle phase errors. 
-      - echo ${test}
       - |
         case ${phase} in
         visual) 
