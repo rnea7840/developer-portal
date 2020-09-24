@@ -3,7 +3,7 @@ env:
   variables:
     GITHUB_USERNAME: "va-bot"
     # These are the test make targets. 
-    TESTS: "images lint security e2e visual accesbility unit"
+    TESTS: "images security lint unit e2e accessibility visual"
     # These are the build environments
     ENVS: "dev staging production"
     # Bucket for archiving deployments
@@ -113,13 +113,13 @@ phases:
           links=""
           for f in report/*; do
             new_f=$(echo $f | sed -e "s/reports\///g")
-            links="$links[$new_f](https://s3-us-gov-west-1.amazonaws.com/${S3_ERROR_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/$new_f)"
+            links="$links[$new_f](https://s3-us-gov-west-1.amazonaws.com/${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/$new_f)"
           done
-          aws s3 sync --no-progress reports/ s3://${S3_ERROR_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/
+          aws s3 sync --no-progress reports/ s3://${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/
           docsLink = 'https://github.com/department-of-veterans-affairs/developer-portal/blob/master/docs/testing.md#visual-regression-testing'
           comment="Visual regression testing failed. Review these diffs and then [update the snapshots](${docsLink}). <br><br> ${links}"
           ;;
-        unit|lint|security|e2e|accessibilty)
+        unit|lint|security|e2e|accessibility)
           aws s3 sync --no-progress reports/ s3://${S3_ERROR_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/
           link="[report](https://s3-us-gov-west-1.amazonaws.com/${S3_ERROR_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/)"
           comment="There was an error during the ${phase} test. View your ${link} for more information."
