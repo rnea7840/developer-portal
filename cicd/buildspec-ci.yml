@@ -76,7 +76,7 @@ phases:
           make ${test} || break
           phase=test_success
         done
-      - if [[ ${phase} != "test_success" ]]; then exit 1
+      - if [[ ${phase} != "test_success" ]]; then exit 1; fi
       # Run builds if all tests are good. We run all builds but we could shorten the CI part for branches by only building on push.
       - phase=build_app
       - |
