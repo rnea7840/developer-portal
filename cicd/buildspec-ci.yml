@@ -3,7 +3,7 @@ env:
   variables:
     GITHUB_USERNAME: "va-bot"
     # These are the test make targets. 
-    TESTS: "images security lint unit e2e accessibility visual"
+    TESTS: "visual"
     # These are the build environments
     ENVS: "dev staging production"
     # Bucket for archiving deployments
