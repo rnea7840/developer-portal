@@ -62,7 +62,7 @@ lint:
 visual:
 	@echo "Running visual tests"
 	docker run --name visual --user ${UNAME}:${GNAME} devportal npm run test:visual \
-	|| { docker cp visual:/application/test/image_snapshots/__diff_output__/* reports/.; \
+	|| { docker cp visual:/application/test/image_snapshots/__diff_output__/ reports/.; \
 	docker container rm visual; \
 	exit 1; }
 	docker container rm visual
