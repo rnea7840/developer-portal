@@ -49,7 +49,6 @@ phases:
       - S3_BRANCH=$(echo ${BRANCH} | sed 's/\//-/g' | tr -dc [:alnum:]-_)
       - COMMIT_HASH=${CODEBUILD_RESOLVED_SOURCE_VERSION}
       - git lfs pull
-      - mkdir -p reports
       - PR_NUM=$(prnum.sh ${REPO} ${BRANCH})
       # Create the required dot files prior to build for proper deployment to review bucket
       - |
@@ -62,6 +61,8 @@ phases:
           done
         fi
       - make build
+      - mkdir -p test/image_snapshots/__diff_output__
+      - mkdir -p reports
   build:
     # We use a phase variable to tell where we are in case of failure. This will allow us to handle the POST_BUILD stage with (some) grace.
     commands:
@@ -114,8 +115,7 @@ phases:
         visual) 
           links=""
           for f in report/*; do
-            new_f=$(echo $f | sed -e "s/reports\///g")
-            links="$links[$new_f](https://s3-us-gov-west-1.amazonaws.com/${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/$new_f)"
+            links="$links[$new_f](https://s3-us-gov-west-1.amazonaws.com/${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/${f##reports/})"
           done
           aws s3 sync --no-progress reports/ s3://${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/
           docsLink = 'https://github.com/department-of-veterans-affairs/developer-portal/blob/master/docs/testing.md#visual-regression-testing'
