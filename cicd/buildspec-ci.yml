@@ -116,8 +116,8 @@ phases:
         case ${phase} in
         visual) 
           links=""
-          for f in report/*; do
-            links="${links}[${f##/reports/}](https://s3-us-gov-west-1.amazonaws.com/${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/${f##reports/})"
+          for f in reports/*; do
+            links="${links}[${f#/reports/}](https://s3-us-gov-west-1.amazonaws.com/${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/${f#reports/})"
           done
           aws s3 sync --no-progress reports/ s3://${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/
           docsLink = 'https://github.com/department-of-veterans-affairs/developer-portal/blob/master/docs/testing.md#visual-regression-testing'
