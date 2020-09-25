@@ -18,6 +18,8 @@ env:
     REACT_APP_SENTRY_DSN: "https://dc7d5ebec20e474c80f8150c399d2955@dev-developer.va.gov/sentry/26"
     # Setting REPO
     REPO: "department-of-veterans-affairs/developer-portal"
+    UNAME: root
+    GNAME: root
   parameter-store:
     GITHUB_TOKEN: "/dvp/devops/va_bot_github_token"
     SLACK_WEBHOOK: "/dvp/devops/codebuild_slack_webhook"
@@ -115,7 +117,7 @@ phases:
         visual) 
           links=""
           for f in report/*; do
-            links="$links[$new_f](https://s3-us-gov-west-1.amazonaws.com/${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/${f##reports/})"
+            links="${links}[${f##/reports/}](https://s3-us-gov-west-1.amazonaws.com/${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/${f##reports/})"
           done
           aws s3 sync --no-progress reports/ s3://${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/
           docsLink = 'https://github.com/department-of-veterans-affairs/developer-portal/blob/master/docs/testing.md#visual-regression-testing'
