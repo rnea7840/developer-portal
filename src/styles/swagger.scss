@@ -112,12 +112,26 @@
       border: none;
     }
   }
-  
+
   blockquote {
     line-height: 1.5;
     color: $color-gray-dark;
     background: $color-primary-alt-lightest;
     padding: 1rem;
     padding-right: 2rem;
+  }
+
+  .opblock-body .code-wrapper {
+    background: #41444e;
+    border-radius: 4px;
+  }
+
+  svg.svg-assets {
+    // for some reason the SVG assets component is like ~300x100 pixels
+    // swagger-ui source appears to set these styles on the React element, but they
+    // didn't make it to the browser
+    position: absolute;
+    width: 0;
+    height: 0;
   }
 }

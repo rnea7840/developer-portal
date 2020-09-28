@@ -1,7 +1,7 @@
 {
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "linterOptions": {
-    "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
+    "exclude": ["config/**/*.js", "node_modules/**/*.ts", "src/__mocks__/**/*"]
   },
   "rulesDirectory": ["node_modules/tslint-microsoft-contrib"],
   "rules": {
@@ -21,6 +21,7 @@
     "prefer-const": {
       "severity": "off"
     },
+    "interface-name": false,
     "react-a11y-anchors": {},
     "react-a11y-aria-unsupported-elements": {},
     "react-a11y-event-has-role": {},
