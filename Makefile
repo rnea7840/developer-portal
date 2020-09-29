@@ -7,7 +7,7 @@ UNAME ?= jenkins
 # Sets group, this is helpful to run locally as you most likely do not have a jenkins group on your machine.
 GNAME ?= jenkins
 # Sets default audit level for security scans
-AUDIT_LEVEL?= critical
+AUDIT_LEVEL?= high
 # Sets Branch
 BRANCH ?= notmaster
 # Sets default env 
@@ -29,12 +29,7 @@ test: security unit lint accessibility e2e visual
 ## security:	runs npm audit at AUDIT_LEVEL
 .PHONY: security
 security:
-ifeq ($(BRANCH), master)
-	docker run --rm --name security devportal /bin/bash -c "npm config set audit-level ${AUDIT_LEVEL} && npm audit"
-else	
-	docker run --rm --name security devportal /bin/bash -c "npm config set audit-level ${AUDIT_LEVEL} && npm audit" \
-	|| exit 0
-endif
+	docker run --rm --name security devportal npm audit --audit-level ${AUDIT_LEVEL}
 
 
 ## unit:		runs unit test script 
