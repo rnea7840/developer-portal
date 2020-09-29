@@ -64,7 +64,7 @@ This is the docker command to run your tests:
 
 `docker run --name newtest --user ${UNAME}:${GNAME} devportal npm run-script test:newtest:ci \`
 
-These lines will run the following command if the test exits with and exit code other than 1. Since each command in make is run in its own sub-shell; we use this opportunity to copy the test reports to the reports folder and then rm the container from the host and exit 1 so that CodeBuild will move to `post_build` stage (covered later).
+These lines will run the following command if the test exits with an exit code other than 1. Since each command in make is run in its own sub-shell; we use this opportunity to copy the test reports to the reports folder and then rm the container from the host and exit 1 so that CodeBuild will move to `post_build` stage (covered later).
 
 ```makefile
 || { docker cp newtest:/application/test-report.xml reports/.; \
