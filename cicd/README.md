@@ -1,23 +1,26 @@
 # Read Me
 
-## Quick Nav (Table of Contents)
+## Quick Nav
 
 1. [Overview](#overview)
-2. [Makefile](#makefile)
-3. [CI](#ci)
+2. [CI](#ci)
+3. [Releases](#release)
+4. [Deployments]([#deployments)
+5. [Build Environment](#build-environment)
 
 ## Overview
 
 This pipeline will utilize a Makefile from the root directory to invoke the testing options. The Makefile gives the developer the opportunity to run the CI process locally in order to get instant feedback on their work. 
 
-## Makefile
-To run tests simply type `make <test>` where <test> is the type of test you would like to run, for example `make lint`. Run `make` to get an output of targets you can run.
-
- The tests are run in a container. This container currently runs as the user __jenkins__ which you most likely do not have on your machine. The tests that are run are also the same test that run in __CI__ , resulting in the tests outputting a report file. This report file most likely will have trouble writing to your local machine as the __jenkins__ user. Therefore, you can export a variable to set the user the container will run as. This user in most all cases will be __root__. To do this you merely have to run `export UNAME=root`. You can also do the same for the group; `export GNAME=root`.
-
 ## CI 
 
 The CI process is triggered on every `PUSH` event and every `PULL REQUEST` event. Depending the variables for each event will dictate which artifacts are produced. 
+
+### Makefile
+
+To run tests simply type `make <test>` where <test> is the type of test you would like to run, for example `make lint`. Run `make` to get an output of targets you can run.
+
+ The tests are run in a container. This container currently runs as the user __jenkins__ which you most likely do not have on your machine. The tests that are run are also the same test that run in __CI__ , resulting in the tests outputting a report file. This report file most likely will have trouble writing to your local machine as the __jenkins__ user. Therefore, you can export a variable to set the user the container will run as. This user in most all cases will be __root__. To do this you merely have to run `export UNAME=root`. You can also do the same for the group; `export GNAME=root`.
 
 ### Feature Branch Push
 
@@ -120,7 +123,7 @@ Also set up the error handling for you're test in the post_build section:
      - |
         case ${phase} in
         newtest)
-					## add stuff or add this to existing case
+				# add stuff or add this to existing case
           ;;
 ```
 
@@ -134,7 +137,15 @@ The PR comment script uses a block at the bottom to evaluate if a PR number exsi
 
 For Slack, the web hook is currently set to the DSVA workspace and posts to the Lighthouse deploys channel. There is a To Do item to move that over to lighthouse workspace and add more web hooks to post to appropriate channels based upon the information needed to be communicated. 
 
+## Releases
 
+Release
+
+## Deployments
+
+Deploying
+
+## Build Environment
 
 ### ToDo
 
