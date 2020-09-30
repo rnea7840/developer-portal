@@ -1,4 +1,13 @@
+# Read Me
+
+## Quick Nav (Table of Contents)
+
+1. [Overview](#overview)
+2. [Makefile](#makefile)
+3. [CI](#ci)
+
 ## Overview
+
 This pipeline will utilize a Makefile from the root directory to invoke the testing options. The Makefile gives the developer the opportunity to run the CI process locally in order to get instant feedback on their work. 
 
 ## Makefile
