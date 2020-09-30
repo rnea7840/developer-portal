@@ -41,11 +41,11 @@ A Pull Request will:
 
 ### Feature Branch Push with associated Pull Request
 
-This scenario will run all steps listed in __Feature Branch Commit__ and __Feature Branch Pull Request__.
+This scenario will run all steps listed in [Feature Branch Push](#feature-branch-push) and [Feature Branch Pull Request](#feature-branch-pull-request).
 
 ### Master Branch Push
 
-This scenario will run steps listed in __Feature Branch Commit__ with following changes:
+This scenario will run steps listed in [Feature Branch Push](#feature-branch-push) _with following changes:
 
 1. Failed `make security` will fail CI. 
 2. Deployment files will be uploaded to the archive bucket as a tar file for deployment.
@@ -54,7 +54,7 @@ This scenario will run steps listed in __Feature Branch Commit__ with following 
 
 ### Adding Tests
 
-If you want to add new test you will also want to incorporate it into the Makefile. You can use the Makefile to iterate on your test and to incorporate it into the CI pipeline in one shot. Here is a breakdown of a process to develop a script that will use `npm run-script test:newtest:ci ` to run locally and in CI.
+If you want to add new test script you will also want to incorporate it into the Makefile. You can use the Makefile to iterate on your test and to incorporate it into the CI pipeline in one shot. Here is a breakdown of a process to develop a script that will use `npm run-script test:newtest:ci ` to run locally and in CI.
 
 This is a comment that will show up when `make` or `make help` is run to inform the user what the target does:
 
@@ -62,7 +62,7 @@ This is a comment that will show up when `make` or `make help` is run to inform 
 
 This will assign an explicit request to the target
 
-`.PHONY: newest` 
+`.PHONY: newtest` 
 
 This is your target
 

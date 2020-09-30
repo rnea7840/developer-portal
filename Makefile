@@ -20,7 +20,7 @@ help : Makefile
 ## build:		builds developer-portal container environment
 .PHONY: build
 build:
-	docker build -t devportal .
+	docker build -t developer-portal .
 
 ## test:		runs all tests
 .PHONY: test 
@@ -29,14 +29,14 @@ test: security unit lint accessibility e2e visual
 ## security:	runs npm audit at AUDIT_LEVEL
 .PHONY: security
 security:
-	docker run --rm --name security devportal npm audit --audit-level ${AUDIT_LEVEL}
+	docker run --rm --name security developer-portal npm audit --audit-level ${AUDIT_LEVEL}
 
 
 ## unit:		runs unit test script 
 .PHONY: unit
 unit:
 	@echo "Running unit tests"
-	docker run  --name unit --user ${UNAME}:${GNAME} devportal npm run-script test:unit:ci \
+	docker run  --name unit --user ${UNAME}:${GNAME} developer-portal npm run-script test:unit:ci \
 	|| { docker cp unit:/application/test-report.xml reports/.; \
 	docker container rm unit; \
 	exit 1; }
@@ -46,7 +46,7 @@ unit:
 .PHONY: lint
 lint:
 	@echo "Running lint tests"
-	docker run --name lint --user ${UNAME}:${GNAME} devportal npm run-script lint:ci \
+	docker run --name lint --user ${UNAME}:${GNAME} developer-portal npm run-script lint:ci \
 	|| { docker cp lint:/application/lint-results.xml reports/.; \
 	docker container rm lint; \
 	exit 1; }
@@ -56,7 +56,7 @@ lint:
 .PHONY: visual
 visual:
 	@echo "Running visual tests"
-	docker run --name visual --user ${UNAME}:${GNAME} devportal npm run test:visual \
+	docker run --name visual --user ${UNAME}:${GNAME} developer-portal npm run test:visual \
 	|| { docker cp visual:/application/test/image_snapshots/__diff_output__/. reports/.; \
 	docker container rm visual; \
 	exit 1; }
@@ -66,7 +66,7 @@ visual:
 .PHONY: e2e
 e2e:
 	@echo "Running e2e tests"
-	docker run --name e2e --user ${UNAME}:${GNAME} devportal npm run-script test:e2e:ci \
+	docker run --name e2e --user ${UNAME}:${GNAME} developer-portal npm run-script test:e2e:ci \
 	|| { docker cp e2e:/application/test-report.xml reports/.; \
 	docker container rm e2e; \
 	exit 1; }
@@ -76,7 +76,7 @@ e2e:
 .PHONY: accessibility
 accessibility:
 	@echo "Running accessibility tests"
-	docker run --name accessibility --user ${UNAME}:${GNAME} devportal npm run-script test:accessibility:ci \
+	docker run --name accessibility --user ${UNAME}:${GNAME} developer-portal npm run-script test:accessibility:ci \
 	|| { docker cp accessibility:/application/test-report.xml reports/.; \
 	docker container rm accessibility; \
 	exit 1; }
@@ -94,8 +94,10 @@ build_app:
 		--env NODE_ENV=production \
 		--env BUILD_ENV=${ENV} \
 		--user ${UNAME}:${GNAME} \
-		devportal npm run-script build ${ENV}
-	docker cp build_app:/application/build/${ENV} .
+		developer-portal npm run-script build ${ENV} \
+	|| { docker container rm build_app; \
+	exit 1; }
+	docker cp build_app:/application/build/${ENV} build/.
 	docker container rm build_app
 
 ## archive:	builds tar ball of local build
