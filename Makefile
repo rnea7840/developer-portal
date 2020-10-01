@@ -3,9 +3,9 @@
 #
 #
 # Sets user, this is helpful to run locally as you most likely do not have a jenkins user on your machine.
-UNAME ?= jenkins
+UNAME ?= root
 # Sets group, this is helpful to run locally as you most likely do not have a jenkins group on your machine.
-GNAME ?= jenkins
+GNAME ?= root
 # Sets default audit level for security scans
 AUDIT_LEVEL?= high
 # Sets Branch
@@ -26,81 +26,82 @@ build:
 .PHONY: test 
 test: security unit lint accessibility e2e visual
 
+## images:	checks if you are using git-lfs.	
+.PHONY: images 
+images:
+	./prohibit_image_files.sh origin/master HEAD
+
 ## security:	runs npm audit at AUDIT_LEVEL
 .PHONY: security
 security:
-	docker run --rm --name security developer-portal npm audit --audit-level ${AUDIT_LEVEL}
+	docker run --rm \
+		--volume "/application/node_modules" \
+		--volume "${PWD}:/application" \
+		developer-portal npm audit --audit-level ${AUDIT_LEVEL}
 
 
 ## unit:		runs unit test script 
 .PHONY: unit
 unit:
 	@echo "Running unit tests"
-	docker run  --name unit --user ${UNAME}:${GNAME} developer-portal npm run-script test:unit:ci \
-	|| { docker cp unit:/application/test-report.xml reports/.; \
-	docker container rm unit; \
-	exit 1; }
-	docker container rm unit
+	docker run  --rm \
+		--user ${UNAME}:${GNAME} \
+		--volume "/application/node_modules" \
+		--volume "${PWD}:/application" \
+		developer-portal npm run-script test:unit:ci \
 	 
 ## lint:		runs linting 
 .PHONY: lint
 lint:
 	@echo "Running lint tests"
-	docker run --name lint --user ${UNAME}:${GNAME} developer-portal npm run-script lint:ci \
-	|| { docker cp lint:/application/lint-results.xml reports/.; \
-	docker container rm lint; \
-	exit 1; }
-	docker container rm lint
+	docker run  --rm \
+		--user ${UNAME}:${GNAME} \
+		--volume "${PWD}:/application" \
+		--volume "/application/node_modules" \
+		developer-portal npm run-script lint:ci
 
 ## visual:	runs visual regression tests 
 .PHONY: visual
 visual:
 	@echo "Running visual tests"
-	docker run --name visual --user ${UNAME}:${GNAME} developer-portal npm run test:visual \
-	|| { docker cp visual:/application/test/image_snapshots/__diff_output__/. reports/.; \
-	docker container rm visual; \
-	exit 1; }
-	docker container rm visual
+	docker run --rm \
+		--user ${UNAME}:${GNAME} \
+		--volume "${PWD}:/application" \
+		--volume "/application/node_modules" \
+		developer-portal npm run test:visual
 	 
 ## e2e:		runs end to end tests
 .PHONY: e2e
 e2e:
 	@echo "Running e2e tests"
-	docker run --name e2e --user ${UNAME}:${GNAME} developer-portal npm run-script test:e2e:ci \
-	|| { docker cp e2e:/application/test-report.xml reports/.; \
-	docker container rm e2e; \
-	exit 1; }
-	docker container rm e2e
+	docker run --rm \
+		--user ${UNAME}:${GNAME} \
+		--volume "${PWD}:/application" \
+		--volume "/application/node_modules" \
+		developer-portal npm run-script test:e2e:ci
 
 ## accessibility:	runs accessibility tests
 .PHONY: accessibility
 accessibility:
 	@echo "Running accessibility tests"
-	docker run --name accessibility --user ${UNAME}:${GNAME} developer-portal npm run-script test:accessibility:ci \
-	|| { docker cp accessibility:/application/test-report.xml reports/.; \
-	docker container rm accessibility; \
-	exit 1; }
-	docker container rm accessibility
-
-## images:	checks if you are using git-lfs.	
-.PHONY: images 
-images:
-	./prohibit_image_files.sh origin/master HEAD
+	docker run --rm \
+		--user ${UNAME}:${GNAME} \
+		--volume "${PWD}:/application" \
+		--volume "/application/node_modules" \
+		developer-portal npm run-script test:accessibility:ci
 
 ## build_app:	builds the developer-portal website, and copies to host
 .PHONY: build_app 
 build_app:
-	docker run --name build_app \
+	docker run --rm \
+		--volume "${PWD}:/application" \
+		--volume "/application/node_modules" \
 		--env NODE_ENV=production \
 		--env BUILD_ENV=${ENV} \
 		--user ${UNAME}:${GNAME} \
-		developer-portal npm run-script build ${ENV} \
-	|| { docker container rm build_app; \
-	exit 1; }
-	docker cp build_app:/application/build/${ENV} build/.
-	docker container rm build_app
+		developer-portal npm run-script build ${ENV}
 
 ## archive:	builds tar ball of local build
 .PHONY: archive 
 archive:
-	tar -C ${ENV} -cf ${ENV}.tar.bz2 .	
+	tar -C build/${ENV} -cf build/${ENV}.tar.bz2 .
