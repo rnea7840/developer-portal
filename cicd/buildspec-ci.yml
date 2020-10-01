@@ -21,8 +21,7 @@ env:
   variables:
     GITHUB_USERNAME: "va-bot"
     # These are the test make targets. 
-    #TESTS: "images lint security unit e2e accessibility visual"
-    TESTS: "visual"
+    TESTS: "images lint security unit e2e accessibility visual"
     # These are the build environments
     ENVS: "dev staging production"
     # Bucket for archiving deployments
@@ -104,8 +103,8 @@ phases:
           make ${test} || break
           phase=test_success
         done
-      - time="${time}\n${phase} - $(date +%r)"
       - if [[ ${phase} != "test_success"  && ${phase} != "test" ]]; then exit 1; fi
+      - time="${time}\n${phase} - $(date +%r)"
       # Run builds if all tests are good. We run all builds but we could shorten the CI part for branches by only building on push.
       - phase=build_app
       - |
@@ -139,7 +138,7 @@ phases:
   post_build:
     commands:
       # Handle phase errors. 
-      - echo ${time}
+      - printf '%b\n' "${time}"
       - |
         case ${phase} in
         visual) 
