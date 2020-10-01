@@ -1,4 +1,5 @@
-## It may be helpful to set UNAME=root GNAME=root if running locally as the container runs as jenkins by default.
+## ** Run make build prior to running any tests! **
+## Docker will through and error about not being able to pull image from Docker Hub if not!
 ## --- 
 #
 #
@@ -11,13 +12,13 @@ AUDIT_LEVEL?= high
 # Sets Branch
 BRANCH ?= notmaster
 # Sets default env 
-ENV ?= dev
+ENVIROMENTS ?= dev
 
 .PHONY: help
 help : Makefile
 	@sed -n 's/^##//p' $<
 
-## build:		builds developer-portal container environment
+## build:		** RUN FIRST ** builds developer-portal container environment 
 .PHONY: build
 build:
 	docker build -t developer-portal .
@@ -90,20 +91,43 @@ accessibility:
 		--volume "/application/node_modules" \
 		developer-portal npm run-script test:accessibility:ci
 
-## build_app:	builds the developer-portal website, and copies to host
-.PHONY: build_app 
-build_app:
-	for env in ${ENVS}; do \
-		docker run --rm \
-			--volume "${PWD}:/application" \
-			--volume "/application/node_modules" \
-			--env NODE_ENV=production \
-			--env BUILD_ENV=$${env} \
-			--user ${UNAME}:${GNAME} \
-			developer-portal npm run-script build ${ENV}; \
-	done
+.PHONY: build_app
+build_app: ${ENVIROMENTS}
+
+## dev:	builds the developer-portal dev website, and copies to host
+.PHONY: dev
+dev:
+	docker run --name dev \
+		--volume "${PWD}:/application" \
+		--volume "/application/node_modules" \
+		--env NODE_ENV=production \
+		--env BUILD_ENV=dev \
+		--user ${UNAME}:${GNAME} \
+		developer-portal npm run-script build dev
+
+## staging:	builds the developer-portal staging website, and copies to host
+.PHONY: staging 
+staging:
+	docker run --name staging \
+		--volume "${PWD}:/application" \
+		--volume "/application/node_modules" \
+		--env NODE_ENV=production \
+		--env BUILD_ENV=staging \
+		--user ${UNAME}:${GNAME} \
+		developer-portal npm run-script build staging
+
+## production:	builds the developer-portal production website, and copies to host
+.PHONY: production 
+production:
+	docker run --name production \
+		--volume "${PWD}:/application" \
+		--volume "/application/node_modules" \
+		--env NODE_ENV=production \
+		--env BUILD_ENV=production \
+		--user ${UNAME}:${GNAME} \
+		developer-portal npm run-script build production
 
 ## archive:	builds tar ball of local build
 .PHONY: archive 
 archive:
-	tar -C build/${ENV} -cf build/${ENV}.tar.bz2 .
+	tar -C build/${ENVIROMENTS} -cf build/${ENVIROMENTS}.tar.bz2 .

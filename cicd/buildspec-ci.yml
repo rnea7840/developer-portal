@@ -4,7 +4,7 @@
 #
 # Tool Links:
 #  - CodeBuild - https://docs.aws.amazon.com/codebuild/index.html
-#  - CodeBuild Environmen Variables - https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-env-vars.html
+#  - CodeBuild Environmental Variables - https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-env-vars.html
 #  - Runner for CodeBuild Enironment - https://github.com/department-of-veterans-affairs/lighthouse-codebuild-containers/tree/main/docker-runner
 #  - AWS CLI 2.0 - https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 # 
@@ -24,7 +24,7 @@ env:
     # These are the test make targets. 
     TESTS: "images lint security unit e2e accessibility visual"
     # These are the build environments
-    ENVS: "dev staging production"
+    ENVIROMENTS: "dev staging production"
     # Bucket for archiving deployments
     S3_ARCHIVE_BUCKET: "developer-portal-builds-s3-upload"
     # Bucket for uploading visual regression failures.
@@ -81,7 +81,7 @@ phases:
       # Create the required dot files prior to build for proper deployment to review bucket
       - |
         if [[ ${PR_NUM} ]]; then
-          for env in ${ENVS}; do
+          for env in ${ENVIROMENTS}; do
         cat <<EOF > .env.${env}.local
         PUBLIC_URL=/${S3_REVIEW_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/${env}
         REACT_APP_SENTRY_DSN=${PREVIEW_SENTRY_DSN}
@@ -109,16 +109,13 @@ phases:
       - time="${time}\n${phase} - $(date +%r)"
       # Run builds if all tests are good. We run all builds but we could shorten the CI part for branches by only building on push.
       - phase=build_app
-      - |
-        for env in ${ENVS}; do
-          time="${time}\n${phase}-${env} - $(date +%r) - started"
-          make build_app ENV=${env} || exit 1 
-        done
+      - time="${time}\n${phase} - $(date +%r) - started"
+      - make build_app || exit 1 
       # Check if we archive the build
       - phase=archive
       - |
         if [[ $BRANCH == 'master' ]]; then
-          for env in ${ENVS}; do
+          for env in ${ENVIROMENTS}; do
             time="${time}\n${phase}-${env} - $(date +%r) - started"
             make archive ENV=${env} || exit 1 
             aws s3 cp --no-progress --acl public-read build/${env}.tar.bz2 s3://${S3_ARCHIVE_BUCKET}/cb-${COMMIT_HASH}/${env}.tar.bz2
@@ -130,7 +127,7 @@ phases:
         if [[ ${PR_NUM} ]]; then
           time="${time}\n${phase} - $(date +%r) started"
           links=""
-          for env in ${ENVS}; do
+          for env in ${ENVIROMENTS}; do
             links="${links}[${env}](https://s3-us-gov-west-1.amazonaws.com/${S3_REVIEW_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/${env}/index.html) <br>"
           done
           aws s3 sync --no-progress --acl public-read build/ s3://${S3_REVIEW_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/
