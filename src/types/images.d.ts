@@ -1,7 +1,10 @@
 declare module '*.svg' {
-  const src:string;
+  const src: string;
   export default src;
 }
-declare module '*.png'
-declare module '*.jpg'
-declare module '*.scss'
+declare module '*.png' {
+  const src: string;
+  export default src;
+}
+declare module '*.jpg';
+declare module '*.scss';
