@@ -111,8 +111,8 @@ phases:
       - phase=build_app
       - |
         for environment in ${ENVIROMENTS}; do
-          time="${time}\n${phase}-${ENVIROMENT} - $(date +%r) - started"
-          make build_app ENVIRONMENT=${ENVIROMENT} || exit 1
+          time="${time}\n${phase}-${enviroment} - $(date +%r) - started"
+          make build_app ENVIRONMENT=${enviroment} || exit 1
         done
       # Check if we archive the build
       - phase=archive
