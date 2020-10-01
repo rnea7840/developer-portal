@@ -54,6 +54,7 @@ phases:
     commands:
       # set variables
       # Bypass tests if a PR is created
+      - time="Start: $(date +%r)"
       - if [[ $CODEBUILD_WEBHOOK_EVENT == "PULL_REQUEST_CREATED"  ]]; then TESTS=""; fi
       # Log all environment varbiables to cloudwatch incase we need to troubleshoot
       - printenv
@@ -95,17 +96,21 @@ phases:
       # Instead of checking for a combination of CODEBUILD_BUILD_SUCCEDING and some other variable we will assume
       # the phase variable is an indiation of the where the build failed and act accordingly in the POST_BUILD section.
       - phase=test
+      - time="${time}${phase}: $(date +%r)"
       - |
         for test in ${TESTS}; do
           phase=${test}
+          time="${time}${phase}: $(date +%r)"
           make ${test} || break
           phase=test_success
         done
+      - time="${time}${phase}: $(date +%r)"
       - if [[ ${phase} != "test_success"  && ${phase} != "test" ]]; then exit 1; fi
       # Run builds if all tests are good. We run all builds but we could shorten the CI part for branches by only building on push.
       - phase=build_app
       - |
         for env in ${ENVS}; do
+          time="${time}${phase}-${env}: $(date +%r)"
           make build_app ENV=${env} || exit 1 
         done
       # Check if we archive the build
@@ -113,6 +118,7 @@ phases:
       - |
         if [[ $BRANCH == 'master' ]]; then
           for env in ${ENVS}; do
+            time="${time}${phase}-${env}: $(date +%r)"
             make archive ENV=${env} || exit 1 
             aws s3 cp --no-progress --acl public-read build/${env}.tar.bz2 s3://${S3_ARCHIVE_BUCKET}/cb-${COMMIT_HASH}/${env}.tar.bz2
           done
@@ -121,6 +127,7 @@ phases:
       - phase=deploy
       - |
         if [[ ${PR_NUM} ]]; then
+          time="${time}${phase}: $(date +%r)"
           links=""
           for env in ${ENVS}; do
             links="${links}[${env}](https://s3-us-gov-west-1.amazonaws.com/${S3_REVIEW_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/${env}/index.html) <br>"
@@ -132,10 +139,11 @@ phases:
   post_build:
     commands:
       # Handle phase errors. 
+      - echo ${time}
       - |
         case ${phase} in
         visual) 
-          report_path="test/image_snapshots/diff_output/"
+          report_path="test/image_snapshots/__diff_output__/"
           links=""
           for f in ${report_path}/*; do
             links="${links}[${f#"${report_path}"}](https://s3-us-gov-west-1.amazonaws.com/${S3_VISUAL_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/${f#"${report_path}"})"
