@@ -12,7 +12,7 @@ AUDIT_LEVEL?= high
 # Sets Branch
 BRANCH ?= notmaster
 # Sets default env 
-ENVIROMENTS ?= dev
+ENVIROMENT ?= dev
 
 .PHONY: help
 help : Makefile
@@ -36,6 +36,7 @@ images:
 .PHONY: security
 security:
 	docker run --rm \
+		--user ${UNAME}:${GNAME} \
 		--volume "/application/node_modules" \
 		--volume "${PWD}:/application" \
 		developer-portal npm audit --audit-level ${AUDIT_LEVEL}
@@ -91,43 +92,19 @@ accessibility:
 		--volume "/application/node_modules" \
 		developer-portal npm run-script test:accessibility:ci
 
-.PHONY: build_app
-build_app: ${ENVIROMENTS}
-
 ## dev:	builds the developer-portal dev website, and copies to host
-.PHONY: dev
-dev:
-	docker run --name dev \
+.PHONY: build_app
+build_app: 
+	@echo "Building ${ENVIRONMENT}"
+	docker run --rm \
+		--user ${UNAME}:${GNAME} \
 		--volume "${PWD}:/application" \
 		--volume "/application/node_modules" \
 		--env NODE_ENV=production \
-		--env BUILD_ENV=dev \
-		--user ${UNAME}:${GNAME} \
-		developer-portal npm run-script build dev
-
-## staging:	builds the developer-portal staging website, and copies to host
-.PHONY: staging 
-staging:
-	docker run --name staging \
-		--volume "${PWD}:/application" \
-		--volume "/application/node_modules" \
-		--env NODE_ENV=production \
-		--env BUILD_ENV=staging \
-		--user ${UNAME}:${GNAME} \
-		developer-portal npm run-script build staging
-
-## production:	builds the developer-portal production website, and copies to host
-.PHONY: production 
-production:
-	docker run --name production \
-		--volume "${PWD}:/application" \
-		--volume "/application/node_modules" \
-		--env NODE_ENV=production \
-		--env BUILD_ENV=production \
-		--user ${UNAME}:${GNAME} \
-		developer-portal npm run-script build production
+		--env BUILD_ENV=${ENVIRONMENT} \
+		developer-portal npm run-script build ${ENVIRONMENT}
 
 ## archive:	builds tar ball of local build
 .PHONY: archive 
 archive:
-	tar -C build/${ENVIROMENTS} -cf build/${ENVIROMENTS}.tar.bz2 .
+	tar -C build/${ENVIROMENT} -cf build/${ENVIROMENT}.tar.bz2 .
