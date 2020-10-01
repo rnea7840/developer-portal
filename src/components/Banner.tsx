@@ -40,11 +40,11 @@ const GuidanceBox = (
   </div>
 );
 
-interface IBannerState {
+interface BannerState {
   accordionVisible: boolean;
 }
 
-export default class Banner extends React.Component<unknown, IBannerState> {
+export default class Banner extends React.Component<unknown, BannerState> {
   public constructor(props: unknown) {
     super(props);
     this.state = {
