@@ -4,6 +4,7 @@
 #
 # Tool Links:
 #  - CodeBuild - https://docs.aws.amazon.com/codebuild/index.html
+#  - CodeBuild Environmen Variables - https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-env-vars.html
 #  - Runner for CodeBuild Enironment - https://github.com/department-of-veterans-affairs/lighthouse-codebuild-containers/tree/main/docker-runner
 #  - AWS CLI 2.0 - https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 # 
@@ -51,11 +52,11 @@ phases:
       - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
   pre_build:
     commands:
-      # set variables
+      # Using a time variable to output at the end to aid where builds may take along time.
       - time="Start - $(date +%r)"
       # Bypass tests if a PR is created
       - if [[ $CODEBUILD_WEBHOOK_EVENT == "PULL_REQUEST_CREATED"  ]]; then TESTS=""; fi
-      # Log all environment varbiables to cloudwatch incase we need to troubleshoot
+      # Log all environment varbiables to cloudwatch incase we need to troubleshoot. AWS is nice enough to hide any secrets from parameter-store.
       - printenv
       # Get usable branch name
       - GET_BRANCH=${CODEBUILD_WEBHOOK_HEAD_REF#"refs/heads/"}
@@ -75,6 +76,7 @@ phases:
       # Short Ref to commit hash
       - COMMIT_HASH=${CODEBUILD_RESOLVED_SOURCE_VERSION:0:7}
       - git lfs pull
+      # Resolve PR_NUM
       - PR_NUM=$(prnum.sh ${REPO} ${BRANCH})
       # Create the required dot files prior to build for proper deployment to review bucket
       - |
@@ -95,7 +97,7 @@ phases:
       # Instead of checking for a combination of CODEBUILD_BUILD_SUCCEDING and some other variable we will assume
       # the phase variable is an indiation of the where the build failed and act accordingly in the POST_BUILD section.
       - phase=test
-      - time="${time}\n${phase} - $(date +%r)"
+      - time="${time}\n${phase} - $(date +%r) - started"
       - |
         for test in ${TESTS}; do
           phase=${test}
@@ -109,7 +111,7 @@ phases:
       - phase=build_app
       - |
         for env in ${ENVS}; do
-          time="${time}\n${phase}-${env} - $(date +%r)"
+          time="${time}\n${phase}-${env} - $(date +%r) - started"
           make build_app ENV=${env} || exit 1 
         done
       # Check if we archive the build
@@ -117,7 +119,7 @@ phases:
       - |
         if [[ $BRANCH == 'master' ]]; then
           for env in ${ENVS}; do
-            time="${time}\n${phase}-${env} - $(date +%r)"
+            time="${time}\n${phase}-${env} - $(date +%r) - started"
             make archive ENV=${env} || exit 1 
             aws s3 cp --no-progress --acl public-read build/${env}.tar.bz2 s3://${S3_ARCHIVE_BUCKET}/cb-${COMMIT_HASH}/${env}.tar.bz2
           done
@@ -126,7 +128,7 @@ phases:
       - phase=deploy
       - |
         if [[ ${PR_NUM} ]]; then
-          time="${time}\n${phase} - $(date +%r)"
+          time="${time}\n${phase} - $(date +%r) started"
           links=""
           for env in ${ENVS}; do
             links="${links}[${env}](https://s3-us-gov-west-1.amazonaws.com/${S3_REVIEW_BUCKET}/${S3_BRANCH}/${COMMIT_HASH}/${env}/index.html) <br>"
@@ -138,7 +140,6 @@ phases:
   post_build:
     commands:
       # Handle phase errors. 
-      - printf '%b\n' "${time}"
       - |
         case ${phase} in
         visual) 
@@ -168,6 +169,8 @@ phases:
           slackpost.sh "Pipeline failure for the developer portal" 
           ;;
         esac
+      # Output build times
+      - printf '%b\n' "${time}"
       # Handle comments.
       - |
         if [[ ${PR_NUM} ]]; then

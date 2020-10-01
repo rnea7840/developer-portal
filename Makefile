@@ -93,13 +93,15 @@ accessibility:
 ## build_app:	builds the developer-portal website, and copies to host
 .PHONY: build_app 
 build_app:
-	docker run --rm \
-		--volume "${PWD}:/application" \
-		--volume "/application/node_modules" \
-		--env NODE_ENV=production \
-		--env BUILD_ENV=${ENV} \
-		--user ${UNAME}:${GNAME} \
-		developer-portal npm run-script build ${ENV}
+	for env in ${ENVS}; do \
+		docker run --rm \
+			--volume "${PWD}:/application" \
+			--volume "/application/node_modules" \
+			--env NODE_ENV=production \
+			--env BUILD_ENV=$${env} \
+			--user ${UNAME}:${GNAME} \
+			developer-portal npm run-script build ${ENV}; \
+	done
 
 ## archive:	builds tar ball of local build
 .PHONY: archive 
