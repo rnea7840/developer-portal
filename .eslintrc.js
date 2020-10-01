@@ -31,7 +31,7 @@ module.exports = {
     'eslint-plugin-jsdoc',
     'eslint-plugin-prefer-arrow',
     'eslint-plugin-import',
-    'eslint-plugin-react',
+    'react',
     '@typescript-eslint',
     '@typescript-eslint/tslint',
     'react-hooks',
@@ -229,5 +229,11 @@ module.exports = {
         },
       },
     ],
+  },
+  settings: {
+    react: {
+      // https://github.com/yannickcr/eslint-plugin-react#configuration
+      version: 'detect',
+    },
   },
 };
