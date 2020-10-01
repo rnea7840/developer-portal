@@ -202,9 +202,11 @@ module.exports = {
     ],
     'use-isnan': 'error',
     'valid-typeof': 'off',
+    // https://www.npmjs.com/package/@typescript-eslint/eslint-plugin-tslint
     '@typescript-eslint/tslint/config': [
       'error',
       {
+        lintFile: './tslint.json',
         rules: {
           'jsx-no-string-ref': true,
           'jsx-self-close': true,
