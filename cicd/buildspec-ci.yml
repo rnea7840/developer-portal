@@ -105,7 +105,6 @@ phases:
       - phase=build_app
       - |
         for env in ${ENVS}; do
-      # CodeBuild sometimes ignores make exit codes.
           make build_app ENV=${env} || exit 1 
         done
       # Check if we archive the build
@@ -113,7 +112,6 @@ phases:
       - |
         if [[ $BRANCH == 'master' ]]; then
           for env in ${ENVS}; do
-      # CodeBuild sometimes ignores make exit codes.
             make archive ENV=${env} || exit 1 
             aws s3 cp --no-progress --acl public-read build/${env}.tar.bz2 s3://${S3_ARCHIVE_BUCKET}/cb-${COMMIT_HASH}/${env}.tar.bz2
           done
