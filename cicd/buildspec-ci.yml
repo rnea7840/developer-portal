@@ -110,7 +110,7 @@ phases:
       # Run builds if all tests are good. We run all builds but we could shorten the CI part for branches by only building on push.
       - phase=build_app
       - time="${time}\n${phase} - $(date +%r) - started"
-      - make build_app || exit 1 
+      - make build_app -j || exit 1 
       # Check if we archive the build
       - phase=archive
       - |
