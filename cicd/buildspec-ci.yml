@@ -22,7 +22,7 @@ env:
     GITHUB_USERNAME: "va-bot"
     # These are the test make targets. 
     #TESTS: "images lint security unit e2e accessibility visual"
-    TESTS: "unit"
+    TESTS: "visual"
     # These are the build environments
     ENVS: "dev staging production"
     # Bucket for archiving deployments
