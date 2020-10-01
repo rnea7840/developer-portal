@@ -45,6 +45,7 @@
     "react-a11y-role-supports-aria-props": {},
     "react-a11y-tabindex-no-positive": {},
     "react-a11y-titles": {},
+    "jsx-boolean-value": false,
     "jsx-no-lambda": {
       "severity": "off"
     }
