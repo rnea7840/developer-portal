@@ -6,8 +6,8 @@ interface CodeWrapperProps {
   children: React.ReactNode;
 }
 
-export default class CodeWrapper extends React.Component<CodeWrapperProps, {}> {
-  public render() {
+export default class CodeWrapper extends React.Component<CodeWrapperProps> {
+  public render(): JSX.Element {
     return (
       // future improvement: add role="region" and add appropriate aria-labels
       <div className="code-wrapper" tabIndex={0}>
