@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import getVideoId, { VideoMetadata } from 'get-video-id';
+import * as getVideoId from 'get-video-id';
 import * as React from 'react';
 
 import './EmbeddedYoutubeVideo.scss';
@@ -16,7 +16,7 @@ const EmbeddedYoutubeVideo: React.FunctionComponent<EmbeddedYoutubeVideoProps> =
   url,
   title,
 }: EmbeddedYoutubeVideoProps): JSX.Element => {
-  const videoInfo: VideoMetadata = getVideoId(url);
+  const videoInfo = getVideoId(url);
   if (videoInfo.service !== YOUTUBE_SERVICE) {
     return <a href={url}>{url}</a>;
   }

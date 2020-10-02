@@ -1,9 +1,9 @@
 declare module 'get-video-id' {
-  export interface VideoMetadata {
+  interface VideoMetadata {
     id: string;
     service: string;
   }
 
   const getVideoId: (url: string) => VideoMetadata;
-  export default getVideoId;
+  export = getVideoId;
 }
