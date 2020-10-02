@@ -17,6 +17,7 @@ module.exports = {
     node: true,
   },
   extends: [
+    'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react/recommended',
@@ -168,7 +169,7 @@ module.exports = {
     'no-bitwise': 'error',
     'no-caller': 'error',
     'no-cond-assign': 'error',
-    'no-console': 'off',
+    'no-console': 'error',
     'no-debugger': 'error',
     'no-empty': 'error',
     'no-eval': 'error',

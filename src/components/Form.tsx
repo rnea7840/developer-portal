@@ -67,11 +67,9 @@ export default class Form extends React.Component<FormProps, FormState> {
       this.props
         .onSubmit()
         .then(() => {
-          console.log('Form submit success path');
           this.setState({ sending: false }, () => this.props.onSuccess());
         })
         .catch(() => {
-          console.log('Form submit error path');
           this.setState({ sending: false, error: true });
         });
     });
