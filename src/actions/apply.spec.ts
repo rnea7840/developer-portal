@@ -54,7 +54,7 @@ describe('submitForm', () => {
       type: constants.SUBMIT_APPLICATION_BEGIN,
     });
     expect(dispatch).toBeCalledWith({
-      clientID: 'testid',
+      clientID: 'teWRONGstid',
       clientSecret: 'test_secret',
       token: 'testtoken',
       type: constants.SUBMIT_APPLICATION_SUCCESS,
