@@ -26,16 +26,13 @@ describe('MainNavItem', () => {
     // this test is applicable only to mobile
     const MobileComponentMock = (
       <Router>
-        <MainNavItem
-          excludeLargeScreen={true}
-          {...mockProps}
-        >
+        <MainNavItem excludeLargeScreen {...mockProps}>
           Mock
         </MainNavItem>
       </Router>
     );
     const wrapper = mount(MobileComponentMock);
-    wrapper.find("NavLink").simulate('click');
+    wrapper.find('NavLink').simulate('click');
     expect(mockProps.onClick).toHaveBeenCalled();
   });
 });

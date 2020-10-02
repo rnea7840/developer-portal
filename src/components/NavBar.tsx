@@ -11,7 +11,7 @@ import plusIcon from '../../node_modules/uswds/src/img/plus.png';
 
 import { getApiCategoryOrder, getApiDefinitions } from '../apiDefs/query';
 import { desktopOnly, mobileOnly } from '../styles/vadsUtils';
-import MainNavItem, { ILargeScreenNavItemProps } from './MainNavItem';
+import MainNavItem, { LargeScreenNavItemProps } from './MainNavItem';
 import Search from './Search';
 
 import './NavBar.scss';
@@ -130,7 +130,7 @@ export default class NavBar extends React.Component<NavBarProps, NavBarState> {
       'medium-screen:vads-u-width--full',
     );
 
-    const sharedNavItemProps: ILargeScreenNavItemProps = {
+    const sharedNavItemProps: LargeScreenNavItemProps = {
       isActive: this.checkActiveNavLink,
       onMouseEnter: this.toggleDefaultNavLink.bind(this, false) as () => void,
       onMouseLeave: this.toggleDefaultNavLink.bind(this, true) as () => void,

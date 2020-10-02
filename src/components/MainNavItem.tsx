@@ -1,33 +1,33 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { NavLink } from 'react-router-dom';
+import { match as Match, NavLink } from 'react-router-dom';
 import { desktopOnly, mobileOnly } from '../styles/vadsUtils';
 
-export interface ILargeScreenNavItemProps {
-  isActive: (match: {}) => boolean;
+export interface LargeScreenNavItemProps {
+  isActive: (match: Match) => boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }
 
-interface IMainNavItemProps {
+interface MainNavItemProps {
   children: React.ReactChild | React.ReactChildren;
   activeClassName?: string;
   className?: string;
   excludeLargeScreen: boolean;
   excludeSmallScreen: boolean;
   targetUrl: string;
-  largeScreenProps: ILargeScreenNavItemProps;
+  largeScreenProps: LargeScreenNavItemProps;
   onClick: () => void;
 }
 
-export default class MainNavItem extends React.PureComponent<IMainNavItemProps> {
+export default class MainNavItem extends React.PureComponent<MainNavItemProps> {
   public static defaultProps = {
     excludeLargeScreen: false,
     excludeSmallScreen: false,
     onClick: null,
   };
 
-  public render() {
+  public render(): JSX.Element {
     const sharedProps = {
       activeClassName: classNames('va-api-active-nav', this.props.activeClassName),
       className: classNames('va-api-nav-link', this.props.className),
@@ -36,20 +36,20 @@ export default class MainNavItem extends React.PureComponent<IMainNavItemProps> 
 
     return (
       <React.Fragment>
-        {!this.props.excludeLargeScreen &&
+        {!this.props.excludeLargeScreen && (
           <div className={desktopOnly()}>
-            <NavLink {... sharedProps} {... this.props.largeScreenProps}>
+            <NavLink {...sharedProps} {...this.props.largeScreenProps}>
               {this.props.children}
             </NavLink>
           </div>
-        }
-        {!this.props.excludeSmallScreen &&
+        )}
+        {!this.props.excludeSmallScreen && (
           <div className={mobileOnly()}>
-            <NavLink onClick={this.props.onClick} {... sharedProps}>
+            <NavLink onClick={this.props.onClick} {...sharedProps}>
               {this.props.children}
             </NavLink>
           </div>
-        }
+        )}
       </React.Fragment>
     );
   }
