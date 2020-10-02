@@ -1,13 +1,16 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import { PAGE_HEADER_ID } from '../types/constants';
 import PageHeader from './PageHeader';
 
-interface IQuickstartWrapperProps {
+interface QuickstartWrapperProps {
   halo: string;
   quickstartContent: React.StatelessComponent;
 }
 
-export default function Quickstart(props: IQuickstartWrapperProps) {
+const QuickstartWrapper: React.FunctionComponent<QuickstartWrapperProps> = (
+  props: QuickstartWrapperProps,
+) => {
   const { halo, quickstartContent } = props;
 
   return (
@@ -16,4 +19,11 @@ export default function Quickstart(props: IQuickstartWrapperProps) {
       {quickstartContent({})}
     </div>
   );
-}
+};
+
+QuickstartWrapper.propTypes = {
+  halo: PropTypes.string.isRequired,
+  quickstartContent: PropTypes.func.isRequired,
+};
+
+export default QuickstartWrapper;
