@@ -79,6 +79,8 @@ module.exports = {
         accessibility: 'explicit',
       },
     ],
+    // @typescript-eslint/indent has several issues, have to override in some places
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1824
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/member-delimiter-style': [
       'error',

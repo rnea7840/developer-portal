@@ -4,56 +4,67 @@ import * as React from 'react';
 
 import './GroupedAccordions.scss';
 
-declare const window: { VetsGov: object };
+// formation-react has a special object on the window for VA.gov. we really don't
+// care about the type except that it compiles.
+declare const window: { VetsGov: unknown };
 
-export interface IPanelContent {
+export interface PanelContent {
   readonly body: string | JSX.Element;
   readonly title: string;
 }
 
-interface IGroupedAccordionsProps {
-  readonly panelContents: IPanelContent[];
+interface GroupedAccordionsProps {
+  readonly panelContents: PanelContent[];
   readonly title: string;
 }
 
-interface IGroupedAccordionsStates {
+interface GroupedAccordionsStates {
   allCollapsed: boolean;
 }
 
-interface ICollapsiblePanelStates {
+interface CollapsiblePanelStates {
   open: boolean;
 }
 
-export default class GroupedAccordions extends React.Component<IGroupedAccordionsProps, IGroupedAccordionsStates> {
-  private panelRefs: Array<React.RefObject<React.Component<{}, ICollapsiblePanelStates>>>;
+/* eslint-disable @typescript-eslint/indent */
+export default class GroupedAccordions extends React.Component<
+  GroupedAccordionsProps,
+  GroupedAccordionsStates
+> {
+  private panelRefs: Array<
+    React.RefObject<React.Component<Record<string, unknown>, CollapsiblePanelStates>>
+  >;
+  /* eslint-enable @typescript-eslint/indent */
 
-  constructor(props: IGroupedAccordionsProps) {
+  public constructor(props: GroupedAccordionsProps) {
     super(props);
     this.state = { allCollapsed: true };
     this.panelRefs = [];
   }
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     // CollapsiblePanel expects a VetsGov object on the global window
     if (!window.VetsGov) {
       window.VetsGov = { scroll: null };
     }
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     this.panelRefs = [];
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <section className={classNames('va-grouped-accordion', 'vads-u-margin-bottom--2p5')}>
-        <div className={classNames(
-          'vads-u-display--flex',
-          'vads-u-justify-content--space-between',
-          'vads-u-align-items--center',
-        )}>
+        <div
+          className={classNames(
+            'vads-u-display--flex',
+            'vads-u-justify-content--space-between',
+            'vads-u-align-items--center',
+          )}
+        >
           <h3>{this.props.title}</h3>
-          <button 
+          <button
             className={classNames(
               'va-api-grouped-accordions-button',
               'vads-u-color--primary',
@@ -63,16 +74,26 @@ export default class GroupedAccordions extends React.Component<IGroupedAccordion
               'vads-u-font-weight--normal',
               'vads-u-width--auto',
             )}
-            onClick={(event) => this.handleExpandCollapse(event)}
+            onClick={event => this.handleExpandCollapse(event)}
           >
             {this.state.allCollapsed ? 'Expand all' : 'Collapse all'}
           </button>
         </div>
-        {this.props.panelContents.map((c: IPanelContent, index: number) => {
-          const panelRef = React.createRef<React.Component<{}, ICollapsiblePanelStates>>();
+        {this.props.panelContents.map((c: PanelContent, index: number) => {
+          /* eslint-disable @typescript-eslint/indent -- see .eslintrc.js */
+          const panelRef = React.createRef<
+            React.Component<Record<string, unknown>, CollapsiblePanelStates>
+          >();
+          /* eslint-disable @typescript-eslint/indent */
+
           this.panelRefs.push(panelRef);
           return (
-            <CollapsiblePanel ref={panelRef} panelName={c.title} startOpen={!this.state.allCollapsed} key={index}>
+            <CollapsiblePanel
+              ref={panelRef}
+              panelName={c.title}
+              startOpen={!this.state.allCollapsed}
+              key={index}
+            >
               {c.body}
             </CollapsiblePanel>
           );
@@ -83,12 +104,17 @@ export default class GroupedAccordions extends React.Component<IGroupedAccordion
 
   private handleExpandCollapse(event: React.MouseEvent<HTMLElement>) {
     event.preventDefault();
-    this.setState((prevState: IGroupedAccordionsStates) => ({ allCollapsed: !prevState.allCollapsed }), () => {
-      this.panelRefs.filter(r => r.current && (r.current.state.open === this.state.allCollapsed)).forEach(r => {
-        if (r.current) {
-          r.current.setState({ open: !this.state.allCollapsed });
-        }
-      });
-    });
+    this.setState(
+      (prevState: GroupedAccordionsStates) => ({ allCollapsed: !prevState.allCollapsed }),
+      () => {
+        this.panelRefs
+          .filter(r => r.current && r.current.state.open === this.state.allCollapsed)
+          .forEach(r => {
+            if (r.current) {
+              r.current.setState({ open: !this.state.allCollapsed });
+            }
+          });
+      },
+    );
   }
 }
