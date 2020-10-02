@@ -34,7 +34,7 @@ export const getFlags = () => {
     deactivated_apis: deactivatedFlags,
     enabled: envFlags,
     hosted_apis: apiFlags,
-    show_testing_notice: process.env['REACT_APP_SHOW_TESTING_NOTICE'] === 'true',
+    show_testing_notice: process.env.REACT_APP_SHOW_TESTING_NOTICE === 'true',
     signups_enabled: process.env.REACT_APP_SIGNUPS_ENABLED !== 'false',
   };
 };
