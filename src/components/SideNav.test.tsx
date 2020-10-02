@@ -6,7 +6,7 @@ import { LocationDescriptor } from 'history';
 import { MemoryRouter } from 'react-router';
 import { SideNavEntry } from './SideNav';
 
-function testActive({
+const testActive = ({
   location,
   to,
   exact = false,
@@ -16,7 +16,7 @@ function testActive({
   to: string;
   exact?: boolean;
   expectation: boolean;
-}) {
+}) => {
   const activeClassName = 'va-api-active-sidenav-link';
   const wrapper = render(
     <MemoryRouter initialEntries={[location]}>
@@ -25,7 +25,7 @@ function testActive({
   );
 
   expect(wrapper.find('a').hasClass(activeClassName)).toBe(expectation);
-}
+};
 
 describe('SideNavEntry isActive matching', () => {
   describe('paths with no hash', () => {

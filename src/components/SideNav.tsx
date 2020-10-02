@@ -1,7 +1,6 @@
-import * as React from 'react';
-
 import classNames from 'classnames';
 import { Location } from 'history';
+import * as React from 'react';
 import { match } from 'react-router';
 import { HashLink, NavHashLink, NavHashLinkProps } from 'react-router-hash-link';
 import * as Stickyfill from 'stickyfilljs';
@@ -9,18 +8,19 @@ import * as Stickyfill from 'stickyfilljs';
 import '../components/SideNav.scss';
 import { onHashAnchorClick } from '../utils/clickHandlers';
 
-export interface ISideNavEntryProps extends NavHashLinkProps {
+export interface SideNavEntryProps extends NavHashLinkProps {
   name: string | JSX.Element;
   className?: string;
-  subNavLevel: number;
+  // subNavLevel is really required, but Typescript is giving a compilation error
+  // when it's provided via defaultProps rather than being specified explicitly.
+  subNavLevel?: number;
 }
 
 // Constructs a NavHashLink in the sidebar that also takes into account the
 // hash when determining if it's active
-export class SideNavEntry extends React.Component<ISideNavEntryProps> {
-  public static defaultProps = {
-    subNavLevel: 0,
-  };
+const SideNavEntry: React.FunctionComponent<SideNavEntryProps> = (props: SideNavEntryProps) => {
+  // Omit unneeded parent props from NavLink
+  const { name, className, subNavLevel, children, ...navLinkProps } = props;
 
   // The isActive prop receives two arguments: a `match` object representing
   // the original determination, and the current location. The match algorithm
@@ -30,20 +30,18 @@ export class SideNavEntry extends React.Component<ISideNavEntryProps> {
   // `navHashLinkIsActive` is both more and less strict than the default implementation:
   // there are cases where the original would return false and this function returns true,
   // and vice versa.
-  public navHashLinkIsActive = (pathMatch: match, location: Location): boolean => {
-    const withoutTrailingSlash = (path: string) => {
-      return path.replace(/\/$/, '');
-    };
+  const navHashLinkIsActive = (pathMatch: match, location: Location): boolean => {
+    const withoutTrailingSlash = (path: string) => path.replace(/\/$/, '');
 
     let pathname: string;
     let hash: string;
-    if (typeof this.props.to === 'string') {
-      const url = new URL(this.props.to, 'http://example.com');
+    if (typeof navLinkProps.to === 'string') {
+      const url = new URL(navLinkProps.to, 'http://example.com');
       pathname = url.pathname;
       hash = url.hash;
     } else {
-      pathname = this.props.to.pathname || '';
-      hash = this.props.to.hash || '';
+      pathname = navLinkProps.to.pathname || '';
+      hash = navLinkProps.to.hash || '';
     }
     const to = withoutTrailingSlash(pathname) + hash;
     const currentPath = withoutTrailingSlash(location.pathname);
@@ -60,71 +58,72 @@ export class SideNavEntry extends React.Component<ISideNavEntryProps> {
       return true;
     }
     // Fall back to the native implementation which does partial matching
-    if (!this.props.exact) {
+    if (!navLinkProps.exact) {
       return !!pathMatch;
     }
     return false;
   }; // tslint:disable-line: semicolon
 
-  public render() {
-    // Omit unneeded parent props from NavLink
-    const { name, className, subNavLevel, ...navLinkProps } = this.props;
-
-    return (
-      <li
+  return (
+    <li
+      className={classNames(
+        'va-api-sidenav-entry',
+        'vads-u-border-top--2px',
+        'vads-u-border-color--gray-lighter',
+        'vads-u-margin-y--0',
+      )}
+    >
+      <NavHashLink
         className={classNames(
-          'va-api-sidenav-entry',
-          'vads-u-border-top--2px',
-          'vads-u-border-color--gray-lighter',
-          'vads-u-margin-y--0',
+          'vads-u-padding--1p5',
+          'vads-u-color--base',
+          {
+            'vads-u-padding-left--4': subNavLevel === 1,
+            'vads-u-padding-left--7': subNavLevel === 2,
+          },
+          className,
         )}
+        activeClassName={classNames('va-api-active-sidenav-link', 'vads-u-font-weight--bold', {
+          'vads-u-border-color--cool-blue': subNavLevel === 0,
+          'vads-u-border-left--5px': subNavLevel === 0,
+        })}
+        isActive={navHashLinkIsActive}
+        onClick={onHashAnchorClick}
+        {...navLinkProps}
       >
-        <NavHashLink
+        {name}
+      </NavHashLink>
+      {children && (
+        <ul
           className={classNames(
-            'vads-u-padding--1p5',
-            'vads-u-color--base',
-            {
-              'vads-u-padding-left--4': subNavLevel === 1,
-              'vads-u-padding-left--7': subNavLevel === 2,
-            },
-            this.props.className,
+            'va-api-sidenav-sub-list',
+            'vads-u-margin-y--0',
+            'vads-u-padding-left--0',
           )}
-          activeClassName={classNames('va-api-active-sidenav-link', 'vads-u-font-weight--bold', {
-            'vads-u-border-color--cool-blue': subNavLevel === 0,
-            'vads-u-border-left--5px': subNavLevel === 0,
-          })}
-          isActive={this.navHashLinkIsActive}
-          onClick={onHashAnchorClick}
-          {...navLinkProps}
         >
-          {this.props.name}
-        </NavHashLink>
-        {this.props.children && (
-          <ul
-            className={classNames(
-              'va-api-sidenav-sub-list',
-              'vads-u-margin-y--0',
-              'vads-u-padding-left--0',
-            )}
-          >
-            {this.props.children}
-          </ul>
-        )}
-      </li>
-    );
-  }
-}
+          {children}
+        </ul>
+      )}
+    </li>
+  );
+};
 
-interface ISideNavProps {
+SideNavEntry.defaultProps = {
+  subNavLevel: 0,
+};
+
+export { SideNavEntry };
+
+interface SideNavProps {
   className?: string;
   ariaLabel: string;
 }
 
 // tslint:disable-next-line: max-classes-per-file
-export default class SideNav extends React.Component<ISideNavProps> {
+export default class SideNav extends React.Component<SideNavProps> {
   private navRef = React.createRef<HTMLDivElement>();
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     if (this.navRef.current) {
       // Stickyfill lets us use `position: sticky` in browsers that may not
       // support it. The library requires a dom reference to work, hence the ref.
@@ -132,7 +131,7 @@ export default class SideNav extends React.Component<ISideNavProps> {
     }
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <div
         className={classNames(
