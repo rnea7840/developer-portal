@@ -2,10 +2,10 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { SiteRoutes } from '../Routes';
 
-export default class PageContent extends React.Component<RouteComponentProps, {}> {
+export default class PageContent extends React.Component<RouteComponentProps> {
   private mainRef: React.RefObject<HTMLElement> = React.createRef<HTMLElement>();
 
-  public componentDidUpdate(prevProps: RouteComponentProps) {
+  public componentDidUpdate(prevProps: RouteComponentProps): void {
     const { location } = this.props;
     if (prevProps.location.pathname === location.pathname && location.hash) {
       return;
@@ -17,7 +17,7 @@ export default class PageContent extends React.Component<RouteComponentProps, {}
     window.scrollTo(0, 0);
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <main id="main" ref={this.mainRef} tabIndex={-1}>
         <SiteRoutes />
