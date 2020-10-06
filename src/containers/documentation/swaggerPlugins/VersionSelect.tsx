@@ -1,17 +1,22 @@
 import classNames from 'classnames';
 import * as React from 'react';
-
 import { IVersionInfo } from '../SwaggerDocs';
+import { System } from './types';
 
 export interface IVersionSelectProps {
-  getSystem: any;
+  getSystem: () => System;
 }
 
 export interface IVersionSelectState {
   version: string;
 }
 
-export default class VersionSelect extends React.Component<IVersionSelectProps, IVersionSelectState> {
+/* eslint-disable @typescript-eslint/indent */
+export default class VersionSelect extends React.Component<
+  IVersionSelectProps,
+  IVersionSelectState
+> {
+  /* eslint-enable @typescript-eslint/indent */
   public constructor(props: IVersionSelectProps) {
     super(props);
     const reduxVersion = this.props.getSystem().versionSelectors.apiVersion();
@@ -21,7 +26,8 @@ export default class VersionSelect extends React.Component<IVersionSelectProps, 
 
   public getCurrentVersion() {
     const metadata = this.props.getSystem().versionSelectors.apiMetadata();
-    const selectCurrentVersion = (versionInfo: IVersionInfo) => versionInfo.status === 'Current Version';
+    const selectCurrentVersion = (versionInfo: IVersionInfo) =>
+      versionInfo.status === 'Current Version';
     return metadata.meta.versions.find(selectCurrentVersion).version;
   }
 
@@ -40,11 +46,13 @@ export default class VersionSelect extends React.Component<IVersionSelectProps, 
 
   public render() {
     return (
-      <div className={classNames(
-        'vads-u-display--flex',
-        'vads-u-flex-wrap--wrap',
-        'vads-u-justify-content--flex-start',
-      )}>
+      <div
+        className={classNames(
+          'vads-u-display--flex',
+          'vads-u-flex-wrap--wrap',
+          'vads-u-justify-content--flex-start',
+        )}
+      >
         <select // tslint:disable-next-line:react-a11y-no-onchange
           aria-label="Version Selection"
           value={this.state.version}
@@ -53,7 +61,8 @@ export default class VersionSelect extends React.Component<IVersionSelectProps, 
             'vads-u-display--inline-block',
             'vads-u-flex--4',
             'vads-u-margin-right--4',
-            'va-api-u-min-width--200')}
+            'va-api-u-min-width--200',
+          )}
         >
           {this.props
             .getSystem()
@@ -66,7 +75,10 @@ export default class VersionSelect extends React.Component<IVersionSelectProps, 
               );
             })}
         </select>
-        <button onClick={e => this.handleButtonClick()} className={classNames('vads-u-flex--1', 'va-api-u-max-width--150')}>
+        <button
+          onClick={e => this.handleButtonClick()}
+          className={classNames('vads-u-flex--1', 'va-api-u-max-width--150')}
+        >
           Select
         </button>
       </div>
