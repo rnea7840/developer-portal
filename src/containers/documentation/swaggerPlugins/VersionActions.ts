@@ -1,28 +1,9 @@
 import { APIMetadata } from '../../../types';
+import { SwaggerVersionActions } from './types';
 
-interface SetAPIMetadataAction {
-  payload: APIMetadata;
-  type: string;
-}
-
-interface SetAPIVersionAction {
-  payload: string;
-  type: string;
-}
-
-interface UpdateVersionAction {
-  type: string;
-}
-
-interface VersionActions {
-  actions: {
-    setApiMetadata: (metadata: APIMetadata) => SetAPIMetadataAction;
-    setApiVersion: (version: string) => SetAPIVersionAction;
-    updateVersion: (version: string) => UpdateVersionAction;
-  };
-}
-
-const actions = (updateVersionHandler: (version: string) => void): VersionActions => ({
+export const VersionActions = (
+  updateVersionHandler: (version: string) => void,
+): SwaggerVersionActions => ({
   actions: {
     setApiMetadata: (metadata: APIMetadata) => ({
       payload: metadata,
@@ -40,5 +21,3 @@ const actions = (updateVersionHandler: (version: string) => void): VersionAction
     },
   },
 });
-
-export { actions as VersionActions };
