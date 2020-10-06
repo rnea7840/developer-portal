@@ -65,7 +65,11 @@ declare module 'swagger-ui' {
   export type OpenAPISpec = OpenAPISpecV3 | OpenAPISpecV2;
 
   // Swagger doesn't really have any consistent typing, or typing at all
-  type SwaggerMapValues = string | List<SwaggerMapValues> | OrderedMap<string, SwaggerMapValues>;
+  export type SwaggerMapValues =
+    | string
+    | List<SwaggerMapValues>
+    | Map<string, SwaggerMapValues>
+    | OrderedMap<string, SwaggerMapValues>;
 
   // partial result of system.spec().toJS()
   export interface SwaggerSpecObject {
