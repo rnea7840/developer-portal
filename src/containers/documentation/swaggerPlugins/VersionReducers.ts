@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
-import { SetAPIMetadataAction, SetAPIVersionAction } from './types';
+import { SetAPIMetadataAction, SetAPIVersionAction, SwaggerVersionReducers } from './types';
 
-export const VersionReducers = {
+export const VersionReducers: SwaggerVersionReducers = {
   reducers: {
     API_METADATA_SET: (
       state: Map<string, unknown>,
