@@ -20,6 +20,7 @@ export interface System extends BaseSystem {
 
   versionSelectors: {
     majorVersion: () => string;
+    apiMetadata: () => APIMetadata;
   };
 }
 
