@@ -1,50 +1,55 @@
 import classNames from 'classnames';
 import * as React from 'react';
+import { VersionMetadata } from '../../../types';
 import { IVersionInfo } from '../SwaggerDocs';
 import { System } from './types';
 
-export interface IVersionSelectProps {
+interface VersionSelectProps {
   getSystem: () => System;
 }
 
-export interface IVersionSelectState {
+interface VersionSelectState {
   version: string;
 }
 
 /* eslint-disable @typescript-eslint/indent */
 export default class VersionSelect extends React.Component<
-  IVersionSelectProps,
-  IVersionSelectState
+  VersionSelectProps,
+  VersionSelectState
 > {
   /* eslint-enable @typescript-eslint/indent */
-  public constructor(props: IVersionSelectProps) {
+  public constructor(props: VersionSelectProps) {
     super(props);
     const reduxVersion = this.props.getSystem().versionSelectors.apiVersion();
     const initialVersion = reduxVersion ? reduxVersion : this.getCurrentVersion();
     this.state = { version: initialVersion };
   }
 
-  public getCurrentVersion() {
+  public getCurrentVersion(): string {
     const metadata = this.props.getSystem().versionSelectors.apiMetadata();
-    const selectCurrentVersion = (versionInfo: IVersionInfo) =>
+    const selectCurrentVersion = (versionInfo: VersionMetadata) =>
       versionInfo.status === 'Current Version';
-    return metadata.meta.versions.find(selectCurrentVersion).version;
+
+    // if this component is rendered, there should (a) be versions present in metadata and (b) 
+    // be a version with the status "Current Version". as a fallback, though, we set it to the 
+    // empty string as in getVersionNumber() in src/reducers/api-versioning.ts.
+    return metadata.meta.versions.find(selectCurrentVersion)?.version || '';
   }
 
-  public handleSelectChange(version: string) {
+  public handleSelectChange(version: string): void {
     this.setState({ version });
   }
 
-  public handleButtonClick() {
+  public handleButtonClick(): void {
     this.props.getSystem().versionActions.updateVersion(this.state.version);
   }
 
-  public buildDisplay(metaObject: IVersionInfo) {
+  public buildDisplay(metaObject: IVersionInfo): string {
     const { version, status, internal_only } = metaObject;
     return `${version} - ${status} ${internal_only ? '(Internal Only)' : ''}`;
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <div
         className={classNames(
@@ -67,16 +72,14 @@ export default class VersionSelect extends React.Component<
           {this.props
             .getSystem()
             .versionSelectors.apiMetadata()
-            .meta.versions.map((versionInfo: IVersionInfo) => {
-              return (
-                <option value={versionInfo.version} key={versionInfo.version}>
-                  {this.buildDisplay(versionInfo)}
-                </option>
-              );
-            })}
+            .meta.versions.map((versionInfo: IVersionInfo) => (
+              <option value={versionInfo.version} key={versionInfo.version}>
+                {this.buildDisplay(versionInfo)}
+              </option>
+            ))}
         </select>
         <button
-          onClick={e => this.handleButtonClick()}
+          onClick={() => this.handleButtonClick()}
           className={classNames('vads-u-flex--1', 'va-api-u-max-width--150')}
         >
           Select

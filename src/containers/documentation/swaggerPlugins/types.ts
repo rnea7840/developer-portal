@@ -33,10 +33,12 @@ export interface System extends BaseSystem {
   versionActions: {
     setApiVersion: (version: string) => void;
     setApiMetadata: (meta: APIMetadata) => void;
+    updateVersion: (version: string) => void;
   };
 
   versionSelectors: {
     majorVersion: () => string;
     apiMetadata: () => APIMetadata;
+    apiVersion: () => string;
   };
 }
