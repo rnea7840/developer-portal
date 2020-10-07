@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import classNames from 'classnames';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ThunkDispatch } from 'redux-thunk';
 
@@ -31,23 +31,11 @@ undefined,
 actions.SubmitFormAction | actions.UpdateApplicationAction
 >;
 
-const mapDispatchToProps = (dispatch: ApplicationDispatch) => ({
-  submitForm: () => {
-    dispatch(actions.submitForm());
-  },
-  toggleAcceptTos: () => {
-    dispatch(actions.toggleAcceptTos());
-  },
-  updateDescription: (value: IErrorableInput) => {
-    dispatch(actions.updateApplicationDescription(value));
-  },
-});
-
 const mapStateToProps = (state: IRootState) => ({
   ...state.application,
 });
 
-const renderError = (props: any) => {
+const renderError = (props: IApplyProps) => {
   const assistanceTrailer = (
     <span>
       Need assistance? Create an issue through our <Link to="/support">Support page</Link>
@@ -66,30 +54,30 @@ const renderError = (props: any) => {
   return null;
 };
 
-const selectedApis = (props: any) => {
+const selectedApis = (props: IApplyProps) => {
   const apis = props.inputs.apis;
   return Object.keys(apis).filter(apiName => apis[apiName]);
 };
 
-const anyOAuthApisSelected = (props: any) => {
+const anyOAuthApisSelected = (props: IApplyProps) => {
   const apiIdsByField = selectedApis(props).flatMap(
     formField => APPLY_FIELDS_TO_URL_FRAGMENTS[formField],
   );
   return includesOauthAPI(apiIdsByField);
 };
 
-const anyApiSelected = (props: any) => {
+const anyApiSelected = (props: IApplyProps) => {
   const numSelected = selectedApis(props).length;
   return numSelected > 0;
 };
 
-const allBioFieldsComplete = (props: any) => {
+const allBioFieldsComplete = (props: IApplyProps) => {
   const bioFieldNames = ['email', 'firstName', 'lastName', 'organization'];
   const incompleteFields = bioFieldNames.filter(fieldName => !props.inputs[fieldName].value);
   return incompleteFields.length === 0;
 };
 
-const readyToSubmit = (props: any) => {
+const readyToSubmit = (props: IApplyProps) => {
   const { inputs: { oAuthApplicationType, oAuthRedirectURI, termsOfService }} = props;
   let applicationTypeComplete = true;
   let redirectURIComplete = true;
@@ -107,8 +95,11 @@ const readyToSubmit = (props: any) => {
   );
 };
 
-const ApplyForm = (props: IApplyProps) => {
-  const applyClasses = classNames('vads-l-grid-container', 'vads-u-padding--4');
+const applyClasses = classNames('vads-l-grid-container', 'vads-u-padding--4');
+
+const ApplyForm = (props: IApplyProps): JSX.Element => {
+
+  const dispatch: ApplicationDispatch = useDispatch();
 
   return (
     <div role="region" aria-labelledby={PAGE_HEADER_ID} className={applyClasses}>
@@ -130,7 +121,7 @@ const ApplyForm = (props: IApplyProps) => {
             <ErrorableTextArea
               errorMessage={null}
               label="Briefly describe how your organization will use VA APIs:"
-              onValueChange={props.updateDescription}
+              onValueChange={ (e: string) => dispatch(actions.updateApplicationDescription(e))}
               name="description"
               field={props.inputs.description}
             />
@@ -142,14 +133,14 @@ const ApplyForm = (props: IApplyProps) => {
                     I agree to the <Link to="/terms-of-service">Terms of Service</Link>
                 </span>
               }
-              onValueChange={props.toggleAcceptTos}
+              onValueChange={ () => dispatch(actions.toggleAcceptTos())}
               required={true}
             />
 
             <ProgressButton
               buttonText={props.sending ? 'Sending...' : 'Submit'}
               disabled={!readyToSubmit(props) || props.sending}
-              onButtonClick={props.submitForm}
+              onButtonClick={ () => dispatch(actions.submitForm())}
               buttonClass="usa-button-primary"
             />
           </form>
@@ -179,5 +170,4 @@ const ApplyForm = (props: IApplyProps) => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
 )(ApplyForm);
