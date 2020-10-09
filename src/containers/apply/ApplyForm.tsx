@@ -11,7 +11,7 @@ import ErrorableTextArea from '@department-of-veterans-affairs/formation-react/E
 import ProgressButton from '@department-of-veterans-affairs/formation-react/ProgressButton';
 
 import * as actions from '../../actions';
-import { includesOauthAPI } from '../../apiDefs/query';
+import { includesOAuthAPI } from '../../apiDefs/query';
 import { IApplication, IErrorableInput, IRootState } from '../../types';
 import { APPLY_FIELDS_TO_URL_FRAGMENTS, PAGE_HEADER_ID } from '../../types/constants';
 import ApplyHeader from './ApplyHeader';
@@ -70,6 +70,7 @@ const anyApiSelected = (props: IApplyProps) => {
   const numSelected = selectedApis(props).length;
   return numSelected > 0;
 };
+
 
 const allBioFieldsComplete = (props: IApplyProps) => {
   const bioFieldNames = ['email', 'firstName', 'lastName', 'organization'];
