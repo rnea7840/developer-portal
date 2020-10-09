@@ -75,4 +75,4 @@ const Search = (props: SearchTypes): JSX.Element => {
   );
 };
 
-export default Search;
+export { Search };
