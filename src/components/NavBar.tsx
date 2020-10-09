@@ -62,6 +62,7 @@ function DocumentationSubNav(props: IDocumentationSubNavProps) {
       {apiCategoryOrder.map(apiKey => (
         <Flag  name={`categories.${apiKey}`} key={apiKey}>
           <li className={itemStyles}>
+            
             <NavLink to={`/explore/${apiKey}`} onClick={props.onMobileNavClose} className={linkStyles} activeClassName="vads-u-font-weight--bold">
               {apiDefs[apiKey].name}
             </NavLink>
