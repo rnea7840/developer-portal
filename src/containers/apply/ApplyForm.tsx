@@ -79,6 +79,7 @@ const allBioFieldsComplete = (props: IApplyProps) => {
 
 const readyToSubmit = (props: IApplyProps) => {
   const { inputs: { oAuthApplicationType, oAuthRedirectURI, termsOfService }} = props;
+  
   let applicationTypeComplete = true;
   let redirectURIComplete = true;
   if (anyOAuthApisSelected(props)) {
