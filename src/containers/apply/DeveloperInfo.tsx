@@ -51,14 +51,14 @@ const DeveloperInfo = (props: IDeveloperInfoProps): JSX.Element => (
       label="First name"
       field={props.firstName}
       onValueChange={props.updateFirstName}
-      required={true}
+      required
     />
 
     <ErrorableTextInput
       label="Last name"
       field={props.lastName}
       onValueChange={props.updateLastName}
-      required={true}
+      required
     />
 
     <ErrorableTextInput
@@ -66,14 +66,14 @@ const DeveloperInfo = (props: IDeveloperInfoProps): JSX.Element => (
       label="Email"
       field={props.email}
       onValueChange={props.updateEmail(props.email.validation)}
-      required={true}
+      required
     />
 
     <ErrorableTextInput
       label="Organization"
       field={props.organization}
       onValueChange={props.updateOrganization}
-      required={true}
+      required
     />
   </React.Fragment>
 );
