@@ -63,7 +63,7 @@ const anyOAuthApisSelected = (props: IApplyProps) => {
   const apiIdsByField = selectedApis(props).flatMap(
     formField => APPLY_FIELDS_TO_URL_FRAGMENTS[formField],
   );
-  return includesOauthAPI(apiIdsByField);
+  return includesOAuthAPI(apiIdsByField);
 };
 
 const anyApiSelected = (props: IApplyProps) => {
@@ -80,7 +80,7 @@ const allBioFieldsComplete = (props: IApplyProps) => {
 
 const readyToSubmit = (props: IApplyProps) => {
   const { inputs: { oAuthApplicationType, oAuthRedirectURI, termsOfService }} = props;
-  
+
   let applicationTypeComplete = true;
   let redirectURIComplete = true;
   if (anyOAuthApisSelected(props)) {
@@ -136,7 +136,7 @@ const ApplyForm = (props: IApplyProps): JSX.Element => {
                 </span>
               }
               onValueChange={ () => dispatch(actions.toggleAcceptTos())}
-              required={true}
+              required
             />
 
             <ProgressButton
