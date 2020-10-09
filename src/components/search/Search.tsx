@@ -11,9 +11,9 @@ interface SearchTypes {
   className?: string;
 }
 
-const Search = (props: SearchTypes) => {
-
+const Search = (props: SearchTypes): JSX.Element => {
   const { inMenu, className } = props;
+
   return (
     <div className={classNames(
       "vads-u-display--flex",
@@ -65,7 +65,10 @@ const Search = (props: SearchTypes) => {
           value="Search"
           aria-label="Search"
         >
-          <FontAwesomeIcon className={classNames({"va-api-search-icon": !inMenu})} icon={faSearch} />
+          <FontAwesomeIcon 
+            className={classNames({"va-api-search-icon": !inMenu})} 
+            icon={faSearch} 
+          />
         </button>
       </form>
     </div>
