@@ -16,6 +16,8 @@ import SwaggerDocs from './SwaggerDocs';
 
 import '../../../node_modules/react-tabs/style/react-tabs.scss';
 
+import { RedocStandalone } from 'redoc';
+
 interface ApiDocumentationProps {
   apiDefinition: APIDescription;
   categoryKey: string;
@@ -87,10 +89,9 @@ const ApiDocumentation = (props: ApiDocumentationProps): JSX.Element => {
   return (
     <Flag name={`hosted_apis.${apiDefinition.urlFragment}`}>
       {apiDefinition.docSources.length === 1 ? (
-        <SwaggerDocs
-          docSource={apiDefinition.docSources[0]}
-          apiName={apiDefinition.urlFragment}
-        />
+        <>
+          <RedocStandalone specUrl={apiDefinition.docSources[0].openApiUrl} />
+        </>
       ) : (
         <>
           {apiDefinition.multiOpenAPIIntro && apiDefinition.multiOpenAPIIntro({})}

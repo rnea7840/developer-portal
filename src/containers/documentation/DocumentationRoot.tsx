@@ -124,12 +124,19 @@ const DocumentationRoot = (props: RouteComponentProps<IApiNameParam>): JSX.Eleme
   const { apiCategoryKey } = props.match.params;
   const shouldRouteCategory = !apiCategoryKey || lookupApiCategory(apiCategoryKey) != null;
 
+  const hideSideNav = window.location.pathname.startsWith('/explore/');
+
   return (
-    <div className={classNames('documentation', 'vads-u-padding-y--5')}>
-      <section className="vads-l-grid-container">
+    <div
+      className={classNames({
+        documentation: true,
+        'vads-u-padding-y--5': !hideSideNav,
+      })}
+    >
+      <section className={classNames({ 'vads-l-grid-container': !hideSideNav })}>
         <div className="vads-l-row">
-          <ExploreSideNav />
-          <div className={classNames('vads-l-col--12', 'medium-screen:vads-l-col--8')}>
+          {!hideSideNav && <ExploreSideNav />}
+          <div>
             <Switch>
               {oldRouteToNew.map(routes => (
                 <Redirect key={routes.from} exact from={routes.from} to={routes.to} />
