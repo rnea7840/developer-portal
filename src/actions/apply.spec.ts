@@ -72,13 +72,13 @@ describe('submitForm', () => {
     getState.mockReturnValueOnce(appState);
     await actions.submitForm()(dispatch, getState, undefined);
     expect(dispatch).toBeCalledWith({
-      type: constants.SUBMIT_APPLICATION_BEGIN,
+      type: constants.SUBMIT_APPLICATION_BEGIN_VALUE,
     });
     expect(dispatch).toBeCalledWith({
       clientID: 'testid',
       clientSecret: 'test_secret',
       token: 'testtoken',
-      type: constants.SUBMIT_APPLICATION_SUCCESS,
+      type: constants.SUBMIT_APPLICATION_SUCCESS_VALUE,
     });
   });
 
@@ -99,11 +99,11 @@ describe('submitForm', () => {
     getState.mockReturnValueOnce(appState);
     await actions.submitForm()(dispatch, getState, undefined);
     expect(dispatch).toBeCalledWith({
-      type: constants.SUBMIT_APPLICATION_BEGIN,
+      type: constants.SUBMIT_APPLICATION_BEGIN_VALUE,
     });
     expect(dispatch).toBeCalledWith({
       status: 'KABOOM',
-      type: constants.SUBMIT_APPLICATION_ERROR,
+      type: constants.SUBMIT_APPLICATION_ERROR_VALUE,
     });
   });
 
@@ -126,14 +126,14 @@ describe('submitForm', () => {
     };
     sentryCallback(scope);
     expect(dispatch).toBeCalledWith({
-      type: constants.SUBMIT_APPLICATION_BEGIN,
+      type: constants.SUBMIT_APPLICATION_BEGIN_VALUE,
     });
     expect(mockedSentry.captureException).toBeCalledWith(
       Error('Developer Application validation errors: email must be valid email'),
     );
     expect(dispatch).toBeCalledWith({
       status: 'Developer Application validation errors: email must be valid email',
-      type: constants.SUBMIT_APPLICATION_ERROR,
+      type: constants.SUBMIT_APPLICATION_ERROR_VALUE,
     });
   });
 
@@ -157,12 +157,12 @@ describe('submitForm', () => {
     const scope: any = { setLevel: jest.fn() };
     sentryCallback(scope);
     expect(dispatch).toBeCalledWith({
-      type: constants.SUBMIT_APPLICATION_BEGIN,
+      type: constants.SUBMIT_APPLICATION_BEGIN_VALUE,
     });
     expect(mockedSentry.captureException).toBeCalledWith(Error('bad bad not good'));
     expect(dispatch).toBeCalledWith({
       status: 'bad bad not good',
-      type: constants.SUBMIT_APPLICATION_ERROR,
+      type: constants.SUBMIT_APPLICATION_ERROR_VALUE,
     });
   });
 });
@@ -175,7 +175,7 @@ describe('updateApplicationEmail', () => {
     };
     expect(actions.updateApplicationEmail(newValue)).toEqual({
       newValue,
-      type: constants.UPDATE_APPLICATION_EMAIL,
+      type: constants.UPDATE_APPLY_EMAIL_VALUE,
     });
   });
 
@@ -187,7 +187,7 @@ describe('updateApplicationEmail', () => {
     };
     expect(actions.updateApplicationEmail(newValue)).toEqual({
       newValue,
-      type: constants.UPDATE_APPLICATION_EMAIL,
+      type: constants.UPDATE_APPLY_EMAIL_VALUE,
     });
   });
 
@@ -202,7 +202,7 @@ describe('updateApplicationEmail', () => {
         dirty: false,
         value: newValue.value,
       },
-      type: constants.UPDATE_APPLICATION_EMAIL,
+      type: constants.UPDATE_APPLY_EMAIL_VALUE,
     });
   });
 
@@ -217,7 +217,7 @@ describe('updateApplicationEmail', () => {
         validation: 'Must be a valid email address.',
         value: newValue.value,
       },
-      type: constants.UPDATE_APPLICATION_EMAIL,
+      type: constants.UPDATE_APPLY_EMAIL_VALUE,
     });
   });
 
@@ -234,7 +234,7 @@ describe('updateApplicationEmail', () => {
         ...newValue,
         validation: errorMessage,
       },
-      type: constants.UPDATE_APPLICATION_EMAIL,
+      type: constants.UPDATE_APPLY_EMAIL_VALUE,
     });
   });
 
@@ -265,7 +265,7 @@ describe('updateApplicationOAuthRedirectURI', () => {
     const updateAction = actions.updateApplicationOAuthRedirectURI(newValue);
     expect(updateAction).toEqual({
       newValue,
-      type: constants.UPDATE_APPLICATION_OAUTH_REDIRECT_URI,
+      type: constants.UPDATE_APPLY_REDIRECT_URI_VALUE,
     });
   });
 
@@ -278,7 +278,7 @@ describe('updateApplicationOAuthRedirectURI', () => {
     const updateAction = actions.updateApplicationOAuthRedirectURI(newValue);
     expect(updateAction).toEqual({
       newValue,
-      type: constants.UPDATE_APPLICATION_OAUTH_REDIRECT_URI,
+      type: constants.UPDATE_APPLY_REDIRECT_URI_VALUE,
     });
   });
 
@@ -294,7 +294,7 @@ describe('updateApplicationOAuthRedirectURI', () => {
         dirty: false,
         value: newValue.value,
       },
-      type: constants.UPDATE_APPLICATION_OAUTH_REDIRECT_URI,
+      type: constants.UPDATE_APPLY_REDIRECT_URI_VALUE,
     });
   });
 
@@ -311,7 +311,7 @@ describe('updateApplicationOAuthRedirectURI', () => {
         validation: 'Must be an http or https URI.',
         value: newValue.value,
       },
-      type: constants.UPDATE_APPLICATION_OAUTH_REDIRECT_URI,
+      type: constants.UPDATE_APPLY_REDIRECT_URI_VALUE,
     });
   });
 
@@ -328,7 +328,7 @@ describe('updateApplicationOAuthRedirectURI', () => {
         ...newValue,
         validation: errorMessage,
       },
-      type: constants.UPDATE_APPLICATION_OAUTH_REDIRECT_URI,
+      type: constants.UPDATE_APPLY_REDIRECT_URI_VALUE,
     });
   });
 

@@ -73,9 +73,9 @@ export const apiVersioning = (
   action: SetVersioning | SetRequestedAPIVersion,
 ): APIVersioning => {
   switch (action.type) {
-    case constants.SET_REQUESTED_API_VERSION:
+    case constants.SET_REQUESTED_API_VERSION_VALUE:
       return { ...state, requestedApiVersion: action.version };
-    case constants.SET_VERSIONING:
+    case constants.SET_VERSIONING_VALUE:
       return { ...state, versions: action.versions, docUrl: action.docUrl };
     default:
       return state;
