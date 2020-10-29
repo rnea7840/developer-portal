@@ -1,0 +1,101 @@
+{
+  "id": "backstop_default",
+  "viewports": [
+    {
+      "label": "phone",
+      "width": 375,
+      "height": 800
+    },
+    {
+      "label": "tablet",
+      "width": 769,
+      "height": 800
+    },
+    {
+      "label": "desktop",
+      "width": 1200,
+      "height": 800
+    }
+  ],
+  "onBeforeScript": "puppet/onBefore.js",
+  "onReadyScript": "puppet/onReady.js",
+  "scenarios": [
+    {
+      "label": "Developer Portal Homepage",
+      "url": "http://host.docker.internal:3001/",
+      "referenceUrl": "http://host.docker.internal:3001/",
+      "readyEvent": "",
+      "readySelector": "",
+      "delay": 0,
+      "hideSelectors": [],
+      "removeSelectors": [],
+      "hoverSelector": "",
+      "clickSelector": "",
+      "postInteractionWait": 0,
+      "selectors": [],
+      "selectorExpansion": true,
+      "expect": 0,
+      "misMatchThreshold" : 0.1,
+      "requireSameDimensions": true
+    },
+    {
+      "label": "Developer Portal Apply Page",
+      "url": "http://host.docker.internal:3001/apply",
+      "referenceUrl": "http://host.docker.internal:3001/apply",
+      "removeSelectors": ["feature"]
+    },
+    {
+      "label": "Developer Portal Support Page",
+      "url": "http://host.docker.internal:3001/support",
+      "referenceUrl": "http://host.docker.internal:3001/support"
+    },
+    {
+      "label": "Developer Portal Release Notes",
+      "url": "http://host.docker.internal:3001/release-notes",
+      "referenceUrl": "http://host.docker.internal:3001/release-notes"
+    },
+    {
+      "label": "Developer Portal News",
+      "url": "http://host.docker.internal:3001/news",
+      "referenceUrl": "http://host.docker.internal:3001/news",
+      "hideSelectors": ["iframe"]
+    },
+    {
+      "label": "Developer Portal Documentation",
+      "url": "http://host.docker.internal:3001/explore",
+      "referenceUrl": "http://host.docker.internal:3001/explore"
+    },
+    {
+      "label": "Developer Portal Docs Benefits",
+      "url": "http://host.docker.internal:3001/explore/benefits",
+      "referenceUrl": "http://host.docker.internal:3001/explore/benefits"
+    },
+    {
+      "label": "Developer Portal Docs Benefits Claims",
+      "url": "http://host.docker.internal:3001/explore/benefits/docs/claims?version=current",
+      "referenceUrl": "http://host.docker.internal:3001/explore/benefits/docs/claims?version=current",
+      "delay": 800
+    },
+    {
+      "label": "Developer Portal 404 Page",
+      "url": "http://host.docker.internal:3001/404page",
+      "referenceUrl": "http://host.docker.internal:3001/404page"
+    }
+  ],
+  "paths": {
+    "bitmaps_reference": "backstop_data/bitmaps_reference",
+    "bitmaps_test": "backstop_data/bitmaps_test",
+    "engine_scripts": "backstop_data/engine_scripts",
+    "html_report": "backstop_data/html_report",
+    "ci_report": "backstop_data/ci_report"
+  },
+  "report": ["browser"],
+  "engine": "puppeteer",
+  "engineOptions": {
+    "args": ["--no-sandbox"]
+  },
+  "asyncCaptureLimit": 5,
+  "asyncCompareLimit": 50,
+  "debug": false,
+  "debugWindow": false
+}
