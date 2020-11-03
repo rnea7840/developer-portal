@@ -55,7 +55,7 @@ export const mockSwagger = (req: Request) : void => {
     contentType: 'application/json',
     headers: { 'Access-Control-Allow-Origin': '*' },
   };
-
+  console.log('url: ', req.url());
   if (req.url() in mocks) {
     response.body = JSON.stringify(mocks[req.url()]);
   } else if (req.url() in metadataMocks) {

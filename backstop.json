@@ -71,15 +71,15 @@
       "referenceUrl": "http://host.docker.internal:3001/explore/benefits"
     },
     {
+      "label": "Developer Portal 404 Page",
+      "url": "http://host.docker.internal:3001/404page",
+      "referenceUrl": "http://host.docker.internal:3001/404page"
+    },
+    {
       "label": "Developer Portal Docs Benefits Claims",
       "url": "http://host.docker.internal:3001/explore/benefits/docs/claims?version=current",
       "referenceUrl": "http://host.docker.internal:3001/explore/benefits/docs/claims?version=current",
       "delay": 800
-    },
-    {
-      "label": "Developer Portal 404 Page",
-      "url": "http://host.docker.internal:3001/404page",
-      "referenceUrl": "http://host.docker.internal:3001/404page"
     }
   ],
   "paths": {
