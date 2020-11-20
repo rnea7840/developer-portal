@@ -55,8 +55,8 @@ export const Login: React.FunctionComponent = (): JSX.Element => {
   return (
     <>
       <h2>Login</h2>
-      {challenge !== '' && <a href={idpLink}> Sign in with google accounts</a>}
-      {challenge === '' && <p>loading...</p>}
+      {challenge && <a href={idpLink}> Sign in with google accounts</a>}
+      {!challenge && <p>loading...</p>}
     </>
   );
 };
