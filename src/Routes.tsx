@@ -6,7 +6,7 @@ import { getDeactivatedFlags } from './apiDefs/deprecated';
 import { getEnvFlags } from './apiDefs/env';
 import { getApiCategoryOrder, getApiDefinitions } from './apiDefs/query';
 import { APIDescription } from './apiDefs/schema';
-import { MarkdownPage } from './components';
+import { Login, MarkdownPage } from './components';
 import { ApplyForm } from './containers/apply/ApplyForm';
 import { ApplySuccess } from './containers/apply/ApplySuccess';
 import DisabledApplyForm from './containers/DisabledApplyForm';
@@ -55,6 +55,7 @@ export const SiteRoutes: React.FunctionComponent = () => (
       path="/providers/integration-guide"
       render={(): JSX.Element => MarkdownPage(ProviderIntegrationGuide)}
     />
+    <Route path="/login" component={Login} />
     <Route component={NotFound} />
   </Switch>
 );
