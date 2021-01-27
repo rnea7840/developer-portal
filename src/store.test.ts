@@ -1,9 +1,11 @@
 import { initialApplicationState } from './reducers';
+import { SerializedState } from './types';
 
-// sessionStorage.getItem('state') is called when the store is imported at application start up.
-// To be able to pass in artibray values for testing purposes, the store is reset between tests 
-// and then initialized after setting sessionStorage.
-
+/**
+ * sessionStorage.getItem('state') is called when the store is imported at application start up.
+ * To be able to pass in artibray values for testing purposes, the store is reset between tests
+ * and then initialized after setting sessionStorage.
+ */
 beforeEach(() => {
   sessionStorage.clear();
   jest.resetModules();
@@ -21,7 +23,8 @@ describe('loadApplicationState', () => {
     sessionStorage.setItem('state', savedState);
     const store = (await import('./store')).default;
     const state = store.getState();
-    expect(state.application).toEqual(JSON.parse(savedState).application);
+    const expectedState = JSON.parse(savedState) as SerializedState;
+    expect(state.application).toEqual({ ...expectedState.application, sending: false });
   });
 
   it('returns a blank application when the form schema has changed', async () => {

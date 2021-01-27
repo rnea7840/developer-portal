@@ -1,17 +1,16 @@
-import '@testing-library/jest-dom';
+/* eslint-disable max-nested-callbacks -- Jest callbacks */
 import { cleanup, render, screen } from '@testing-library/react';
-import { FlagsProvider } from 'flag';
 import 'jest';
 import * as React from 'react';
 import { MemoryRouter } from 'react-router';
 import { fakeAPIs, fakeCategories, fakeCategoryOrder } from '../../__mocks__/fakeCategories';
 import * as apiQueries from '../../apiDefs/query';
-import { IApiCategories, IApiDescription } from '../../apiDefs/schema';
-import { getFlags } from '../../App';
+import { APICategories, APIDescription } from '../../apiDefs/schema';
+import { FlagsProvider, getFlags } from '../../flags';
 import ReleaseNotesOverview from './ReleaseNotesOverview';
 
-function renderComponent() {
-  cleanup();
+const renderComponent = async (): Promise<void> => {
+  await cleanup(); // clean up beforeEach render if we're testing a different page
   render(
     <FlagsProvider flags={getFlags()}>
       <MemoryRouter>
@@ -19,11 +18,11 @@ function renderComponent() {
       </MemoryRouter>
     </FlagsProvider>,
   );
-}
+};
 
 describe('ReleaseNotesOverview', () => {
-  let apiDefsSpy: jest.SpyInstance<IApiCategories>;
-  let allAPIsSpy: jest.SpyInstance<IApiDescription[]>;
+  let apiDefsSpy: jest.SpyInstance<APICategories>;
+  let allAPIsSpy: jest.SpyInstance<APIDescription[]>;
 
   beforeAll(() => {
     jest.spyOn(apiQueries, 'getApiCategoryOrder').mockReturnValue(fakeCategoryOrder);
@@ -37,7 +36,7 @@ describe('ReleaseNotesOverview', () => {
     const heading1 = screen.getByRole('heading', { name: 'Release Notes' });
     expect(heading1).toBeInTheDocument();
     expect(heading1.previousElementSibling).not.toBeNull();
-    expect(heading1.previousElementSibling!).toHaveTextContent('Overview');
+    expect(heading1.previousElementSibling).toHaveTextContent('Overview');
   });
 
   it('renders the contact us link', () => {
@@ -61,9 +60,9 @@ describe('ReleaseNotesOverview', () => {
       expect(cardLink.getAttribute('href')).toBe('/release-notes/sports');
     });
 
-    it('does not render a card for a disabled category', () => {
+    it('does not render a card for a disabled category', async () => {
       const sportsAPIs = fakeCategories.sports.apis.map(
-        (api: IApiDescription): IApiDescription => ({
+        (api: APIDescription): APIDescription => ({
           ...api,
           enabledByDefault: false,
         }),
@@ -77,7 +76,7 @@ describe('ReleaseNotesOverview', () => {
         },
       });
 
-      renderComponent();
+      await renderComponent();
       expect(
         screen.queryByRole('link', {
           name: `Sports API ${fakeCategories.sports.content.shortDescription}`,
@@ -95,11 +94,10 @@ describe('ReleaseNotesOverview', () => {
       expect(cardLink.getAttribute('href')).toBe('/release-notes/deactivated');
     });
 
-    it('does not have a card link for deactivated APIs if there are none', () => {
+    it('does not have a card link for deactivated APIs if there are none', async () => {
       const apis = fakeAPIs.map(api => ({ ...api, deactivationInfo: undefined }));
       allAPIsSpy.mockReturnValue(apis);
-
-      renderComponent();
+      await renderComponent();
 
       expect(
         screen.queryByRole('link', {

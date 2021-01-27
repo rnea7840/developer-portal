@@ -1,15 +1,13 @@
 import { SubmitFormAction, UpdateApplicationAction } from '../actions';
-import { IApplication, IApplyInputs, IErrorableInput } from '../types';
+import { DevApplication, ApplyInputs, ErrorableInput } from '../types';
 import * as constants from '../types/constants';
 
-const newErrorableInput: () => IErrorableInput = () => {
-  return {
-    dirty: false,
-    value: '',
-  };
-};
+const newErrorableInput: () => ErrorableInput = () => ({
+  dirty: false,
+  value: '',
+});
 
-const initialApplyInputs: IApplyInputs = {
+const initialApplyInputs: ApplyInputs = {
   apis: {
     appeals: false,
     benefits: false,
@@ -31,54 +29,55 @@ const initialApplyInputs: IApplyInputs = {
   termsOfService: false,
 };
 
-export const initialApplicationState: IApplication = {
+export const initialApplicationState: DevApplication = {
   inputs: initialApplyInputs,
   sending: false,
 };
 
 const applyApis: string[] = Object.keys(constants.APPLY_FIELDS_TO_URL_FRAGMENTS);
 
-export function applicationInput(
-  inputs: IApplyInputs = initialApplyInputs,
+export const applicationInput = (
+  inputs: ApplyInputs = initialApplyInputs,
   action: UpdateApplicationAction,
-): IApplyInputs {
+): ApplyInputs => {
   switch (action.type) {
-    case constants.UPDATE_APPLICATION_DESCRIPTION:
+    case constants.UPDATE_APPLY_DESCRIPTION_VALUE:
       return { ...inputs, description: action.newValue };
-    case constants.UPDATE_APPLICATION_EMAIL:
+    case constants.UPDATE_APPLY_EMAIL_VALUE:
       return { ...inputs, email: action.newValue };
-    case constants.UPDATE_APPLICATION_FIRST_NAME:
+    case constants.UPDATE_APPLY_FIRST_NAME_VALUE:
       return { ...inputs, firstName: action.newValue };
-    case constants.UPDATE_APPLICATION_LAST_NAME:
+    case constants.UPDATE_APPLY_LAST_NAME_VALUE:
       return { ...inputs, lastName: action.newValue };
-    case constants.UPDATE_APPLICATION_OAUTH_APPLICATION_TYPE:
+    case constants.UPDATE_APPLY_CLIENT_TYPE_VALUE:
       return { ...inputs, oAuthApplicationType: action.newValue };
-    case constants.UPDATE_APPLICATION_OAUTH_REDIRECT_URI:
+    case constants.UPDATE_APPLY_REDIRECT_URI_VALUE:
       return { ...inputs, oAuthRedirectURI: action.newValue };
-    case constants.UPDATE_APPLICATION_ORGANIZATION:
+    case constants.UPDATE_APPLY_ORGANIZATION_VALUE:
       return { ...inputs, organization: action.newValue };
-    case constants.TOGGLE_SELECTED_API:
+    case constants.TOGGLE_SELECTED_API_VALUE:
       if (!applyApis.includes(action.apiId)) {
         return inputs;
       }
 
       const isApiSelected = !inputs.apis[action.apiId];
-      return { ...inputs, apis: { ... inputs.apis, [action.apiId]: isApiSelected }};
-    case constants.TOGGLE_ACCEPT_TOS:
+      return { ...inputs, apis: { ...inputs.apis, [action.apiId]: isApiSelected } };
+    case constants.TOGGLE_ACCEPT_TOS_VALUE:
       const termsOfService = !inputs.termsOfService;
       return { ...inputs, termsOfService };
+    default:
+      return inputs;
   }
-  return inputs;
-}
+};
 
-export function application(
-  state: IApplication = initialApplicationState,
+export const application = (
+  state: DevApplication = initialApplicationState,
   action: SubmitFormAction | UpdateApplicationAction,
-): IApplication {
+): DevApplication => {
   switch (action.type) {
-    case constants.SUBMIT_APPLICATION_BEGIN:
-      return { ...state, sending: true, errorStatus: undefined };
-    case constants.SUBMIT_APPLICATION_SUCCESS:
+    case constants.SUBMIT_APPLICATION_BEGIN_VALUE:
+      return { ...state, errorStatus: undefined, sending: true };
+    case constants.SUBMIT_APPLICATION_SUCCESS_VALUE:
       return {
         ...state,
         inputs: initialApplyInputs,
@@ -91,9 +90,9 @@ export function application(
         },
         sending: false,
       };
-    case constants.SUBMIT_APPLICATION_ERROR:
-      return { ...state, sending: false, errorStatus: action.status };
+    case constants.SUBMIT_APPLICATION_ERROR_VALUE:
+      return { ...state, errorStatus: action.status, sending: false };
     default:
       return { ...state, inputs: applicationInput(state.inputs, action) };
   }
-}
+};

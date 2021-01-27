@@ -8,9 +8,15 @@ module.exports = {
     '<rootDir>/setupJest.ts',
     '<rootDir>/config/jest/testEnv.js', // only necessary when running Jest directly
   ],
+  setupFilesAfterEnv: [
+    '<rootDir>/config/jest/setupJestPostEnv.js',
+  ],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)',
     '<rootDir>/src/**/?(*.)(spec|test).(j|t)s?(x)',
+  ],
+  testPathIgnorePatterns: [
+    '<rootDir>/src/containers/documentation/swaggerPlugins/CurlForm.test.tsx',
   ],
   testEnvironment: 'jsdom',
   testURL: process.env.TEST_HOST || 'http://localhost:4444',
@@ -25,6 +31,7 @@ module.exports = {
   moduleNameMapper: {
     '^react-native$': 'react-native-web',
     'content/news.yml': '<rootDir>/src/__mocks__/news.test.yml',
+    '\\.(svg|png)': '<rootDir>/src/__mocks__/fakeImage.ts',
   },
   moduleFileExtensions: [
     'web.ts',

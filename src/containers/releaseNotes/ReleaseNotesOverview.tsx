@@ -1,17 +1,19 @@
-import { Flag } from 'flag';
 import * as React from 'react';
-
+import { Helmet } from 'react-helmet';
 import { getDeactivatedCategory } from '../../apiDefs/deprecated';
 import { getApiCategoryOrder, getApiDefinitions } from '../../apiDefs/query';
-import CardLink from '../../components/CardLink';
-import PageHeader from '../../components/PageHeader';
+import { CardLink, PageHeader } from '../../components';
+import { Flag } from '../../flags';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
 
-export default () => {
+const ReleaseNotesOverview = (): JSX.Element => {
   const apiDefs = getApiDefinitions();
   const deactivatedCategory = getDeactivatedCategory();
   return (
     <div>
+      <Helmet>
+        <title>Release Notes</title>
+      </Helmet>
       <PageHeader halo="Overview" header="Release Notes" />
       <div className="vads-u-font-size--lg">
         <p>
@@ -30,15 +32,14 @@ export default () => {
           To view user-requested features and known issues or report a bug, please visit our{' '}
           <a href="https://github.com/department-of-veterans-affairs/vets-api-clients">
             GitHub repo
-          </a>
-          .
+          </a>.
         </p>
       </div>
       <div className={defaultFlexContainer()}>
         {getApiCategoryOrder().map((apiCategoryKey: string) => {
           const { name, content } = apiDefs[apiCategoryKey];
           return (
-            <Flag name={`categories.${apiCategoryKey}`} key={apiCategoryKey}>
+            <Flag name={['categories', apiCategoryKey]} key={apiCategoryKey}>
               <CardLink name={name} url={`/release-notes/${apiCategoryKey}`}>
                 {content.shortDescription}
               </CardLink>
@@ -54,3 +55,5 @@ export default () => {
     </div>
   );
 };
+
+export default ReleaseNotesOverview;

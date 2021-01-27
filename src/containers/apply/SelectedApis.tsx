@@ -1,60 +1,40 @@
+import classNames from 'classnames';
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 import ErrorableCheckbox from '@department-of-veterans-affairs/formation-react/ErrorableCheckbox';
 import * as actions from '../../actions';
-import { IApiList, IRootState } from '../../types';
+import { RootState } from '../../types';
 
-interface IApiCheckbox {
+interface APICheckbox {
   id: string;
   label: string;
 }
 
-interface IApiCheckboxListProps {
-  apiCheckboxes: IApiCheckbox[];
-  apiInputs: IApiList;
-  toggleSelectedApi: (apiId: string) => () => void;
+interface APICheckboxListProps {
+  apiCheckboxes: APICheckbox[];
 }
 
-const mapStateToProps = (state: IRootState) => {
-  return {
-    apiInputs: state.application.inputs.apis,
-  };
-};
+type ApiSelectDispatch = ThunkDispatch<RootState, undefined, actions.ToggleSelectedAPI>;
 
-type ApiSelectDispatch = ThunkDispatch<IRootState, undefined, actions.IToggleSelectedApi>;
-
-const mapDispatchToProps = (dispatch: ApiSelectDispatch) => {
-  return {
-    toggleSelectedApi: (apiId: string) => {
-      return () => {
-        dispatch(actions.toggleSelectedApi(apiId));
-      };
-    },
-  };
-};
-
-const ApiCheckboxList = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)((props: IApiCheckboxListProps) => {
+const ApiCheckboxList = (props: APICheckboxListProps): JSX.Element => {
+  const apiInputs = useSelector((state: RootState) => state.application.inputs.apis);
+  const dispatch: ApiSelectDispatch = useDispatch();
   return (
-    <React.Fragment>
-      {props.apiCheckboxes.map(api => {
-        return (
-          <ErrorableCheckbox
-            key={api.id}
-            name={api.id}
-            checked={props.apiInputs[api.id]}
-            label={api.label}
-            onValueChange={props.toggleSelectedApi(api.id)}
-          />
-        );
-      })}
-    </React.Fragment>
+    <>
+      {props.apiCheckboxes.map(api => (
+        <ErrorableCheckbox
+          key={api.id}
+          name={api.id}
+          checked={apiInputs[api.id] as boolean}
+          label={api.label}
+          onValueChange={(): void => void dispatch(actions.toggleSelectedApi(api.id))}
+        />
+      ))}
+    </>
   );
-});
+};
 
 const oauthInfo = [
   {
@@ -94,26 +74,26 @@ const apiInfo = [
   },
 ];
 
-export default class SelectedApis extends React.PureComponent {
-  public render() {
-    return (
-      <React.Fragment>
-        <label>Please select all of the APIs you'd like access to:</label>
-        <fieldset
-          className="vads-u-margin-top--2"
-          aria-label="Please select all of the Standard APIs you'd like access to:"
-        >
-          <legend className="vads-u-font-size--lg">Standard APIs:</legend>
-          <ApiCheckboxList apiCheckboxes={apiInfo} />
-        </fieldset>
-        <fieldset
-          className="vads-u-margin-top--2"
-          aria-label="Please select all the OAuth APIs you'd like access to:"
-        >
-          <legend className="vads-u-font-size--lg">OAuth APIs:</legend>
-          <ApiCheckboxList apiCheckboxes={oauthInfo} />
-        </fieldset>
-      </React.Fragment>
-    );
-  }
-}
+const SelectedAPIs = (): JSX.Element => (
+  <fieldset className="vads-u-margin-top--3">
+    <legend className={classNames('vads-u-font-weight--normal', 'vads-u-font-size--base')}>
+      Please select all of the APIs you&apos;d like access to:
+    </legend>
+    <fieldset
+      className="vads-u-margin-top--2"
+      aria-label="Please select all of the Standard APIs you'd like access to:"
+    >
+      <legend className="vads-u-font-size--lg">Standard APIs:</legend>
+      <ApiCheckboxList apiCheckboxes={apiInfo} />
+    </fieldset>
+    <fieldset
+      className="vads-u-margin-top--2"
+      aria-label="Please select all the OAuth APIs you'd like access to:"
+    >
+      <legend className="vads-u-font-size--lg">OAuth APIs:</legend>
+      <ApiCheckboxList apiCheckboxes={oauthInfo} />
+    </fieldset>
+  </fieldset>
+);
+
+export default SelectedAPIs;

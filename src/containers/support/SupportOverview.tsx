@@ -1,9 +1,9 @@
 import * as React from 'react';
-import CardLink from '../../components/CardLink';
-import PageHeader from '../../components/PageHeader';
+import Helmet from 'react-helmet';
+import { CardLink, PageHeader } from '../../components';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
 import { PAGE_HEADER_ID } from '../../types/constants';
-import { ISection } from './Support';
+import { SupportSection } from './Support';
 
 const headerProps = {
   description:
@@ -11,23 +11,26 @@ const headerProps = {
   header: 'Support',
 };
 
-interface ISupportOverviewProps {
-  readonly sections: ISection[];
+interface SupportOverviewProps {
+  readonly sections: SupportSection[];
 }
 
-export default function SupportOverview(props: ISupportOverviewProps) {
-  return (
-    <section role="region" aria-labelledby={PAGE_HEADER_ID}>
-      <PageHeader {...headerProps} />
-      <div className={defaultFlexContainer()}>
-        {props.sections.map((section: ISection) => {
-          return (
-            <CardLink name={section.name} url={`/support/${section.id}`} key={section.id}>
-              {section.description}
-            </CardLink>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
+const SupportOverview: React.FunctionComponent<SupportOverviewProps> = (
+  props: SupportOverviewProps,
+): JSX.Element => (
+  <section aria-labelledby={PAGE_HEADER_ID}>
+    <Helmet>
+      <title>Support</title>
+    </Helmet>
+    <PageHeader {...headerProps} />
+    <div className={defaultFlexContainer()}>
+      {props.sections.map((section: SupportSection) => (
+        <CardLink name={section.name} url={`/support/${section.id}`} key={section.id}>
+          {section.description}
+        </CardLink>
+      ))}
+    </div>
+  </section>
+);
+
+export default SupportOverview;

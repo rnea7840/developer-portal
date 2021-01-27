@@ -1,65 +1,55 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 import ErrorableRadioButtons from '@department-of-veterans-affairs/formation-react/ErrorableRadioButtons';
 import ErrorableTextInput from '@department-of-veterans-affairs/formation-react/ErrorableTextInput';
 import * as actions from '../../actions';
-import { IErrorableInput, IRootState } from '../../types';
+import { ErrorableInput, RootState } from '../../types';
 
-interface IOAuthAppInfoProps {
-  oAuthApplicationType: IErrorableInput;
-  oAuthRedirectURI: IErrorableInput;
-  updateOAuthApplicationType: (value: IErrorableInput) => void;
-  updateOAuthRedirectURI: (oldValidation?: string) => (value: IErrorableInput) => void;
-}
+type OAuthAppInfoDispatch = ThunkDispatch<RootState, undefined, actions.UpdateApplicationAction>;
 
-const mapStateToProps = (state: IRootState) => {
-  return {
-    oAuthApplicationType: state.application.inputs.oAuthApplicationType,
-    oAuthRedirectURI: state.application.inputs.oAuthRedirectURI,
+const OAuthAppInfo: React.FunctionComponent = (): JSX.Element => {
+  const dispatch = useDispatch<OAuthAppInfoDispatch>();
+
+  const oAuthApplicationType = useSelector((state: RootState) => (
+    state.application.inputs.oAuthApplicationType)
+  );
+  const updateOAuthApplicationType = (value: ErrorableInput): void => {
+    dispatch(actions.updateApplyOAuthApplicationType(value));
   };
-};
 
-type OAuthAppInfoDispatch = ThunkDispatch<
-  IRootState,
-  undefined,
-  actions.UpdateApplicationAction
->;
-
-const mapDispatchToProps = (dispatch: OAuthAppInfoDispatch) => {
-  return {
-    updateOAuthApplicationType: (value: IErrorableInput) => {
-      dispatch(actions.updateApplicationOAuthApplicationType(value));
-    },
-    updateOAuthRedirectURI: (oldValidation?: string) => {
-      return (value: IErrorableInput) => {
-        dispatch(actions.updateApplicationOAuthRedirectURI(value, oldValidation));
-      };
-    },
+  const oAuthRedirectURI = useSelector((state: RootState) => (
+    state.application.inputs.oAuthRedirectURI)
+  );
+  const updateOAuthRedirectURI = (value: ErrorableInput): void => {
+    dispatch(
+      actions.updateApplyOAuthRedirectURI(
+        value,
+        oAuthRedirectURI.validation,
+      )
+    );
   };
-};
-
-const OAuthAppInfo = (props: IOAuthAppInfoProps) => {
-  const {
-    oAuthApplicationType,
-    oAuthRedirectURI,
-  } = props;
 
   return (
-    <React.Fragment>
+    <>
       <div className="vads-u-margin-top--4">
-        Please specify whether your app can securely hide a client secret. 
-        Apps that can hide a secret will use the&nbsp;
-        <a href="https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/" target="_blank">
+        Please specify whether your app can securely hide a client secret. Apps that can hide a
+        secret will use the&nbsp;
+        <a
+          href="https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/"
+          target="_blank"
+          rel="noreferrer"
+        >
           authorization code flow
-        </a>,
-        and apps that cannot will use the&nbsp;
-        <a href="https://www.oauth.com/oauth2-servers/pkce/" target="_blank">PKCE flow</a>.
+        </a>, and apps that cannot will use the&nbsp;
+        <a href="https://www.oauth.com/oauth2-servers/pkce/" target="_blank" rel="noreferrer">
+          PKCE flow
+        </a>.
       </div>
       <ErrorableRadioButtons
         label="Can your application securely hide a client secret?"
-        onValueChange={props.updateOAuthApplicationType}
+        onValueChange={updateOAuthApplicationType}
         options={[
           {
             label: 'Yes',
@@ -71,20 +61,20 @@ const OAuthAppInfo = (props: IOAuthAppInfoProps) => {
           },
         ]}
         value={oAuthApplicationType}
-        required={true}
+        required
         additionalLegendClass="vads-u-margin-top--0"
         additionalFieldsetClass="vads-u-margin-top--1"
       />
-        
+
       <ErrorableTextInput
         errorMessage={oAuthRedirectURI.validation}
         label="OAuth Redirect URI"
         field={oAuthRedirectURI}
-        onValueChange={props.updateOAuthRedirectURI(oAuthRedirectURI.validation)}
-        required={true}
+        onValueChange={updateOAuthRedirectURI}
+        required
       />
-    </React.Fragment>
+    </>
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OAuthAppInfo);
+export { OAuthAppInfo };

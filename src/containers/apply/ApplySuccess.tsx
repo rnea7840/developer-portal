@@ -1,36 +1,29 @@
 import * as React from 'react';
 
 import classNames from 'classnames';
-import { connect } from 'react-redux';
+import Helmet from 'react-helmet';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getApiDefinitions } from '../../apiDefs/query';
 import sentenceJoin from '../../sentenceJoin';
-import { IApplySuccessResult, IRootState } from '../../types';
+import { ApplySuccessResult, RootState } from '../../types';
 import { APPLY_OAUTH_APIS, APPLY_STANDARD_APIS, PAGE_HEADER_ID } from '../../types/constants';
 
-const mapStateToProps = (state: IRootState) => {
-  return {
-    ...state.application.result,
-  };
-};
+const AssistanceTrailer = (): JSX.Element => (
+  <p>
+    If you would like to report a bug or make a feature request, please open an issue through our{' '}
+    <Link to="/support">Support page</Link>.
+  </p>
+);
 
-function AssistanceTrailer() {
-  return (
-    <p>
-      If you would like to report a bug or make a feature request, please open an issue through our{' '}
-      <Link to="/support">Support page</Link>.
-    </p>
-  );
-}
-
-interface IApiKeyNoticeProps {
+interface APIKeyNoticeProps {
   token: string;
   email: string;
   selectedApis: string[];
 }
 
-interface IOAuthCredentialsNoticeProps {
+interface OAuthCredentialsNoticeProps {
   clientID: string;
   clientSecret?: string;
   email: string;
@@ -38,14 +31,14 @@ interface IOAuthCredentialsNoticeProps {
 }
 
 // Mapping from the options on the form to Proper Names for APIs
-const apisToEnglishOAuthList = {
+const apisToEnglishOAuthList: Record<string, string> = {
   claims: 'Benefits Claims API',
   communityCare: 'Community Care API',
   health: 'VA Health API',
   verification: 'Veteran Verification API',
 };
 
-const apisToEnglishApiKeyList = () => {
+const apisToEnglishApiKeyList = (): Record<string, string> => {
   const apiDefs = getApiDefinitions();
   return {
     benefits: apiDefs.benefits.properName,
@@ -55,12 +48,12 @@ const apisToEnglishApiKeyList = () => {
   };
 };
 
-function OAuthCredentialsNotice({
+const OAuthCredentialsNotice: React.FunctionComponent<OAuthCredentialsNoticeProps> = ({
   clientID,
   clientSecret,
   email,
   selectedApis,
-}: IOAuthCredentialsNoticeProps) {
+}: OAuthCredentialsNoticeProps) => {
   const apiNameList = selectedApis.map(k => apisToEnglishOAuthList[k]);
   const apiListSnippet = sentenceJoin(apiNameList);
 
@@ -82,9 +75,13 @@ function OAuthCredentialsNotice({
       </p>
     </div>
   );
-}
+};
 
-function ApiKeyNotice({ token, email, selectedApis }: IApiKeyNoticeProps) {
+const ApiKeyNotice: React.FunctionComponent<APIKeyNoticeProps> = ({
+  token,
+  email,
+  selectedApis,
+}: APIKeyNoticeProps) => {
   const apiNameList = selectedApis.map(k => apisToEnglishApiKeyList()[k]);
   const apiListSnippet = sentenceJoin(apiNameList);
 
@@ -100,10 +97,10 @@ function ApiKeyNotice({ token, email, selectedApis }: IApiKeyNoticeProps) {
       </p>
     </div>
   );
-}
+};
 
-function ApplySuccess(props: IApplySuccessResult) {
-  const { apis, email, token, clientID, clientSecret } = props;
+const ApplySuccessContent = (props: { result: ApplySuccessResult }): JSX.Element => {
+  const { apis, email, token, clientID, clientSecret } = props.result;
 
   // Auth type should be encoded into global API table once it's extracted from ExploreDocs.
   const hasOAuthAPI = APPLY_OAUTH_APIS.some(apiId => apis[apiId]);
@@ -117,6 +114,9 @@ function ApplySuccess(props: IApplySuccessResult) {
       aria-labelledby={PAGE_HEADER_ID}
       className={classNames('vads-l-grid-container', 'vads-u-padding--4')}
     >
+      <Helmet>
+        <title>Welcome to the VA API Platform</title>
+      </Helmet>
       <p>
         <strong>Thank you for signing up!</strong>
       </p>
@@ -132,6 +132,21 @@ function ApplySuccess(props: IApplySuccessResult) {
       <AssistanceTrailer />
     </div>
   );
-}
+};
 
-export default connect(mapStateToProps)(ApplySuccess);
+const ApplySuccessError = (): JSX.Element => (
+  <>
+    <Helmet>
+      <title>Error</title>
+    </Helmet>
+    <div>Error! Unable to render apply success</div>
+  </>
+);
+
+const ApplySuccess = (): JSX.Element => {
+  const result: ApplySuccessResult | undefined = useSelector((state: RootState) => state.application.result);
+
+  return result ? <ApplySuccessContent result={result} /> : <ApplySuccessError />;
+};
+
+export { ApplySuccess };

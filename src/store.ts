@@ -1,61 +1,62 @@
-import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory, History } from 'history';
-import { debounce, isEqual } from 'lodash';
+import debounce from 'lodash.debounce';
+import isEqual from 'lodash.isequal';
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk, { ThunkMiddleware } from 'redux-thunk';
 
 import { application, initialApplicationState } from './reducers';
-import { apiVersioning } from './reducers/api-versioning';
-import { IApplication, IRootState } from './types';
+import { oAuthApiSelection } from './reducers/oAuthApiSelection';
+import { apiVersioning } from './reducers/apiVersioning';
+import { DevApplication, RootState, SerializedState } from './types';
 
 export const history: History = createBrowserHistory({
-  basename: process.env.PUBLIC_URL || '/',
+  basename: process.env.PUBLIC_URL ?? '/',
 });
 
-function loadApplicationState(): { application: IApplication } {
+const loadApplicationState = (): { application: DevApplication } => {
   try {
     const serializedState = sessionStorage.getItem('state');
     if (serializedState == null) {
       return { application: initialApplicationState };
     } else {
-      const state = JSON.parse(serializedState);
+      const state = JSON.parse(serializedState) as SerializedState;
       if (
         isEqual(Object.keys(state.application.inputs), Object.keys(initialApplicationState.inputs))
       ) {
-        return { application: state.application };
+        return { application: { ...state.application, sending: false } };
       } else {
         return { application: initialApplicationState };
       }
     }
-  } catch (err) {
+  } catch (err: unknown) {
     return { application: initialApplicationState };
   }
-}
+};
 
-function saveApplicationState(state: IRootState) {
+const saveApplicationState = (state: RootState): void => {
   try {
-    const stateToSerialize = {
+    const stateToSerialize: SerializedState = {
       application: {
         inputs: state.application.inputs,
       },
     };
     const serializedState = JSON.stringify(stateToSerialize);
     sessionStorage.setItem('state', serializedState);
-  } catch (err) {
+  } catch (err: unknown) {
     // swallow the error.
   }
-}
+};
 
 const store = createStore(
-  combineReducers<IRootState>({
+  combineReducers<RootState>({
     apiVersioning,
     application,
-    router: connectRouter(history),
+    oAuthApiSelection,
   }),
   {
     application: loadApplicationState().application,
   },
-  compose(applyMiddleware(routerMiddleware(history), thunk as ThunkMiddleware<IRootState>)),
+  compose(applyMiddleware(thunk as ThunkMiddleware<RootState>)),
 );
 
 store.subscribe(

@@ -1,41 +1,43 @@
 import { curlify } from './curlify';
-import DisableTryItOut from './DisableTryItOut';
 import ExtendedLayout from './ExtendedLayout';
 import OperationTag from './OperationTag';
-import Servers from './Servers';
-import ServersContainer from './ServersContainer';
 import './StyleOverride.scss';
 import { VersionActions } from './VersionActions';
 import { VersionReducers } from './VersionReducers';
 import { VersionSelector } from './VersionSelector';
 import { WrapHighlightCode } from './WrapHighlightCode';
 import { WrapParameters } from './WrapParameters';
+import { SwaggerPlugins as Plugins } from './types';
 
-export function SwaggerPlugins(versionHandler: any) {
-  return {
-    components: {
-      ExtendedLayout,
-      OperationTag,
-      Servers,
-      ServersContainer,
-    },
-    fn: {
-      curlify,
-    },
-    statePlugins: {
-      spec: {
-        ...DisableTryItOut.toggleTryItOut(),
-      },
-      version: {
-        ...VersionActions(versionHandler),
-        ...VersionReducers,
-        ...VersionSelector,
+export * from './types';
+
+const allowTryItOutSelector = (): boolean => false;
+const SwaggerPlugins = (versionHandler: (newVersion: string) => void): Plugins => ({
+  components: {
+    ExtendedLayout,
+    OperationTag,
+    ServersContainer: (): null => null,
+    authorizeBtn: (): null => null,
+  },
+  fn: {
+    curlify,
+  },
+  statePlugins: {
+    spec: {
+      wrapSelectors: {
+        allowTryItOutFor: (): (() => boolean) => allowTryItOutSelector,
       },
     },
-    wrapComponents: {
-      ...DisableTryItOut.toggleAuthorize(),
-      ...WrapHighlightCode,
-      ...WrapParameters,
+    version: {
+      ...VersionActions(versionHandler),
+      ...VersionReducers,
+      ...VersionSelector,
     },
-  };
-}
+  },
+  wrapComponents: {
+    ...WrapHighlightCode,
+    ...WrapParameters,
+  },
+});
+
+export { SwaggerPlugins };

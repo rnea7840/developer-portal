@@ -1,31 +1,20 @@
 import classNames from 'classnames';
-import { Flag } from 'flag';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
+import { Banner, NavBar } from '../../components';
+import { Flag } from '../../flags';
 import { defaultFlexContainer, desktopOnly, mobileOnly } from '../../styles/vadsUtils';
-import Banner from '../Banner';
 import VeteransCrisisLine from '../crisisLine/VeteransCrisisLine';
-import NavBar from '../NavBar';
-import Search from '../Search';
+import Search from '../search/Search';
 import TestingNotice from '../TestingNotice';
 import './Header.scss';
 
 const buttonClassnames = classNames(
   'usa-button',
-  'vads-u-background-color--white',
-  'vads-u-color--primary-darkest',
+  'va-api-button-default',
   'vads-u-margin-right--2',
 );
-
-// need to manually set focus on navigation to #main, since React Router cancels
-// native anchor click behavior and react-router-hash-link doesn't handle focus
-const handleSkipNavClick = () => {
-  const mainElement: HTMLElement | null = document.querySelector('main');
-  if (mainElement) {
-    mainElement.focus();
-  }
-};
 
 const Header = (): JSX.Element => {
   /**
@@ -33,7 +22,8 @@ const Header = (): JSX.Element => {
    */
   const [mobileNavVisible, setMobileNavVisible] = React.useState(false);
 
-  const toggleMenuVisible = () => {
+  const location = useLocation();
+  const toggleMenuVisible = (): void => {
     setMobileNavVisible((state: boolean) => !state);
   };
 
@@ -42,7 +32,7 @@ const Header = (): JSX.Element => {
    */
   return (
     <>
-      <Flag name="show_testing_notice">
+      <Flag name={['show_testing_notice']}>
         <TestingNotice />
       </Flag>
       <header
@@ -50,9 +40,8 @@ const Header = (): JSX.Element => {
         className={classNames('va-api-header', 'vads-u-background-color--primary-darkest')}
       >
         <HashLink
-          to="#main"
+          to={{ ...location, hash: '#main' }}
           className={classNames('va-api-skipnav', 'vads-u-padding-x--2', 'vads-u-padding-y--1')}
-          onClick={handleSkipNavClick}
         >
           Skip to main content
         </HashLink>
@@ -107,6 +96,7 @@ const Header = (): JSX.Element => {
                 'vads-u-text-align--center',
               )}
               onClick={toggleMenuVisible}
+              type="button"
             >
               Menu
             </button>

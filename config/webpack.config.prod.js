@@ -3,11 +3,8 @@
 
 'use strict';
 
-const fs = require('fs');
-const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
-const resolve = require('resolve');
 
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -25,6 +22,7 @@ const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const SitemapBuilderPlugin = require('../SitemapBuilderWebpackPlugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 // Webpack uses `output.publicPath`, from it's options object, to determine
 // where the app is being served from. It requires a trailing slash, or the
@@ -308,7 +306,7 @@ module.exports = envName => {
                       [
                         require('markdown-it-attrs'),
                         {
-                          allowedAttributes: ['id'],
+                          allowedAttributes: ['id', 'tabIndex', 'class'],
                         },
                       ],
                       [
@@ -432,32 +430,22 @@ module.exports = envName => {
         ],
       }),
       // TypeScript type checking
-      fs.existsSync(paths.appTsConfig) &&
-        new ForkTsCheckerWebpackPlugin({
-          typescript: resolve.sync('typescript', {
-            basedir: paths.appNodeModules,
-          }),
-          async: false,
-          checkSyntacticErrors: true,
-          tsconfig: paths.appTsProdConfig(envName),
-          compilerOptions: {
-            module: 'esnext',
-            moduleResolution: 'node',
-            resolveJsonModule: true,
-            noEmit: true,
-            jsx: 'preserve',
+      new ForkTsCheckerWebpackPlugin({
+        async: false,
+        eslint: {
+          files: 'src/**/*.{ts,tsx}',
+        },
+        typescript: true,
+      }),
+      // Place the appropriate robots.txt in public folder based on the environment
+      new CopyPlugin({
+        patterns: [
+          {
+            from: envName === 'production' ? 'config/robots.prod.txt' : 'config/robots.dev.txt',
+            to: 'robots.txt',
           },
-          reportFiles: [
-            '**',
-            '!**/*.json',
-            '!**/__tests__/**',
-            '!**/?(*.)(e2e|spec|test).*',
-            '!src/setupProxy.js',
-            '!src/setupTests.*',
-          ],
-          watch: paths.appSrc,
-          silent: true,
-        }),
+        ],
+      }),
       new SitemapBuilderPlugin({
         routesFile: path.join(paths.appSrc, 'Routes.tsx'),
         polyfillsFile: path.join(paths.appConfigScripts, 'polyfills.js'),

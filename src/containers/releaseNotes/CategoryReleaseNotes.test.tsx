@@ -1,9 +1,9 @@
-import '@testing-library/jest-dom';
+/* eslint-disable max-lines -- exception for test suite */
 import { cleanup, getByRole, queryByRole, render, screen } from '@testing-library/react';
-import { FlagsProvider } from 'flag';
+import { createMemoryHistory } from 'history';
 import 'jest';
 import * as React from 'react';
-import { MemoryRouter, Route } from 'react-router';
+import { MemoryRouter, Route, Router } from 'react-router';
 import {
   extraAPI,
   extraDeactivationInfo,
@@ -12,13 +12,13 @@ import {
   fakeCategoryOrder,
 } from '../../__mocks__/fakeCategories';
 import * as apiQueries from '../../apiDefs/query';
-import { IApiCategories, IApiDescription } from '../../apiDefs/schema';
-import { getFlags } from '../../App';
+import { APICategories, APIDescription } from '../../apiDefs/schema';
+import { FlagsProvider, getFlags } from '../../flags';
 import { CategoryReleaseNotes, DeactivatedReleaseNotes } from './CategoryReleaseNotes';
 
 describe('ReleaseNotesCollection', () => {
-  let apiDefsSpy: jest.SpyInstance<IApiCategories>;
-  let allAPIsSpy: jest.SpyInstance<IApiDescription[]>;
+  let apiDefsSpy: jest.SpyInstance<APICategories>;
+  let allAPIsSpy: jest.SpyInstance<APIDescription[]>;
   beforeEach(() => {
     jest.spyOn(apiQueries, 'getApiCategoryOrder').mockReturnValue(fakeCategoryOrder);
     apiDefsSpy = jest.spyOn(apiQueries, 'getApiDefinitions').mockReturnValue(fakeCategories);
@@ -26,8 +26,8 @@ describe('ReleaseNotesCollection', () => {
   });
 
   describe('CategoryReleaseNotes', () => {
-    function renderComponent(route: string = '/release-notes/lotr') {
-      cleanup();
+    const renderComponent = async (route = '/release-notes/lotr'): Promise<void> => {
+      await cleanup(); // clean up beforeEach render if we're testing a different page
       render(
         <FlagsProvider flags={getFlags()}>
           <MemoryRouter initialEntries={[route]}>
@@ -35,17 +35,17 @@ describe('ReleaseNotesCollection', () => {
           </MemoryRouter>
         </FlagsProvider>,
       );
-    }
+    };
 
-    beforeEach(() => {
-      renderComponent();
+    beforeEach(async () => {
+      await renderComponent();
     });
 
     it('renders the heading', () => {
       const heading1 = screen.getByRole('heading', { name: 'Release Notes' });
       expect(heading1).toBeInTheDocument();
       expect(heading1.previousElementSibling).not.toBeNull();
-      expect(heading1.previousElementSibling!).toHaveTextContent('LOTR API');
+      expect(heading1.previousElementSibling as HTMLElement).toHaveTextContent('LOTR API');
     });
 
     describe('card links', () => {
@@ -69,8 +69,8 @@ describe('ReleaseNotesCollection', () => {
         expect(hobbitsLink.getAttribute('href')).toBe('/release-notes/lotr#hobbits');
       });
 
-      it('does not have any card links if there is only one active/enabled API', () => {
-        renderComponent('/release-notes/sports');
+      it('does not have any card links if there is only one active/enabled API', async () => {
+        await renderComponent('/release-notes/sports');
         expect(screen.queryByRole('navigation', { name: 'Sports API Release Notes' })).toBeNull();
         expect(screen.queryByRole('link', { name: /Basketball API/ })).toBeNull();
       });
@@ -80,7 +80,7 @@ describe('ReleaseNotesCollection', () => {
         expect(queryByRole(cardLinks, 'link', { name: /Silmarils API/ })).toBeNull();
       });
 
-      it('does not have a card link for disabled APIs', () => {
+      it('does not have a card link for disabled APIs', async () => {
         allAPIsSpy.mockReturnValue([...fakeAPIs, extraAPI]);
         apiDefsSpy.mockReturnValue({
           ...fakeCategories,
@@ -90,7 +90,7 @@ describe('ReleaseNotesCollection', () => {
           },
         });
 
-        renderComponent('/release-notes/sports');
+        await renderComponent('/release-notes/sports');
         const cardLinks = screen.getByRole('navigation', { name: 'Sports API Release Notes' });
         expect(queryByRole(cardLinks, 'link', { name: /Baseball API/ })).toBeNull();
       });
@@ -101,29 +101,32 @@ describe('ReleaseNotesCollection', () => {
         const ringsHeading = screen.getByRole('heading', { name: 'Rings API' });
         expect(ringsHeading).toBeInTheDocument();
         expect(ringsHeading.tagName).toBe('H2');
-        expect(ringsHeading.parentElement!.id).toBe('rings');
+        expect(ringsHeading.tabIndex).toBe(-1);
+        expect(ringsHeading.id).toBe('rings');
 
         const hobbitsHeading = screen.getByRole('heading', { name: 'Hobbits API' });
         expect(hobbitsHeading).toBeInTheDocument();
         expect(hobbitsHeading.tagName).toBe('H2');
-        expect(hobbitsHeading.parentElement!.id).toBe('hobbits');
+        expect(hobbitsHeading.tabIndex).toBe(-1);
+        expect(hobbitsHeading.id).toBe('hobbits');
       });
 
       it('renders the release notes themselves within the section', () => {
         const ringsHeading = screen.getByRole('heading', { name: 'Rings API' });
         expect(ringsHeading.nextElementSibling).not.toBeNull();
-        const ringsContainer: HTMLElement = ringsHeading.nextElementSibling! as HTMLElement;
+        const ringsContainer: HTMLElement = ringsHeading.nextElementSibling as HTMLElement;
 
         const ringsNoteHeading = getByRole(ringsContainer, 'heading', { name: 'March 25, 2020' });
         expect(ringsNoteHeading).toBeInTheDocument();
         expect(ringsNoteHeading.tagName).toBe('H3');
         expect(ringsNoteHeading.nextElementSibling).not.toBeNull();
-        expect(ringsNoteHeading.nextElementSibling!.tagName).toBe('P');
-        expect(ringsNoteHeading.nextElementSibling!).toHaveTextContent('One Ring destroyed');
+        const ringsNoteContent: HTMLElement = ringsNoteHeading.nextElementSibling as HTMLElement;
+        expect(ringsNoteContent.tagName).toBe('P');
+        expect(ringsNoteContent).toHaveTextContent('One Ring destroyed');
 
         const hobbitsHeading = screen.getByRole('heading', { name: 'Hobbits API' });
         expect(hobbitsHeading.nextElementSibling).not.toBeNull();
-        const hobbitsContainer: HTMLElement = hobbitsHeading.nextElementSibling! as HTMLElement;
+        const hobbitsContainer: HTMLElement = hobbitsHeading.nextElementSibling as HTMLElement;
 
         const hobbitsNoteHeading = getByRole(hobbitsContainer, 'heading', {
           name: 'June 11, 2019',
@@ -131,24 +134,40 @@ describe('ReleaseNotesCollection', () => {
         expect(hobbitsNoteHeading).toBeInTheDocument();
         expect(hobbitsNoteHeading.tagName).toBe('H3');
         expect(hobbitsNoteHeading.nextElementSibling).not.toBeNull();
-        expect(hobbitsNoteHeading.nextElementSibling!.tagName).toBe('P');
-        expect(hobbitsNoteHeading.nextElementSibling!).toHaveTextContent('Bilbo disappeared');
+        const hobbitsNoteContent: HTMLElement = hobbitsNoteHeading.nextElementSibling as HTMLElement;
+        expect(hobbitsNoteContent.tagName).toBe('P');
+        expect(hobbitsNoteContent).toHaveTextContent('Bilbo disappeared');
       });
 
       it('does not include release notes for deactivated APIs', () => {
         expect(screen.queryByRole('heading', { name: 'Silmarils API' })).toBeNull();
       });
 
-      it('does not include release notes for disabled APIs', () => {
-        renderComponent('/release-notes/sports');
+      it('does not include release notes for disabled APIs', async () => {
+        await renderComponent('/release-notes/sports');
         expect(screen.queryByRole('heading', { name: 'Baseball API' })).toBeNull();
+      });
+
+      it("redirect to /release-notes when category isn't found", () => {
+        const history = createMemoryHistory({ initialEntries: ['/release-notes/fakeCategory'] });
+        const { container } = render(
+          <Router history={history}>
+            <Route path="/release-notes" exact render={(): JSX.Element => <div>/release-notes</div>} />
+            <Route
+              path="/release-notes/fakeCategory"
+              exact
+              component={CategoryReleaseNotes}
+            />
+          </Router>,
+        );
+        expect(container.innerHTML).toEqual(expect.stringContaining('/release-notes'));
       });
     });
   });
 
   describe('DeactivatedReleaseNotes', () => {
-    function renderComponent() {
-      cleanup();
+    const renderComponent = async (): Promise<void> => {
+      await cleanup();
       render(
         <FlagsProvider flags={getFlags()}>
           <MemoryRouter initialEntries={['/release-notes/deactivated']}>
@@ -156,7 +175,7 @@ describe('ReleaseNotesCollection', () => {
           </MemoryRouter>
         </FlagsProvider>,
       );
-    }
+    };
 
     beforeEach(renderComponent);
 
@@ -164,20 +183,20 @@ describe('ReleaseNotesCollection', () => {
       const heading1 = screen.getByRole('heading', { name: 'Release Notes' });
       expect(heading1).toBeInTheDocument();
       expect(heading1.previousElementSibling).not.toBeNull();
-      expect(heading1.previousElementSibling!).toHaveTextContent('Deactivated APIs');
+      expect(heading1.previousElementSibling as HTMLElement).toHaveTextContent('Deactivated APIs');
     });
 
     it('has an alert box explaining that the page is for deactivated APIs', () => {
       const heading1 = screen.getByRole('heading', { name: 'Release Notes' });
       expect(heading1.parentElement).not.toBeNull();
-      expect(heading1.parentElement!.nextElementSibling).not.toBeNull();
-      expect(heading1.parentElement!.nextElementSibling!).toHaveTextContent(
+      expect(heading1.parentElement?.nextElementSibling).not.toBeNull();
+      expect(heading1.parentElement?.nextElementSibling).toHaveTextContent(
         'This is a repository for deactivated APIs and related documentation and release notes.',
       );
     });
 
     describe('card links', () => {
-      it('renders the card link section', () => {
+      it('renders the card link section', async () => {
         allAPIsSpy.mockReturnValue([
           ...fakeAPIs,
           {
@@ -186,14 +205,14 @@ describe('ReleaseNotesCollection', () => {
           },
         ]);
 
-        renderComponent();
+        await renderComponent();
         const cardLinks = screen.getByRole('navigation', {
           name: 'Deactivated APIs Release Notes',
         });
         expect(cardLinks).toBeInTheDocument();
       });
 
-      it('has a card link for each enabled API if there is more than one', () => {
+      it('has a card link for each enabled API if there is more than one', async () => {
         allAPIsSpy.mockReturnValue([
           ...fakeAPIs,
           {
@@ -202,7 +221,7 @@ describe('ReleaseNotesCollection', () => {
           },
         ]);
 
-        renderComponent();
+        await renderComponent();
         const cardLinks = screen.getByRole('navigation', {
           name: 'Deactivated APIs Release Notes',
         });
@@ -225,16 +244,16 @@ describe('ReleaseNotesCollection', () => {
         expect(screen.queryByRole('link', { name: /Silmarils API/ })).toBeNull();
       });
 
-      it('does not include card links for disabled APIs', () => {
+      it('does not include card links for disabled APIs', async () => {
         const apis = fakeAPIs.map(
-          (api: IApiDescription): IApiDescription => ({
+          (api: APIDescription): APIDescription => ({
             ...api,
             deactivationInfo: extraDeactivationInfo,
           }),
         );
 
         allAPIsSpy.mockReturnValue(apis);
-        renderComponent();
+        await renderComponent();
 
         const cardLinks = screen.getByRole('navigation', {
           name: 'Deactivated APIs Release Notes',
@@ -249,14 +268,15 @@ describe('ReleaseNotesCollection', () => {
         const silmarilsHeading = screen.getByRole('heading', { name: 'Silmarils API' });
         expect(silmarilsHeading).toBeInTheDocument();
         expect(silmarilsHeading.tagName).toBe('H2');
-        expect(silmarilsHeading.parentElement!.id).toBe('silmarils');
+        expect(silmarilsHeading.tabIndex).toBe(-1);
+        expect(silmarilsHeading.id).toBe('silmarils');
       });
 
       it('renders deactivation info for each API', () => {
         const silmarilsHeading = screen.getByRole('heading', { name: 'Silmarils API' });
         expect(silmarilsHeading.nextElementSibling).not.toBeNull();
 
-        const deactivationInfo: HTMLElement = silmarilsHeading.nextElementSibling! as HTMLElement;
+        const deactivationInfo: HTMLElement = silmarilsHeading.nextElementSibling as HTMLElement;
         expect(
           getByRole(deactivationInfo, 'heading', { name: 'Deactivated API' }),
         ).toBeInTheDocument();
@@ -266,10 +286,9 @@ describe('ReleaseNotesCollection', () => {
       it('renders the release notes themselves within the section', () => {
         const silmarilsHeading = screen.getByRole('heading', { name: 'Silmarils API' });
         expect(silmarilsHeading.nextElementSibling).not.toBeNull();
-        expect(silmarilsHeading.nextElementSibling!.nextElementSibling).not.toBeNull();
+        expect(silmarilsHeading.nextElementSibling?.nextElementSibling).not.toBeNull();
 
-        const notesContainer: HTMLElement = silmarilsHeading.nextElementSibling!
-          .nextElementSibling as HTMLElement;
+        const notesContainer = silmarilsHeading.nextElementSibling?.nextElementSibling as HTMLElement;
         const noteHeading = getByRole(notesContainer, 'heading', {
           name: 'December 1, 0215',
         });
@@ -277,18 +296,18 @@ describe('ReleaseNotesCollection', () => {
         expect(noteHeading).toBeInTheDocument();
         expect(noteHeading.tagName).toBe('H3');
         expect(noteHeading.nextElementSibling).not.toBeNull();
-        expect(noteHeading.nextElementSibling!.tagName).toBe('P');
-        expect(noteHeading.nextElementSibling!).toHaveTextContent('Feanor created the jewels');
+        expect(noteHeading.nextElementSibling?.tagName).toBe('P');
+        expect(noteHeading.nextElementSibling).toHaveTextContent('Feanor created the jewels');
       });
 
-      it('does not include release notes for disabled APIs', () => {
-        const apis: IApiDescription[] = fakeAPIs.map(api => ({
+      it('does not include release notes for disabled APIs', async () => {
+        const apis: APIDescription[] = fakeAPIs.map(api => ({
           ...api,
           deactivationInfo: extraDeactivationInfo,
         }));
 
         allAPIsSpy.mockReturnValue(apis);
-        renderComponent();
+        await renderComponent();
 
         expect(screen.queryByRole('heading', { name: 'Baseball API' })).toBeNull();
       });

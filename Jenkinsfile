@@ -70,16 +70,6 @@ def getPullRequestNumber() {
   }
 }
 
-def commentAfterDeploy() {
-  def linksSnippet = envNames.collect{ envName ->
-    "https://s3-us-gov-west-1.amazonaws.com/${reviewBucketPath()}/${envName}/index.html"
-  }.join(" <br> ")
-
-  pullRequestComment(
-    "These changes have been deployed to an S3 bucket. A build for each environment is available: <br><br> ${linksSnippet} <br><br> Due to S3 website hosting limitations in govcloud you need to first navigate to index.html explicitly."
-  )
-}
-
 def reviewBucketPath() {
   return "${review_s3_bucket_name}/${shortRef}"
 }
@@ -133,8 +123,11 @@ node('vetsgov-general-purpose') {
 
       imageTag = java.net.URLDecoder.decode(env.BUILD_TAG).replaceAll("[^A-Za-z0-9\\-\\_]", "-")
 
-      dockerImage = docker.build("developer-portal:${imageTag}")
-      args = "-v ${pwd()}:/application -v /application/node_modules"
+
+      docker.withRegistry('https://index.docker.io/v1/', 'vasdvdocker') {
+      	dockerImage = docker.build("developer-portal:${imageTag}")
+        args = "-v ${pwd()}:/application -v /application/node_modules"
+      }
     } catch (error) {
       notify()
       throw error
@@ -150,7 +143,7 @@ node('vetsgov-general-purpose') {
   stage('Security') {
     try {
       dockerImage.inside(args) {
-        sh "cd /application && npm config set audit-level critical && npm audit"
+        sh "cd /application && npm audit --audit-level moderate"
       }
     } catch (error) {
       if (!onDeployableBranch()) {
@@ -163,16 +156,13 @@ node('vetsgov-general-purpose') {
     }
   }
 
-  stage('TSLint') {
+  stage('ESLint') {
     try {
       dockerImage.inside(args) {
-        sh 'cd /application && npm run-script lint:ci'
+        sh 'cd /application && npm run lint'
       }
     } catch (error) {
       notify()
-      dir(pwd()) {
-        step([$class: 'JUnitResultArchiver', testResults: 'lint-results.xml'])
-      }
       throw error
     }
   }
@@ -226,7 +216,7 @@ node('vetsgov-general-purpose') {
         sh 'cd /application && npm run test:visual'
       }
     } catch (error) {
-      dir('test/image_snapshots/diff_output') {
+      dir('test/image_snapshots/__diff_output__') {
         withEnv(["ref=${ref}",'bucket=developer-portal-screenshots']) {
           // Upload diffs to S3
           withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'vetsgov-website-builds-s3-upload', usernameVariable: 'AWS_ACCESS_KEY', passwordVariable: 'AWS_SECRET_KEY']]) {
@@ -252,7 +242,7 @@ node('vetsgov-general-purpose') {
   stage('Build') {
     if (supercededByConcurrentBuild()) { return }
 
-      try {
+    try {
       def builds = [:]
       envNames.each{ envName ->
         builds[envName] = {
@@ -286,33 +276,6 @@ node('vetsgov-general-purpose') {
         envNames.each{ envName ->
           sh "tar -C build/${envName} -cf build/${envName}.tar.bz2 ."
           sh "aws --region us-gov-west-1 s3 cp --no-progress --acl public-read build/${envName}.tar.bz2 s3://developer-portal-builds-s3-upload/${ref}/${envName}.tar.bz2"
-        }
-      }
-    } catch (error) {
-      notify()
-      throw error
-    }
-  }
-
-  stage('Deploy') {
-    if (supercededByConcurrentBuild()) { return }
-    try {
-      if (prNum) {
-        // Deploy to review bucket
-        sh "aws --region us-gov-west-1 s3 sync --no-progress --acl public-read ./build/ s3://${reviewBucketPath()}/"
-        commentAfterDeploy()
-      } else {
-        if (env.BRANCH_NAME == devBranch) {
-          build job: 'deploys/developer-portal-dev', parameters: [
-            booleanParam(name: 'notify_slack', value: true),
-            stringParam(name: 'ref', value: ref),
-          ], wait: false
-        }
-        if (env.BRANCH_NAME == stagingBranch) {
-          build job: 'deploys/developer-portal-staging', parameters: [
-            booleanParam(name: 'notify_slack', value: true),
-            stringParam(name: 'ref', value: ref),
-          ], wait: false
         }
       }
     } catch (error) {
