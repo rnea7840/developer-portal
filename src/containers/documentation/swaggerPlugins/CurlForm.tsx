@@ -75,14 +75,13 @@ export class CurlForm extends React.Component<CurlFormProps, CurlFormState> {
   }
 
   public requirementsMet(): boolean {
-    const hasSecurity = Object.keys(this.props.operation).includes('security');
     if (this.isSwagger2()) {
       const spec: OpenAPISpecV2 = this.jsonSpec() as OpenAPISpecV2;
-      return hasSecurity && !!spec.host;
+      return !!spec.host;
     } else {
       const hasServerBlock = this.containsServerInformation();
       const isFormData = this.props.operation.requestBody?.content['multipart/form-data'];
-      return hasSecurity && hasServerBlock && !isFormData;
+      return hasServerBlock && !isFormData;
     }
   }
 
@@ -235,7 +234,10 @@ export class CurlForm extends React.Component<CurlFormProps, CurlFormState> {
     return spec.swagger === '2.0';
   }
 
-  public authParameterContainer(): JSX.Element {
+  public authParameterContainer(): JSX.Element | null {
+    if (!Object.keys(this.props.operation).includes('security')) {
+      return null;
+    }
     if (Object.keys(this.props.operation.security[0]).includes('apikey')) {
       return (
         <div>
