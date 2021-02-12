@@ -146,8 +146,8 @@ const supportQuestions: SupportQuestion[] = [
   {
     answer: (
       <p>
-        Submit a support request, bug report, documentation or feature request via{' '}
-        <Link to="/support/contact-us">the Contact Us form</Link>. We strive to reply with
+        Submit a support request, bug report, documentation or feature request via the{' '}
+        <Link to="/support/contact-us">Contact Us</Link> form. We strive to reply with
         a solution or next steps within one business day.
       </p>
     ),
