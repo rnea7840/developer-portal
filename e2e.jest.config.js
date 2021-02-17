@@ -1,7 +1,9 @@
 module.exports = {
   displayName: "E2E Puppeteer Tests",
   name: 'e2e',
-  preset: "jest-puppeteer",
+  globalSetup: './config/jest/puppeteer/setup.js',
+  globalTeardown: './config/jest/puppeteer/teardown.js',
+  testEnvironment: './config/jest/puppeteer/environment.js',
   testMatch: [
     "<rootDir>/src/**/?(*.)(e2e).(j|t)s?(x)"
   ],
