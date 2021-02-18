@@ -1,6 +1,6 @@
 import * as axe from 'axe-core';
 import { toHaveNoViolations } from 'jest-axe';
-import { Request } from 'puppeteer';
+import { HTTPRequest } from 'puppeteer';
 import { PUBLISHING_ONBOARDING_PATH, PUBLISHING_PATH } from './types/constants/paths';
 
 import { mockMetadata as metadataMocks } from './__mocks__/mockMetadata';
@@ -54,11 +54,12 @@ export const axeCheck = (): Promise<axe.AxeResults> => new Promise(resolve => {
   });
 });
 
-export const mockSwagger = (req: Request): void => {
+export const mockSwagger = (req: HTTPRequest): void => {
   const response = {
     body: '',
     contentType: 'application/json',
     headers: { 'Access-Control-Allow-Origin': '*' },
+    status: 200,
   };
 
   if (req.url() in mocks) {
