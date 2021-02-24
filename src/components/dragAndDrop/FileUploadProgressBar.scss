@@ -1,0 +1,47 @@
+@import '../../styles/variables';
+
+.va-api-file-progress {
+  color: $color-gray;
+
+  &--error {
+    color: $color-secondary-dark !important;
+  }
+
+  &__bar {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: $color-gray-lighter;
+  }
+
+  &__bar-inner {
+    display: block;
+    content: '&nbsp;';
+    height: 100%;
+    background-color: $color-primary-alt-darkest;
+  }
+
+  &__label {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__control {
+    display: flex;
+    align-items: center;
+  }
+
+  &__remove {
+    display: inline-block;
+    background-color: transparent;
+    padding: 0;
+    margin-left: 1rem;
+    color: $color-gray;
+    cursor: pointer;
+
+    &:hover {
+      background-color: transparent;
+      color: $color-secondary-dark;
+    }
+  }
+}

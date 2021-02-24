@@ -1,0 +1,34 @@
+@import '../../styles/variables';
+@import '~@department-of-veterans-affairs/formation/sass/base/b-functions';
+
+.va-api-file-input {
+  &__target {
+    background-color: $color-white;
+    border: 1px dashed $color-gray;
+    display: block;
+    margin-top: map-get($spacers, 2p5);
+    position: relative;
+    text-align: center;
+    width: 100%;
+  }
+
+  &__instructions {
+    display: inline-block;
+    padding: 2rem 1rem;
+    position: relative;
+    z-index: 3;
+  }
+
+  &__choose {
+    cursor: pointer;
+    color: $color-link-default;
+    text-decoration: underline;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+    transition-property: color, background-color, border-color;
+
+    &:hover {
+      color: #222;
+    }
+  }
+}

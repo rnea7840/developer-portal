@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { getEnabledApiCategories } from '../../apiDefs/env';
 import { getApiDefinitions } from '../../apiDefs/query';
-import { Form } from '../../components';
+import { DragAndDrop, Form } from '../../components';
 import { ErrorableInput } from '../../types';
 import { CONTACT_US_URL } from '../../types/constants';
 import { makeRequest, ResponseType } from '../../utils/makeRequest';
@@ -125,16 +125,21 @@ const SupportContactUsForm = (props: SupportContactUsFormProps): JSX.Element => 
   });
 
   const formSubmission = (): Promise<void> =>
-    makeRequest(CONTACT_US_URL, {
-      body: JSON.stringify(processedData()),
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
+    makeRequest(
+      CONTACT_US_URL,
+      {
+        body: JSON.stringify(processedData()),
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+        },
+        method: 'POST',
       },
-      method: 'POST',
-    }, { responseType: ResponseType.TEXT }).then(() => {
-      // do nothing and return void
-    })
+      { responseType: ResponseType.TEXT },
+    )
+      .then(() => {
+        // do nothing and return void
+      })
       .catch(error => {
         throw error;
       });
@@ -154,6 +159,15 @@ const SupportContactUsForm = (props: SupportContactUsFormProps): JSX.Element => 
       `small-screen:vads-u-padding-${paddingDirection}--2`,
     );
 
+  const acceptedFileTypes = [
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/pdf',
+    'application/vnd.oasis.opendocument.text',
+    'application/json',
+    'application/xml',
+    'application/x-yaml',
+  ];
+
   /**
    * RENDER
    */
@@ -172,6 +186,13 @@ const SupportContactUsForm = (props: SupportContactUsFormProps): JSX.Element => 
             answer your question and get you headed in the right direction.
           </p>
         </legend>
+
+        <DragAndDrop
+          acceptedFileTypes={acceptedFileTypes}
+          label="File Input"
+          maxFileSize={1500000}
+          name="support-file-input"
+        />
 
         <div className={classNames('vads-l-grid-container', 'vads-u-padding-x--0')}>
           <div className="vads-l-row">
@@ -248,7 +269,10 @@ const SupportContactUsForm = (props: SupportContactUsFormProps): JSX.Element => 
           errorMessage={formState.description.validation}
           label="Please describe your question or issue in as much detail as you can provide. Steps to reproduce or any specific error messages are helpful if applicable."
           onValueChange={(field: ErrorableInput): void => {
-            setFormState({ type: 'SET_DESCRIPTION', value: validatePresence(field, 'Description') });
+            setFormState({
+              type: 'SET_DESCRIPTION',
+              value: validatePresence(field, 'Description'),
+            });
           }}
           name="description"
           field={formState.description}
