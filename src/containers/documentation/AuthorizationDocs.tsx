@@ -23,7 +23,25 @@ import { DEFAULT_OAUTH_API_SELECTION } from '../../types/constants';
 
 import './AuthorizationDocs.scss';
 
+const setSearchParam = (
+  history: History,
+  queryString: string,
+  api: string,
+  initialLoad: boolean,
+): void => {
+  const params = new URLSearchParams(queryString);
+  if (params.get('api') !== api) {
+    params.set('api', api);
+    if (initialLoad) {
+      history.replace(`${history.location.pathname}?${params.toString()}${history.location.hash}`);
+    } else {
+      history.push(`${history.location.pathname}?${params.toString()}`);
+    }
+  }
+};
+
 const setInitialApi = (
+  history: History,
   searchQuery: string,
   dispatch: React.Dispatch<ResetOAuthAPISelection | SetOAuthAPISelection>,
 ): void => {
@@ -32,15 +50,19 @@ const setInitialApi = (
   const availableApis = getAllOauthApis().filter((item: APIDescription) => !isApiDeactivated(item));
   const isAnApi = availableApis.some((item: APIDescription) => item.urlFragment === apiQuery);
   const api = apiQuery && isAnApi ? apiQuery.toLowerCase() : DEFAULT_OAUTH_API_SELECTION;
-  dispatch(setOAuthApiSelection(api));
-};
-
-const setSearchParam = (history: History, queryString: string, api: string): void => {
-  const params = new URLSearchParams(queryString);
-  if (params.get('api') !== api) {
-    params.set('api', api);
-    history.push(`${history.location.pathname}?${params.toString()}`);
+  if (api === DEFAULT_OAUTH_API_SELECTION) {
+    /*
+     * We need to trigger a change to the API selection so the key will change and trigger a
+     * re-render of the <CodeWrapper /> component to fix the bug.
+     * Other APIs already include a change because they will default to "claims" and then change to
+     * the requested API. For "claims" we set it to "none" immediately followed by setting it to
+     * "claims" so that the <CodeWrapper /> will have rendered once (badly) for "none" and the
+     * second time for "claims" to render properly.
+     */
+    dispatch(setOAuthApiSelection('none'));
   }
+  dispatch(setOAuthApiSelection(api));
+  setSearchParam(history, searchQuery, api, true);
 };
 
 const AuthorizationDocs = (): JSX.Element => {
@@ -53,18 +75,22 @@ const AuthorizationDocs = (): JSX.Element => {
 
   React.useEffect(() => {
     if (initializing.current) {
+      // Do this on first load
       initializing.current = false;
-
-      setInitialApi(location.search, dispatch);
+      setTimeout(() => {
+        /*
+         * This is needed because the MDX loader needs to be fired twice after the component is
+         * loaded. We don't know why the initial render doesn't properly handle multi-line code
+         * snippets but our current solution is to render them twice after the component is intially
+         * ready.
+         */
+        setInitialApi(history, location.search, dispatch);
+      }, 0);
+    } else {
+      // Do this on all subsequent re-renders
+      setSearchParam(history, location.search, api, false);
     }
-  }, [dispatch, location]);
-
-  /**
-   * UPDATES URL WITH CORRECT API PARAM
-   */
-  React.useEffect(() => {
-    setSearchParam(history, location.search, api);
-  }, [history, location.search, prevApi, api]);
+  }, [dispatch, location, history, prevApi, api]);
 
   /**
    * CLEAR REDUX STATE ON UNMOUNT

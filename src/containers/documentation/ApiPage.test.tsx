@@ -4,7 +4,7 @@ import moment from 'moment';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route } from 'react-router';
 import { APICategory } from 'src/apiDefs/schema';
-import { AppFlags, FlagsProvider } from '../../flags';
+import { AppFlags, FlagsProvider, getFlags } from '../../flags';
 import { fakeCategories, unmetDeactivationInfo } from '../../__mocks__/fakeCategories';
 import * as apiDefs from '../../apiDefs/query';
 import ApiPage from './ApiPage';
@@ -51,14 +51,8 @@ const renderApiPage = (flags: AppFlags, initialRoute: string, componentPath?: st
 // Test
 describe('ApiPage', () => {
   const defaultFlags: AppFlags = {
-    api_publishing: false,
-    auth_docs_v2: false,
-    categories: { category: true },
-    deactivated_apis: {},
+    ...getFlags(),
     enabled: { rings: true, silmarils: true },
-    hosted_apis: {},
-    show_testing_notice: false,
-    signups_enabled: true,
   };
 
   const lookupApiByFragmentMock = jest.spyOn(apiDefs, 'lookupApiByFragment');
@@ -78,10 +72,6 @@ describe('ApiPage', () => {
     it('calls lookupApi methods with correct parameters', () => {
       expect(lookupApiByFragmentMock).toHaveBeenCalledWith('rings');
       expect(lookupApiCategoryMock).toHaveBeenCalledWith('lotr');
-    });
-
-    it('renders region', () => {
-      expect(screen.getByRole('region')).not.toBeNull();
     });
 
     it('renders api page heading', () => {

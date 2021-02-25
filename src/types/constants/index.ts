@@ -25,5 +25,6 @@ export const APPLY_FIELDS_TO_URL_FRAGMENTS = {
 export const APPLY_STANDARD_APIS = ['benefits', 'facilities', 'vaForms', 'confirmation'];
 export const APPLY_OAUTH_APIS = ['claims', 'communityCare', 'health', 'verification'];
 export const PAGE_HEADER_ID = 'page-header';
-export const FLAG_API_PUBLISHING = 'api_publishing';
+export const PAGE_HEADER_AND_HALO_ID = 'header-halo';
+export const FLAG_API_PUBLISHING_CONTACT_FORM = 'api_publishing_contact_form';
 export const FLAG_AUTH_DOCS_V2 = 'auth_docs_v2';
