@@ -1,4 +1,4 @@
-import { FacilitiesReleaseNotes } from '../../content/apiDocs/facilities';
+import { FacilitiesAPIIntro, FacilitiesReleaseNotes } from '../../content/apiDocs/facilities';
 import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import { APIDescription } from '../schema';
 
@@ -7,6 +7,7 @@ const facilitiesApis: APIDescription[] = [
     description: 'VA Facilities',
     docSources: [
       {
+        apiIntro: FacilitiesAPIIntro,
         openApiUrl: `${OPEN_API_SPEC_HOST}/services/va_facilities/docs/v0/api`,
       },
     ],

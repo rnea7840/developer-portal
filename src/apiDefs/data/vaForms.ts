@@ -1,4 +1,4 @@
-import { VAFormsReleaseNotes } from '../../content/apiDocs/vaForms';
+import { VAFormsAPIIntro, VAFormsReleaseNotes } from '../../content/apiDocs/vaForms';
 import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import { APIDescription } from '../schema';
 
@@ -7,6 +7,7 @@ const vaFormsApis: APIDescription[] = [
     description: 'Look up VA forms and check for new versions.',
     docSources: [
       {
+        apiIntro: VAFormsAPIIntro,
         metadataUrl: `${OPEN_API_SPEC_HOST}/services/va_forms/metadata`,
         openApiUrl: `${OPEN_API_SPEC_HOST}/services/va_forms/docs/v0/api`,
       },

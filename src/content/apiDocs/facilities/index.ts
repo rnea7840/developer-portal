@@ -1,4 +1,5 @@
 import { APICategoryContent } from '../../../apiDefs/schema';
+import FacilitiesAPIIntro from './facilitiesAPIIntro.mdx';
 import FacilitiesIntro from './facilitiesIntro.mdx';
 import FacilitiesOverview from './facilitiesOverview.mdx';
 import FacilitiesReleaseNotes from './facilitiesReleaseNotes.mdx';
@@ -11,4 +12,4 @@ const facilitiesContent: APICategoryContent = {
     'Use the VA Facility API to find relevant information about a specific VA facility.',
 };
 
-export { facilitiesContent, FacilitiesReleaseNotes };
+export { facilitiesContent, FacilitiesAPIIntro, FacilitiesReleaseNotes };

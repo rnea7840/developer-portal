@@ -1,5 +1,7 @@
 import {
+  BenefitsIntakeAPIIntro,
   BenefitsIntakeReleaseNotes,
+  ClaimsAPIIntro,
   ClaimsReleaseNotes,
   LoanGuarantyReleaseNotes,
   ClaimsAttributesReleaseNotes,
@@ -12,6 +14,7 @@ const benefitsApis: APIDescription[] = [
     description: 'Submit and track claims',
     docSources: [
       {
+        apiIntro: ClaimsAPIIntro,
         metadataUrl: `${OPEN_API_SPEC_HOST}/services/claims/metadata`,
         openApiUrl: `${OPEN_API_SPEC_HOST}/services/claims/docs/v0/api`,
       },
@@ -32,6 +35,7 @@ const benefitsApis: APIDescription[] = [
     description: 'Submit PDF claims',
     docSources: [
       {
+        apiIntro: BenefitsIntakeAPIIntro,
         metadataUrl: `${OPEN_API_SPEC_HOST}/services/vba_documents/metadata`,
         openApiUrl: `${OPEN_API_SPEC_HOST}/services/vba_documents/docs/v0/api`,
       },

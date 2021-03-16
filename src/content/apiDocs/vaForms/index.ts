@@ -1,4 +1,5 @@
 import { APICategoryContent } from '../../../apiDefs/schema';
+import VAFormsAPIIntro from './vaFormsAPIIntro.mdx';
 import VAFormsIntro from './vaFormsIntro.mdx';
 import VAFormsOverview from './vaFormsOverview.mdx';
 import VAFormsReleaseNotes from './vaFormsReleaseNotes.mdx';
@@ -10,4 +11,4 @@ const vaFormsContent: APICategoryContent = {
   shortDescription: 'Look up VA forms and check for new versions.',
 };
 
-export { vaFormsContent, VAFormsReleaseNotes };
+export { vaFormsContent, VAFormsAPIIntro, VAFormsReleaseNotes };
