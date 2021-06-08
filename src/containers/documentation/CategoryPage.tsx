@@ -1,70 +1,79 @@
+import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
 import * as React from 'react';
-
-import { Flag } from 'flag';
-import { RouteComponentProps } from 'react-router';
-
+import Helmet from 'react-helmet';
+import { useParams } from 'react-router';
+import { Flag, useFlag } from '../../flags';
 import { getApiDefinitions } from '../../apiDefs/query';
-import { IApiDescription } from '../../apiDefs/schema';
-import AuthorizationCard from '../../components/AuthorizationCard';
-import CardLink from '../../components/CardLink';
-import OnlyTags from '../../components/OnlyTags';
-import PageHeader from '../../components/PageHeader';
+import { APIDescription } from '../../apiDefs/schema';
+import { AuthorizationCard, CardLink, OnlyTags, PageHeader } from '../../components';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
-import { IApiNameParam } from '../../types';
+import { APINameParam } from '../../types';
+import { FLAG_AUTH_DOCS_V2, FLAG_HOSTED_APIS, PAGE_HEADER_ID } from '../../types/constants';
 
-export default class CategoryPage extends React.Component<RouteComponentProps<IApiNameParam>, {}> {
-  public render() {
-    const { apiCategoryKey } = this.props.match.params;
-    const {
-      apis,
-      name: categoryName,
-      content: { intro, overview },
-    } = getApiDefinitions()[apiCategoryKey];
+const CategoryPage = (): JSX.Element => {
+  const authDocsV2 = useFlag([FLAG_AUTH_DOCS_V2]);
+  const { apiCategoryKey } = useParams<APINameParam>();
 
-    let cardSection;
-    const headerId = `${apiCategoryKey}-overview`;
-    if (apis.length > 0) {
-      const apiCards = apis.map((apiDesc: IApiDescription) => {
-        const { description, name, urlFragment, vaInternalOnly, trustedPartnerOnly } = apiDesc;
-        return (
-          <Flag key={name} name={`hosted_apis.${urlFragment}`}>
-            <CardLink
-              name={name}
-              subhead={
-                vaInternalOnly || trustedPartnerOnly ? (
-                  <OnlyTags {...{ vaInternalOnly, trustedPartnerOnly }} />
-                ) : (
-                  undefined
-                )
-              }
-              url={`/explore/${apiCategoryKey}/docs/${urlFragment}`}
-            >
-              {description}
-            </CardLink>
-          </Flag>
-        );
-      });
+  const {
+    apis,
+    name: categoryName,
+    content: { intro, overview, veteranRedirect },
+  } = getApiDefinitions()[apiCategoryKey];
 
-      const authCard = apis.some(api => !!api.oAuth) && categoryName !== 'Benefits API'  ? <AuthorizationCard categoryKey={apiCategoryKey} /> : null;
-
-      cardSection = (
-        <div role="navigation" aria-labelledby={headerId}>
-          <div className={defaultFlexContainer()}>
-            {authCard}
-            {apiCards}
-          </div>
-        </div>
+  let cardSection;
+  if (apis.length > 0) {
+    const apiCards = apis.map((apiDesc: APIDescription) => {
+      const { description, name, urlFragment, vaInternalOnly, trustedPartnerOnly } = apiDesc;
+      return (
+        <Flag key={name} name={[FLAG_HOSTED_APIS, urlFragment]}>
+          <CardLink
+            name={name}
+            subhead={
+              vaInternalOnly || trustedPartnerOnly ? (
+                <OnlyTags {...{ trustedPartnerOnly, vaInternalOnly }} />
+              ) : undefined
+            }
+            url={`/explore/${apiCategoryKey}/docs/${urlFragment}`}
+          >
+            {description}
+          </CardLink>
+        </Flag>
       );
-    }
+    });
 
-    return (
-      <section role="region" aria-labelledby={headerId} className="va-api-api-overview">
-        <PageHeader id={headerId} header={categoryName} />
-        {intro({})}
-        {cardSection}
-        <div className="vads-u-width--full">{overview({})}</div>
-        <hr />
-      </section>
+    const authCard =
+      apis.some(api => !!api.oAuth) && categoryName !== 'Benefits API' && !authDocsV2 ? (
+        <AuthorizationCard categoryKey={apiCategoryKey} />
+      ) : null;
+
+    cardSection = (
+      <div role="navigation" aria-labelledby={PAGE_HEADER_ID}>
+        <div className={defaultFlexContainer()}>
+          {authCard}
+          {apiCards}
+        </div>
+      </div>
     );
   }
-}
+
+  return (
+    <div className="va-api-api-overview">
+      <Helmet>
+        <title>{categoryName}</title>
+      </Helmet>
+      <PageHeader header={categoryName} />
+      {intro({})}
+      {cardSection}
+      <div className="vads-u-width--full">{overview({})}</div>
+      <hr />
+      {veteranRedirect && (
+        <AlertBox status="info" key={apiCategoryKey}>
+          {veteranRedirect.message}&nbsp;
+          <a href={veteranRedirect.linkUrl}>{veteranRedirect.linkText}</a>.
+        </AlertBox>
+      )}
+    </div>
+  );
+};
+
+export default CategoryPage;

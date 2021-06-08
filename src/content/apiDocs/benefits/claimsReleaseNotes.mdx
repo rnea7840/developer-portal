@@ -1,3 +1,73 @@
+### May 3, 2021
+
+* (v0 & v1) Fixed documentation to properly define consentLimits for a POST 2122 submission [#6728](https://github.com/department-of-veterans-affairs/vets-api/pull/6728)
+
+### April 22, 2021
+
+* (v1) "/forms/2122/active" now returns current and previous POA regardless of prior submissions to Lighthouse Claims API [#6621](https://github.com/department-of-veterans-affairs/vets-api/pull/6621)
+* (v0 & v1) Fixed bug where a Veteran was unable to submit a POA change for a previously used Representative [#6486](https://github.com/department-of-veterans-affairs/vets-api/pull/6486)
+* (v0 & v1) Fixed bug where some service branch options within a disability claim submission were invalid [#6640](https://github.com/department-of-veterans-affairs/vets-api/pull/6640)
+
+### March 30, 2021
+
+* (v0 & v1) Deprecate "schema" endpoint for 526 form [#6289](https://github.com/department-of-veterans-affairs/vets-api/pull/6289)
+* (v0 & v1) Deprecate "schema" endpoint for 0966 form [#6289](https://github.com/department-of-veterans-affairs/vets-api/pull/6289)
+* (v0 & v1) Deprecate "schema" endpoint for 2122 form [#6289](https://github.com/department-of-veterans-affairs/vets-api/pull/6289)
+* (v0 & v1) Deprecate "validate" endpoint for 526 form [#6289](https://github.com/department-of-veterans-affairs/vets-api/pull/6289)
+* (v0 & v1) Deprecate "validate" endpoint for 0966 form [#6289](https://github.com/department-of-veterans-affairs/vets-api/pull/6289)
+* (v0 & v1) Deprecate "validate" endpoint for 2122 form [#6289](https://github.com/department-of-veterans-affairs/vets-api/pull/6289)
+* (v0 & v1) Reduce valid flashes to 526 endpoint to shorter more relevant list [#6256](https://github.com/department-of-veterans-affairs/vets-api/pull/6256)
+
+---
+
+### January 4, 2021
+
+* (v0 & v1) Write flashes to BGS when 526 claims are submitted for auto-establishment [#5248](https://github.com/department-of-veterans-affairs/vets-api/pull/5248)
+* (v0 & v1) Write special issues to BGS when 526 claims are submitted for auto-establishment [#5576](https://github.com/department-of-veterans-affairs/vets-api/pull/5576)
+
+---
+
+### September 14, 2020
+(v0 & v1) Add `validate` endpoint for 2122 form [#4881](https://github.com/department-of-veterans-affairs/vets-api/pull/4881)
+
+---
+
+### September 1, 2020
+Update claims API documentation [#4783](https://github.com/department-of-veterans-affairs/vets-api/pull/4783)
+
+---
+
+### August 25, 2020
+Migrate Intent to FIle from EVSS to BGS [#4575](https://github.com/department-of-veterans-affairs/vets-api/pull/4575)
+
+---
+
+### August 17, 2020
+Added camel inflected schemas to claims API [#4730](https://github.com/department-of-veterans-affairs/vets-api/pull/4730)
+
+---
+
+### August 7, 2020
+(v0 & v1) Add `validate` endpoint for 0966 form [#4656](https://github.com/department-of-veterans-affairs/vets-api/pull/4656)
+
+---
+
+### July 16, 2020
+Ability to generate and upload a signed 2122 PDF form using submitted signatures [#4463](https://github.com/department-of-veterans-affairs/vets-api/pull/4463)
+- Updated schema changes for 2122
+
+---
+
+### June 25, 2020
+(v0 & v1) Updated `homelessSituationType` and `homelessnessRiskSituationType` enums [#4383](https://github.com/department-of-veterans-affairs/vets-api/pull/4383)
+
+---
+
+### June 17, 2020
+(v0 & v1) Add optional base64 encoding information to documentation [#4381](https://github.com/department-of-veterans-affairs/vets-api/pull/4381)
+
+---
+
 ### June 10, 2020
 The optional query parameter `prompt` has been added to the authorization flow.
 - Supported prompts: login. If specified, the user will be forced to provide credentials regardless of session state. If omitted, an existing active session with the identity provider may not require the user to provide credentials.

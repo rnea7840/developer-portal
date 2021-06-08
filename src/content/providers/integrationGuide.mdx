@@ -1,7 +1,15 @@
-# Lighthouse API Provider Integration Guide
+---
+imports:
+  '{CodeWrapper, PageHeader}': ../../components
+  Helmet: react-helmet
+---
+
+<Helmet>
+  <title>Provider Integration Guide</title>
+</Helmet>
+<PageHeader header="Lighthouse API Provider Integration Guide" />
 
 The Lighthouse platform offers an API gateway that VA teams can use to publish their API, exposing it to the internet. This can be an effective way to allow external applications to consume your VA API. This document will explain how to integrate with the API gateway as part of this publishing process.
-
 
 ## Authentication and Authorization
 
@@ -17,12 +25,11 @@ Every developer that signs up for an API key through developer.va.gov receives a
 
 If you're planning to secure your API by requiring requests to be secured by an API key, your backend should expect to receive a few custom HTTP headers. These are added to the request by the API gateway after the caller is authenticated and authorized.
 
-| Header Name          | Purpose |
-| -------------------- | ------- |
-| x-consumer-id        | A unique identifier for the consumer. Generally you should ignore this. |
+| Header Name          | Purpose                                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------------------- |
+| x-consumer-id        | A unique identifier for the consumer. Generally you should ignore this.                               |
 | x-consumer-username  | This is an identifier for the API caller that you can use to correlate requests from the same caller. |
-| x-anonymous-consumer | Indicates that the request has not been authenticated. Boolean, either `true` or `false`. |
-
+| x-anonymous-consumer | Indicates that the request has not been authenticated. Boolean, either `true` or `false`.             |
 
 ### OAuth 2.0
 
@@ -30,12 +37,15 @@ If your API allows 3rd party applications to access Veteran PII or PHI, the Ligh
 
 If you're planning to secure your API by requiring an OAuth access token, you should expect to receive the access token in the HTTP `Authorization` header.
 
-```
+<CodeWrapper>
+
+```plaintext
 Authorization: Bearer eyJraWQiOiJUdWZhS3pDWlNENlZiN25Xclg3U1VzUkZXQTRQQkJKZGpodHpxbi1aUEZFIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjlXd1BYc0oyUUxxY0JMaXctMkU3SmEwYUVBd3pjZ0Z3WjFPNi04UkR6RjgiLCJpc3MiOiJodHRwczovL2RlcHR2YS1ldmFsLm9rdGEuY29tL29hdXRoMi9kZWZhdWx0IiwiYXVkIjoiYXBpOi8vZGVmYXVsdCIsImlhdCI6MTU2OTAxMjI1MSwiZXhwIjoxNTY5MDE1ODUxLCJjaWQiOiIwb2EzNXJsYjhwdEh1bGVGZjJwNyIsInVpZCI6IjAwdTJwOWZhcjRpaERBRVg4MnA3Iiwic2NwIjpbInZldGVyYW5fc3RhdHVzLnJlYWQiLCJvcGVuaWQiLCJwcm9maWxlIl0sInN1YiI6ImNmYTMyMjQ0NTY5ODQxYTA5MGFkOWQyZjA1MjRjZjM4In0.CV8IVz12EXgZhnjXragxhMFUN8aRWL3GbwGzlfDn-OEluae9M1b4TKiy379nkMxEvD4t1wn7CsIZZDSUK_ueEiFBQ6qX2_oNpHeyO6HDYJvydhytDDgJnvXA48nH2WySNXt44U9meCCbNegSRN5siJn0hy7Cj1GoaUd9DYPZbmjB-62yVZ67t7NOVjwW86q12-8KhA3gyJoDjU6qAn0KddgbKxi4R6H3wytH778osqMKLCsED9GVvczT0ZIhPobTzLgOcEwkjIBmkt0cZRx0t79o-Cn5sk4DV3frwQgfUJErRy439YyAR2CHGSTT1xet_eMD1KvH0IXGhZcoEEYO7w
 ```
 
-The OAuth access token should be validated by submitting it to the Lighthouse token validation service. For details on how to use that service, you can consult the [OpenAPI specification](https://sandbox-api.va.gov/internal/auth/docs/v0/validation.json) for the service API.
+</CodeWrapper>
 
+The OAuth access token should be validated by submitting it to the Lighthouse token validation service. For details on how to use that service, you can consult the [OpenAPI specification](https://sandbox-api.va.gov/internal/auth/docs/v1/validation.json) for the service API.
 
 ### Mixed Authorization
 
@@ -46,6 +56,3 @@ This approach requires you to be thoughtful about how API requests are served by
 ## Next Steps
 
 If you're interested in publishing an API on the Lighthouse platform, get in touch by emailing us at api@va.gov.
-
-
-

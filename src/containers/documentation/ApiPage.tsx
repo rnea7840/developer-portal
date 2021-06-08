@@ -1,18 +1,35 @@
+import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
 import * as React from 'react';
-
+import Helmet from 'react-helmet';
+import { useLocation, useParams } from 'react-router-dom';
 import classNames from 'classnames';
-import { Flag } from 'flag';
-import { RouteComponentProps } from 'react-router';
-
 import { isApiDeactivated, isApiDeprecated } from '../../apiDefs/deprecated';
-import { lookupApiByFragment, lookupApiCategory } from '../../apiDefs/query';
-import { IApiDescription } from '../../apiDefs/schema';
-import PageHeader from '../../components/PageHeader';
-import ExplorePage from '../../content/explorePage.mdx';
-import { IApiNameParam } from '../../types';
-import ApiDocumentation from './ApiDocumentation';
 
-const DeactivationMessage = ({ api } : { api: IApiDescription }) => {
+import { lookupApiByFragment, lookupApiCategory } from '../../apiDefs/query';
+import { APIDescription } from '../../apiDefs/schema';
+import { PageHeader } from '../../components';
+import ExplorePage from '../../content/explorePage.mdx';
+import { Flag } from '../../flags';
+
+import { APINameParam } from '../../types';
+import { FLAG_API_ENABLED_PROPERTY } from '../../types/constants';
+import ApiDocumentation from './ApiDocumentation';
+import ApiNotFoundPage from './ApiNotFoundPage';
+
+const DeactivationMessage = ({ api }: { api: APIDescription }): JSX.Element | null => {
+  /*
+   * This code should be unneeded but is required for the linter. Without this
+   * code DeactivationMessage will still return null (isApiDeprecated and
+   * isApiDeactivated will both return false when api.deactivationInfo is
+   * undefined, resulting in a null return on DeactivationMessage).
+   * The linter does not catch this and thinks that api.deactivationInfo could
+   * be undefined further down, even though the DeactionMessage would return
+   * null before hitting that code.
+   */
+  if (!api.deactivationInfo) {
+    return null;
+  }
+
   const isDeprecated = isApiDeprecated(api);
   const isDeactivated = isApiDeactivated(api);
 
@@ -20,48 +37,59 @@ const DeactivationMessage = ({ api } : { api: IApiDescription }) => {
     return null;
   }
 
-  const content = isDeactivated 
-    ? api.deactivationInfo!.deactivationContent 
-    : api.deactivationInfo!.deprecationContent;
+  const { deactivationContent, deprecationContent } = api.deactivationInfo;
+  const content = isDeactivated ? deactivationContent : deprecationContent;
+
   return (
-    <div className={classNames('usa-alert', 'usa-alert-info', 'va-api-deprecation-alert')}>
-      <div className={classNames('usa-alert-body')}>
-        {content({})}
-      </div>
+    <div className={classNames('usa-alert', 'usa-alert-info', 'va-api-alert-box')}>
+      <div className={classNames('usa-alert-body')}>{content({})}</div>
     </div>
   );
 };
 
-export default class ApiPage extends React.Component<RouteComponentProps<IApiNameParam>> {
-  public render() {
-    const { params } = this.props.match;
-    const api = this.getApi();
-    if (api === null) {
-      return <ExplorePage />;
-    }
-
-    const category = lookupApiCategory(params.apiCategoryKey)!;
-    return (
-      <Flag name={`enabled.${api.urlFragment}`} fallbackComponent={ExplorePage}>
-        <div role="region" aria-labelledby="api-documentation">
-          <PageHeader id="api-documentation" halo={category.name} header={api.name} />
-          <DeactivationMessage api={api} />
-          {!isApiDeactivated(api) &&
-            <ApiDocumentation
-              apiDefinition={api}
-              categoryKey={params.apiCategoryKey}
-              location={this.props.location} />
-          }
-        </div>
-      </Flag>
-    );
+const getApi = (apiName?: string): APIDescription | null => {
+  if (!apiName) {
+    return null;
   }
 
-  private getApi() : IApiDescription | null {
-    if (!this.props.match.params.apiName) {
-      return null;
-    }
+  return lookupApiByFragment(apiName);
+};
 
-    return lookupApiByFragment(this.props.match.params.apiName);
+const ApiPage = (): JSX.Element => {
+  const location = useLocation();
+  const params = useParams<APINameParam>();
+
+  const api = getApi(params.apiName);
+  const category = lookupApiCategory(params.apiCategoryKey);
+
+  if (api === null || !category?.apis.includes(api)) {
+    return <ApiNotFoundPage />;
   }
-}
+
+  return (
+    <Flag
+      name={[FLAG_API_ENABLED_PROPERTY, api.urlFragment]}
+      fallbackRender={(): JSX.Element => <ExplorePage />}
+    >
+      <Helmet>
+        <title>{api.name} Documentation</title>
+      </Helmet>
+      <PageHeader halo={category.name} header={api.name} />
+      {api.veteranRedirect && (
+        <AlertBox
+          status="info"
+          key={api.urlFragment}
+          className={classNames('vads-u-margin-bottom--2', 'vads-u-padding-y--1')}
+        >
+          {api.veteranRedirect.message}&nbsp;
+          <a href={api.veteranRedirect.linkUrl}>{api.veteranRedirect.linkText}</a>.
+        </AlertBox>
+      )}
+      <DeactivationMessage api={api} />
+      {!isApiDeactivated(api) && <ApiDocumentation apiDefinition={api} location={location} />}
+    </Flag>
+  );
+};
+
+ApiPage.propTypes = {};
+export default ApiPage;

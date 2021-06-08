@@ -1,43 +1,58 @@
 import classNames from 'classnames';
 import * as React from 'react';
+import Helmet from 'react-helmet';
+import './News.scss';
 
-import CardLink from '../components/CardLink';
-import EmbeddedYoutubeVideo from '../components/EmbeddedYoutubeVideo';
-import HoverImage from '../components/HoverImage';
-import PageHeader from '../components/PageHeader';
-import SideNav, { SideNavEntry } from '../components/SideNav';
+import {
+  CardLink,
+  ContentWithNav,
+  EmbeddedYoutubeVideo,
+  PageHeader,
+  SideNavEntry,
+} from '../components';
 import * as NewsData from '../content/news.yml';
 import { defaultFlexContainer } from '../styles/vadsUtils';
 import toHtmlId from '../toHtmlId';
 
-interface ISection {
+export interface DataSection {
   title: string;
   description: string;
   media: boolean;
-  items: INewsItem[];
+  items: NewsItemData[];
 }
 
-interface INewsSection extends ISection {
+interface NewsSection extends DataSection {
   id: string;
 }
 
-interface INewsItem {
+export interface NewsItemData {
   date: string;
   title: string;
   url: string;
   source?: string;
 }
 
-const sections = NewsData.sections.map((section: ISection) => ({
+const data = NewsData as {
+  sections: DataSection[];
+};
+
+const sections = data.sections.map((section: DataSection) => ({
   ...section,
   id: toHtmlId(section.title),
 }));
 
-function NewsItem({item, media} : {item: INewsItem, media: boolean}) {
-  return media ? <MediaItem item={item} /> : <ItemDescription item={item} />;
-}
+const ItemDescription = ({ item }: { item: NewsItemData }): JSX.Element => (
+  <p>
+    <a href={item.url}>{item.title}</a>
+    <br />
+    <strong>
+      {item.date}
+      {item.source ? ` | ${item.source}` : null}
+    </strong>
+  </p>
+);
 
-function MediaItem({item} : {item: INewsItem}) {
+const MediaItem = ({ item }: { item: NewsItemData }): JSX.Element => {
   const description = <ItemDescription item={item} />;
   if (item.url.includes('www.youtube.com')) {
     return (
@@ -50,92 +65,69 @@ function MediaItem({item} : {item: INewsItem}) {
 
   return (
     <div className="vads-u-display--flex vads-u-flex-direction--row vads-u-margin-y--5">
-      <div aria-hidden={true}>
+      <div aria-hidden>
         <a href={item.url} tabIndex={-1}>
-          <HoverImage
-            imagePath={require('../assets/video-player.png')}
-            hoverImagePath={require('../assets/video-player-hover.png')}
-          />
+          <div className="hover-image-videoplayer" />
         </a>
       </div>
-      <div className="vads-u-margin-left--2p5 va-api-media-row-description">
-        {description}
-      </div>
+      <div className="vads-u-margin-left--2p5 va-api-media-row-description">{description}</div>
     </div>
   );
-}
+};
 
-function ItemDescription({item}: {item: INewsItem}) {
+const NewsItem = ({ item, media }: { item: NewsItemData; media: boolean }): JSX.Element =>
+  media ? <MediaItem item={item} /> : <ItemDescription item={item} />;
+
+const News = (): JSX.Element => {
+  const pageDescription =
+    'This page is where you’ll find interesting press releases, articles, or media that relate to the VA Lighthouse program and the Developer Portal.';
+
   return (
-    <p>
-      <a href={item.url}>{item.title}</a>
-      <br />
-      <strong>
-        {item.date}
-        {item.source ? ` | ${item.source}` : null}
-      </strong>
-    </p>
-  );
-}
-
-export default class News extends React.Component {
-  private cardsSections = sections.map((section: INewsSection) => {
-    return (
-      <CardLink key={section.id} url={`#${section.id}`} name={section.title}>
-        {section.description}
-      </CardLink>
-    );
-  });
-
-  public render() {
-    const headerProps = {
-      description:
-        'This page is where you’ll find interesting press releases, articles, or media that relate to the VA Lighthouse program and the Developer Portal.',
-      header: 'News',
-    };
-
-    const newsContent = sections.map((section: INewsSection) => {
-      return (
-        <section
-          aria-label={section.title}
-          key={section.id}
-          id={section.id}
-          className="vads-u-margin-bottom--4"
-        >
-          <h2>{section.title}</h2>
-          {section.items.map((item: INewsItem) => {
-            return <NewsItem key={item.url} item={item} media={section.media} />;
-          })}
-        </section>
-      );
-    });
-
-    return (
-      <div className="vads-u-padding-y--5">
-        <div className="vads-l-grid-container">
-          <div className="vads-l-row">
-            <SideNav ariaLabel="News Side Nav">
-              <SideNavEntry key="all" exact={true} to="/news" name="Overview" />
-              {sections.map((section: any) => {
-                return <SideNavEntry key={section.id} to={`#${section.id}`} name={section.title} />;
-              })}
-            </SideNav>
-            <div className={classNames('vads-l-col--12', 'medium-screen:vads-l-col--8')}>
-              <section role="region" aria-label="News">
-                <PageHeader
-                  description={headerProps.description}
-                  header={headerProps.header}
-                  className="vads-u-margin-bottom--4"
-                />
-                <div className={classNames(defaultFlexContainer(), 'vads-u-margin-bottom--4')}>
-                  {this.cardsSections}
-                </div>
-                {newsContent}
-              </section>
-            </div>
+    <ContentWithNav
+      nav={
+        <>
+          <SideNavEntry key="all" exact to="#header-halo" name="Overview" />
+          {sections.map((section: NewsSection) => (
+            <SideNavEntry key={section.id} to={`#${section.id}`} name={section.title} />
+          ))}
+        </>
+      }
+      content={
+        <>
+          <Helmet>
+            <title>News</title>
+          </Helmet>
+          <PageHeader
+            description={pageDescription}
+            header="News"
+            className="vads-u-margin-bottom--4"
+          />
+          <div className={classNames(defaultFlexContainer(), 'vads-u-margin-bottom--4')}>
+            {sections.map((section: NewsSection) => (
+              <CardLink key={section.id} url={`#${section.id}`} name={section.title}>
+                {section.description}
+              </CardLink>
+            ))}
           </div>
-        </div>
-      </div>
-    );
-  }
-}
+          {sections.map((section: NewsSection) => (
+            <section
+              aria-label={section.title}
+              key={section.id}
+              className="vads-u-margin-bottom--4"
+            >
+              <h2 id={section.id} tabIndex={-1}>
+                {section.title}
+              </h2>
+              {section.items.map((item: NewsItemData) => (
+                <NewsItem key={item.url} item={item} media={section.media} />
+              ))}
+            </section>
+          ))}
+        </>
+      }
+      navAriaLabel="News Side Nav"
+    />
+  );
+};
+
+export default News;

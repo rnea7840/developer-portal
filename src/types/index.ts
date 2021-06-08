@@ -1,22 +1,35 @@
-import { RouterState } from 'connected-react-router';
-import { IApplication } from './apply';
-
 export * from './apply';
-export * from './form';
 
-export interface IApiNameParam {
+export interface APINameParam {
   apiName?: string;
   apiCategoryKey: string;
 }
 
-export interface IApiVersioning {
-  docUrl: string;
-  metadata: any;
+export interface VersionMetadata {
+  version: string;
+  path: string;
+  status: string;
+  internal_only: boolean;
+  healthcheck: string;
+}
+
+export interface APIMetadata {
+  meta: {
+    versions: VersionMetadata[];
+  };
+}
+
+export interface APIVersioning {
+  defaultUrl: string;
+  versions: VersionMetadata[] | null;
   requestedApiVersion: string;
 }
 
-export interface IRootState {
-  apiVersioning: IApiVersioning;
-  application: IApplication;
-  router: RouterState;
+export interface OAuthAPISelection {
+  selectedOAuthApi: string;
+}
+
+export interface RootState {
+  oAuthApiSelection: OAuthAPISelection;
+  apiVersioning: APIVersioning;
 }

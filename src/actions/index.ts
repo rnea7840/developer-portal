@@ -1,30 +1,59 @@
 import { Action, ActionCreator } from 'redux';
+import { VersionMetadata } from '../types';
 import * as constants from '../types/constants';
 
-export * from './apply';
+export interface ResetVersioning extends Action {
+  type: constants.RESET_VERSIONING;
+}
 
-export interface ISetRequestedApiVersion extends Action {
+export interface SetRequestedAPIVersion extends Action {
   type: constants.SET_REQUESTED_API_VERSION;
   version: string;
 }
 
-export interface ISetInitialVersioning extends Action {
-  docUrl: string;
-  metadata: any;
-  type: constants.SET_INITIAL_VERSIONING;
+export interface SetVersioning extends Action {
+  defaultUrl: string;
+  type: constants.SET_VERSIONING;
+  version: string;
+  versions: VersionMetadata[] | null;
 }
 
-export const setRequstedApiVersion: ActionCreator<ISetRequestedApiVersion> = (version: string) => {
-  return {
-    type: constants.SET_REQUESTED_API_VERSION,
-    version,
-  };
-};
+export interface ResetOAuthAPISelection extends Action {
+  type: constants.RESET_OAUTH_API_SELECTION;
+}
 
-export const setInitialVersioning: ActionCreator<ISetInitialVersioning> = (docUrl: string, metadata: any) => {
-  return {
-    docUrl,
-    metadata,
-    type: constants.SET_INITIAL_VERSIONING,
-  };
-};
+export interface SetOAuthAPISelection extends Action {
+  type: constants.SET_OAUTH_API_SELECTION;
+  selectedOAuthApi: string;
+}
+
+export const resetVersioning: ActionCreator<ResetVersioning> = () => ({
+  type: constants.RESET_VERSIONING_VALUE,
+});
+
+export const setRequestedApiVersion: ActionCreator<SetRequestedAPIVersion> = (version: string) => ({
+  type: constants.SET_REQUESTED_API_VERSION_VALUE,
+  version,
+});
+
+export const setVersioning: ActionCreator<SetVersioning> = (
+  defaultUrl: string,
+  versions: VersionMetadata[] | null,
+  version: string = '',
+) => ({
+  defaultUrl,
+  type: constants.SET_VERSIONING_VALUE,
+  version,
+  versions,
+});
+
+export const resetOAuthApiSelection: ActionCreator<ResetOAuthAPISelection> = () => ({
+  type: constants.RESET_OAUTH_API_SELECTION_VALUE,
+});
+
+export const setOAuthApiSelection: ActionCreator<SetOAuthAPISelection> = (
+  selectedOAuthApi: string,
+) => ({
+  selectedOAuthApi,
+  type: constants.SET_OAUTH_API_SELECTION_VALUE,
+});

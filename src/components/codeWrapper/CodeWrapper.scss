@@ -1,0 +1,8 @@
+.code-wrapper {
+  overflow-x: auto;
+
+  & > pre {
+    margin: 0;
+    overflow: visible;
+  }
+}

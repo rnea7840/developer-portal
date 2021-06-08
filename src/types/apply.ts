@@ -1,40 +1,30 @@
-import { IErrorableInput } from './form';
-
-export interface IApiList {
-  appeals: boolean;
-  benefits: boolean;
-  claims: boolean;
-  confirmation: boolean;
-  facilities: boolean;
-  health: boolean;
-  vaForms: boolean;
-  verification: boolean;
-  communityCare: boolean;
+export interface ApplySuccessResult {
+  apis: string[];
+  clientID: string;
+  clientSecret: string;
+  email: string;
+  kongUsername: string;
+  token: string;
+  redirectURI: string;
 }
 
-export interface IApplyInputs {
-  apis: IApiList;
-  description: IErrorableInput;
-  email: IErrorableInput;
-  firstName: IErrorableInput;
-  lastName: IErrorableInput;
-  oAuthApplicationType: IErrorableInput;
-  oAuthRedirectURI: IErrorableInput;
-  organization: IErrorableInput;
+export interface DevApplicationRequest {
+  email: string;
+  firstName: string;
+  lastName: string;
+  organization: string;
+  description: string;
+  apis: string;
+  oAuthApplicationType: string;
+  oAuthRedirectURI: string;
   termsOfService: boolean;
 }
 
-export interface IApplySuccessResult {
-  email: string;
+export interface DevApplicationResponse {
   token: string;
   clientID: string;
   clientSecret: string;
-  apis: IApiList;
-}
-
-export interface IApplication {
-  inputs: IApplyInputs;
-  sending: boolean;
-  errorStatus?: string;
-  result?: IApplySuccessResult;
+  redirectURI: string;
+  kongUsername: string;
+  errors?: string[];
 }

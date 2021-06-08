@@ -1,82 +1,93 @@
 import * as React from 'react';
-
-import classNames from 'classnames';
-import { Flag } from 'flag';
-
-import { Redirect, RouteComponentProps } from 'react-router';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect } from 'react-router';
+import { Route, Switch, useParams } from 'react-router-dom';
 
 import { getApiCategoryOrder, getApiDefinitions, lookupApiCategory } from '../../apiDefs/query';
-import { IApiCategory, IApiDescription } from '../../apiDefs/schema';
-import SideNav, { SideNavEntry } from '../../components/SideNav';
-import { IApiNameParam } from '../../types';
-import { CURRENT_VERSION_IDENTIFIER } from '../../types/constants';
+import { APICategory, APIDescription } from '../../apiDefs/schema';
+import { ContentWithNav, SideNavEntry } from '../../components';
+import { Flag, useFlag } from '../../flags';
+import { APINameParam } from '../../types';
+import {
+  CURRENT_VERSION_IDENTIFIER,
+  FLAG_AUTH_DOCS_V2,
+  FLAG_CATEGORIES,
+  FLAG_HOSTED_APIS,
+} from '../../types/constants';
 import ApiPage from './ApiPage';
 import { AuthorizationDocs } from './AuthorizationDocs';
+import { AuthorizationDocsLegacy } from './AuthorizationDocsLegacy';
 import CategoryPage from './CategoryPage';
 import DocumentationOverview from './DocumentationOverview';
 import QuickstartPage from './QuickstartPage';
 
 import './Documentation.scss';
 
-function SideNavApiEntry(apiCategoryKey: string, api: IApiDescription) {
-  return (
-    <Flag key={api.urlFragment} name={`hosted_apis.${api.urlFragment}`}>
-      <SideNavEntry
-        key={api.urlFragment}
-        exact={true}
-        to={`/explore/${apiCategoryKey}/docs/${
-          api.urlFragment
-        }?version=${CURRENT_VERSION_IDENTIFIER}`}
-        name={
-          <React.Fragment>
-            {api.name}
-            {api.vaInternalOnly && (
-              <small className="vads-u-display--block">Internal VA use only.</small>
-            )}
-            {api.trustedPartnerOnly && (
-              <small className="vads-u-display--block">
-                Internal VA use only.{/*Trusted Partner use only.*/}
-              </small>
-            )}
-          </React.Fragment>
-        }
-        subNavLevel={1}
-      />
-    </Flag>
-  );
-}
-
-function OAuthSideNavEntry(apiCategoryKey: string) {
-  return (
+const SideNavApiEntry = (apiCategoryKey: string, api: APIDescription): JSX.Element => (
+  <Flag key={api.urlFragment} name={[FLAG_HOSTED_APIS, api.urlFragment]}>
     <SideNavEntry
-      to={`/explore/${apiCategoryKey}/docs/authorization`}
-      id={`side-nav-authorization-link-${apiCategoryKey}`}
-      name="Authorization"
+      key={api.urlFragment}
+      exact
+      to={`/explore/${apiCategoryKey}/docs/${api.urlFragment}?version=${CURRENT_VERSION_IDENTIFIER}`}
+      name={
+        <>
+          {api.name}
+          {api.vaInternalOnly && (
+            <small className="vads-u-display--block">Internal VA use only.</small>
+          )}
+          {api.trustedPartnerOnly && (
+            <small className="vads-u-display--block">
+              Internal VA use only.{/* Trusted Partner use only.*/}
+            </small>
+          )}
+        </>
+      }
       subNavLevel={1}
-    >
-      <SideNavEntry to="#getting-started" name="Getting Started" subNavLevel={2} />
-      <SideNavEntry to="#scopes" name="Scopes" subNavLevel={2} />
-      <SideNavEntry to="#id-token" name="ID Token" subNavLevel={2} />
-      <SideNavEntry to="#test-users" name="Test Users" subNavLevel={2} />
-      <SideNavEntry to="#security-considerations" name="Security Considerations" subNavLevel={2} />
-      <SideNavEntry to="#support" name="Support" subNavLevel={2} />
-      <SideNavEntry to="#sample-applications" name="Sample Application" subNavLevel={2} />
-    </SideNavEntry>
-  );
-}
+    />
+  </Flag>
+);
 
-function ExploreSideNav() {
-  const apiCategoryOrder = getApiCategoryOrder();
+const OAuthSideNavEntry = (apiCategoryKey: string): JSX.Element => (
+  <SideNavEntry
+    to={`/explore/${apiCategoryKey}/docs/authorization`}
+    id={`side-nav-authorization-link-${apiCategoryKey}`}
+    name="Authorization"
+    subNavLevel={1}
+  >
+    <SideNavEntry to="#getting-started" name="Getting Started" subNavLevel={2} />
+    <SideNavEntry
+      to="#building-openid-connect-applications"
+      name="Building OpenID Connect Applications"
+      subNavLevel={2}
+    />
+    <SideNavEntry to="#scopes" name="Scopes" subNavLevel={2} />
+    <SideNavEntry to="#id-token" name="ID Token" subNavLevel={2} />
+    <SideNavEntry to="#test-users" name="Test Users" subNavLevel={2} />
+    <SideNavEntry to="#security-considerations" name="Security Considerations" subNavLevel={2} />
+    <SideNavEntry to="#support" name="Support" subNavLevel={2} />
+    <SideNavEntry to="#sample-applications" name="Sample Application" subNavLevel={2} />
+  </SideNavEntry>
+);
+
+const ExploreSideNav = (): JSX.Element => {
+  const authDocsV2 = useFlag([FLAG_AUTH_DOCS_V2]);
+  const apiCategoryOrder: string[] = getApiCategoryOrder();
   const apiDefinitions = getApiDefinitions();
 
   return (
-    <SideNav ariaLabel="API Docs Side Nav">
-      <SideNavEntry key="all" exact={true} to="/explore" name="Overview" />
+    <>
+      <SideNavEntry key="all" exact to="/explore" name="Overview" />
+      <Flag name={[FLAG_AUTH_DOCS_V2]}>
+        <SideNavEntry
+          key="authorization"
+          to="/explore/authorization"
+          name="Authorization"
+          forceAriaCurrent
+        />
+      </Flag>
       {apiCategoryOrder.map((categoryKey: string) => {
-        const apiCategory: IApiCategory = apiDefinitions[categoryKey];
+        const apiCategory: APICategory = apiDefinitions[categoryKey];
         return (
-          <Flag name={`categories.${categoryKey}`} key={categoryKey}>
+          <Flag name={[FLAG_CATEGORIES, categoryKey]} key={categoryKey}>
             <SideNavEntry
               to={`/explore/${categoryKey}`}
               id={`side-nav-category-link-${categoryKey}`}
@@ -85,7 +96,7 @@ function ExploreSideNav() {
             >
               {apiCategory.content.quickstart && (
                 <SideNavEntry
-                  exact={true}
+                  exact
                   to={`/explore/${categoryKey}/docs/quickstart`}
                   name="Quickstart"
                   subNavLevel={1}
@@ -93,15 +104,16 @@ function ExploreSideNav() {
               )}
               {categoryKey !== 'benefits' &&
                 apiCategory.apis.some(api => !!api.oAuth) &&
+                !authDocsV2 &&
                 OAuthSideNavEntry(categoryKey)}
-              {apiCategory.apis.map((api: IApiDescription) => SideNavApiEntry(categoryKey, api))}
+              {apiCategory.apis.map((api: APIDescription) => SideNavApiEntry(categoryKey, api))}
             </SideNavEntry>
           </Flag>
         );
       })}
-    </SideNav>
+    </>
   );
-}
+};
 
 const oldRouteToNew = [
   {
@@ -118,48 +130,43 @@ const oldRouteToNew = [
   },
 ];
 
-export default class DocumentationRoot extends React.Component<
-  RouteComponentProps<IApiNameParam>,
-  {}
-> {
-  public render() {
-    const { apiCategoryKey } = this.props.match.params;
-    const shouldRouteCategory = !apiCategoryKey || lookupApiCategory(apiCategoryKey) != null;
-    return (
-      <div className={classNames('documentation', 'vads-u-padding-y--5')}>
-        <section className="vads-l-grid-container">
-          <div className="vads-l-row">
-            <ExploreSideNav />
-            <div className={classNames('vads-l-col--12', 'medium-screen:vads-l-col--8')}>
-              <Switch>
-                {oldRouteToNew.map(routes => {
-                  return (
-                    <Redirect key={routes.from} exact={true} from={routes.from} to={routes.to} />
-                  );
-                })}
-                {!shouldRouteCategory && <Redirect from="/explore/:apiCategoryKey" to="/explore" />}
-                <Route exact={true} path="/explore/" component={DocumentationOverview} />
-                <Route exact={true} path="/explore/:apiCategoryKey" component={CategoryPage} />
-                <Route
-                  exact={true}
-                  path="/explore/:apiCategoryKey/docs/authorization"
-                  component={AuthorizationDocs}
-                />
-                <Route
-                  exact={true}
-                  path="/explore/:apiCategoryKey/docs/quickstart"
-                  component={QuickstartPage}
-                />
-                <Route
-                  exact={true}
-                  path="/explore/:apiCategoryKey/docs/:apiName"
-                  component={ApiPage}
-                />
-              </Switch>
-            </div>
-          </div>
-        </section>
-      </div>
-    );
-  }
-}
+const DocumentationRoot = (): JSX.Element => {
+  const { apiCategoryKey } = useParams<APINameParam>();
+  const shouldRouteCategory = !apiCategoryKey || lookupApiCategory(apiCategoryKey) != null;
+  const authDocsV2 = useFlag([FLAG_AUTH_DOCS_V2]);
+
+  return (
+    <ContentWithNav
+      nav={<ExploreSideNav />}
+      content={
+        <Switch>
+          {oldRouteToNew.map(routes => (
+            <Redirect key={routes.from} exact from={routes.from} to={routes.to} />
+          ))}
+          {authDocsV2 && (
+            <Route path="/explore/authorization" component={AuthorizationDocs} exact />
+          )}
+          {authDocsV2 && (
+            <Redirect
+              exact
+              from="/explore/verification/docs/authorization"
+              to="/explore/authorization?api=veteran_verification"
+            />
+          )}
+          {!shouldRouteCategory && <Redirect from="/explore/:apiCategoryKey" to="/404" />}
+          <Route exact path="/explore/" component={DocumentationOverview} />
+          <Route exact path="/explore/:apiCategoryKey" component={CategoryPage} />
+          <Route exact path="/explore/:apiCategoryKey/docs/authorization">
+            {authDocsV2 ? <Redirect to="/explore/authorization" /> : <AuthorizationDocsLegacy />}
+          </Route>
+          <Route exact path="/explore/:apiCategoryKey/docs/quickstart" component={QuickstartPage} />
+          <Route exact path="/explore/:apiCategoryKey/docs/:apiName" component={ApiPage} />
+        </Switch>
+      }
+      navAriaLabel="API Docs Side Nav"
+      className="documentation"
+    />
+  );
+};
+
+export default DocumentationRoot;

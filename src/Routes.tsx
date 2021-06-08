@@ -1,89 +1,123 @@
 import * as React from 'react';
-
 import { Switch } from 'react-router';
 import { Redirect, Route } from 'react-router-dom';
 
-import { Flag } from 'flag';
 import { getDeactivatedFlags } from './apiDefs/deprecated';
 import { getEnvFlags } from './apiDefs/env';
-import { getApiCategoryOrder, getApiDefinitions } from './apiDefs/query';
-import { IApiDescription } from './apiDefs/schema';
-import MarkdownPage from './components/MarkdownPage';
-import ApplyForm from './containers/apply/ApplyForm';
-import ApplySuccess from './containers/apply/ApplySuccess';
-import BetaPage from './containers/Beta';
-import BetaSuccess from './containers/BetaSuccess';
+import {
+  getAllQuickstartCategorySlugs,
+  getApiCategoryOrder,
+  getApiDefinitions,
+} from './apiDefs/query';
+import { APIDescription } from './apiDefs/schema';
+import { MarkdownPage } from './components';
 import DisabledApplyForm from './containers/DisabledApplyForm';
 import DocumentationRoot from './containers/documentation/DocumentationRoot';
-import ProviderIntegrationGuide from './containers/documentation/ProviderIntegrationGuide';
-import ProviderIntegrationGuideSwaggerPreview from './containers/documentation/ProviderIntegrationGuideSwaggerPreview';
+import ProviderIntegrationGuideSwagger from './containers/documentation/ProviderIntegrationGuideSwagger';
 import Home from './containers/Home';
 import News from './containers/News';
-import NotFound from './containers/NotFound';
+import ErrorPage from './containers/ErrorPage';
 import ReleaseNotes from './containers/releaseNotes/ReleaseNotes';
-import Support from './containers/support/Support';
+import Support, { sections as supportSections, SupportSection } from './containers/support/Support';
 import PathToProduction from './content/goLive.mdx';
 import TermsOfService from './content/termsOfService.mdx';
+import ProviderIntegrationGuide from './content/providers/integrationGuide.mdx';
+import { Flag, getFlags } from './flags';
+import { Publishing } from './containers/publishing';
+import {
+  CONSUMER_PATH,
+  PUBLISHING_EXPECTATIONS_PATH,
+  PUBLISHING_ONBOARDING_PATH,
+  PUBLISHING_PATH,
+} from './types/constants/paths';
+import { Apply } from './containers/apply/Apply';
+import { FLAG_SIGNUPS_ENABLED } from './types/constants';
 
-export function SiteRoutes() {
+export const SiteRoutes: React.FunctionComponent = (): JSX.Element => {
+  const flags = getFlags();
   return (
     <Switch>
-      <Route exact={true} path="/" component={Home} />
-      <Route exact={true} path="/index.html" component={Home} />
+      <Route exact path="/" component={Home} />
+      <Route exact path="/index.html" component={Home} />
 
       {/* Legacy routes that we want to maintain: */}
-      <Route path="/explore/terms-of-service" render={() => <Redirect to="/terms-of-service" />} />
-      <Route path="/whats-new" render={() => <Redirect to="/news" />} />
+      <Route
+        path="/explore/terms-of-service"
+        render={(): JSX.Element => <Redirect to="/terms-of-service" />}
+      />
+      <Route path="/whats-new" render={(): JSX.Element => <Redirect to="/news" />} />
 
       {/* Current routes: */}
-      <Route path="/go-live" render={() => MarkdownPage(PathToProduction)} />
-      <Route path="/terms-of-service" render={() => MarkdownPage(TermsOfService)} />
+      <Route path="/go-live" render={(): JSX.Element => MarkdownPage(PathToProduction)} />
+      <Route path="/terms-of-service" render={(): JSX.Element => MarkdownPage(TermsOfService)} />
       <Route
         path="/apply"
-        render={() => (
+        render={(): JSX.Element => (
           <Flag
-            name="signups_enabled"
-            component={ApplyForm}
+            name={[FLAG_SIGNUPS_ENABLED]}
+            component={Apply}
             fallbackComponent={DisabledApplyForm}
           />
         )}
       />
-      <Route path="/applied" component={ApplySuccess} />
-      <Route path="/beta" component={BetaPage} />
-      <Route path="/beta-success" component={BetaSuccess} />
       <Route path="/explore/:apiCategoryKey?" component={DocumentationRoot} />
-      <Route exact={true} path="/explore/:apiCategoryKey/docs/:apiName" />
       <Route
         path="/oauth"
-        render={() => <Redirect to="/explore/verification/docs/authorization" />}
+        render={(): JSX.Element => <Redirect to="/explore/verification/docs/authorization" />}
       />
       <Route path="/release-notes/:apiCategoryKey?" component={ReleaseNotes} />
       <Route path="/news" component={News} />
       <Route path="/support" component={Support} />
       <Route
         path="/providers/integration-guide/swagger-preview"
-        component={ProviderIntegrationGuideSwaggerPreview}
+        component={ProviderIntegrationGuideSwagger}
       />
-      <Route path="/providers/integration-guide" component={ProviderIntegrationGuide} />
-      <Route component={NotFound} />
+      <Route
+        path="/providers/integration-guide"
+        render={(): JSX.Element => MarkdownPage(ProviderIntegrationGuide)}
+      />
+      <Route path={PUBLISHING_PATH} component={Publishing} />
+      {flags.consumer_docs && (
+        <Route path={CONSUMER_PATH} render={(): JSX.Element => <h1>Consumer docs page</h1>} />
+      )}
+      <Route render={(): JSX.Element => <ErrorPage errorCode={404} />} />
+      {/* The below Routes are needed for the sitemap */}
+      <Route path="/explore/:apiCategoryKey/docs/quickstart" />
+      <Route path="/explore/:apiCategoryKey/docs/:apiName" />
+      <Route exact path={PUBLISHING_EXPECTATIONS_PATH} />
+      <Route exact path={PUBLISHING_ONBOARDING_PATH} />
+      {supportSections.map((section: SupportSection) => (
+        <Route path={`/support/${section.id}`} key={section.id} />
+      ))}
     </Switch>
   );
+};
+
+interface SitemapConfig {
+  topLevelRoutes: React.FunctionComponent;
+  paramsConfig: Record<string, unknown>;
+  pathFilter: {
+    isValid: boolean;
+    rules: RegExp[];
+  };
 }
 
-/*  When a route is added to or removed from `topLevelRoutes` the sitemap will be automatically updated during the next build.
- *   There are situations when the config for react-router-sitemap needs to be updated for the sitemap to reflect the desired paths:
- *     - a route is included in `topLevelRoutes` that should not be included in the sitemap needs to be added to `pathFilter`
- *     - a route with dynamic subroutes (e.g. `/route/:param`) is added an array of the available params needs to be added to `paramsConfig`
+/**
+ * When a route is added to or removed from `topLevelRoutes` the sitemap will be automatically
+ * updated during the next build. There are situations when the config for react-router-sitemap needs
+ * to be updated for the sitemap to reflect the desired paths:
+ * - a route is included in `topLevelRoutes` that should not be included in the sitemap needs to be added to `pathFilter`
+ * - a route with dynamic subroutes (e.g. `/route/:param`) is added an array of the available params needs to be added to `paramsConfig`
  */
 
-export function sitemapConfig() {
+export const sitemapConfig = (): SitemapConfig => {
   const apiDefs = getApiDefinitions();
   const deactivatedFlags = getDeactivatedFlags();
   const envFlags = getEnvFlags();
 
-  function getApiRouteParams(route: string, apiCategory: string): string[] {
+  const getApiRouteParams = (route: string, apiCategory: string): string[] => {
     const routeParams = apiDefs[apiCategory].apis.reduce(
-      (result: string[], api: IApiDescription) => {
+      (result: string[], api: APIDescription) => {
         if (envFlags[api.urlFragment] && !deactivatedFlags[api.urlFragment]) {
           result.push(api.urlFragment);
         }
@@ -92,33 +126,27 @@ export function sitemapConfig() {
       [],
     );
 
-    if (
-      route === '/explore/:apiCategoryKey/docs/:apiName' &&
-      apiDefs[apiCategory].apis.some(api => !!api.oAuth) &&
-      apiCategory !== 'benefits'
-    ) {
-      routeParams.push('authorization');
-    }
-
     return routeParams;
-  }
+  };
 
   const apiCategoryOrder = getApiCategoryOrder();
+  const apiQuickstartCategories = getAllQuickstartCategorySlugs();
   return {
     paramsConfig: {
-      '/explore/:apiCategoryKey/docs/:apiName': apiCategoryOrder.map(apiCategory => {
-        return {
-          apiCategoryKey: apiCategory,
-          apiName: getApiRouteParams('/explore/:apiCategoryKey/docs/:apiName', apiCategory),
-        };
-      }),
+      '/explore/:apiCategoryKey/docs/:apiName': apiCategoryOrder.map(apiCategory => ({
+        apiCategoryKey: apiCategory,
+        apiName: getApiRouteParams('/explore/:apiCategoryKey/docs/:apiName', apiCategory),
+      })),
+      '/explore/:apiCategoryKey/docs/quickstart': [{ apiCategoryKey: apiQuickstartCategories }],
       '/explore/:apiCategoryKey?': [{ 'apiCategoryKey?': apiCategoryOrder }],
-      '/release-notes/:apiCategoryKey?': [{ 'apiCategoryKey?': apiCategoryOrder }],
+      '/release-notes/:apiCategoryKey?': [
+        { 'apiCategoryKey?': [...apiCategoryOrder, 'deactivated'] },
+      ],
     },
     pathFilter: {
       isValid: false,
-      rules: [/index.html|\/explore\/terms-of-service|\/applied|\/beta-success|\/oauth/],
+      rules: [/index.html|\/explore\/terms-of-service|\/applied|\/oauth/],
     },
     topLevelRoutes: SiteRoutes,
   };
-}
+};
