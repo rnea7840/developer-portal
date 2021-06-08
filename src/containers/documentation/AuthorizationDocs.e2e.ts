@@ -33,7 +33,7 @@ describe('AuthorizationDocs', () => {
 
       contentsList = (await contentsHeading.evaluateHandle(
         headingEl => headingEl.nextElementSibling,
-      ));
+      )) as ElementHandle;
     });
 
     it.each(headings)('moves focus to the %s section', async (sectionName: string) => {
@@ -61,7 +61,7 @@ describe('AuthorizationDocs', () => {
 
       contentsList = (await contentsHeading.evaluateHandle(
         headingEl => headingEl.nextElementSibling,
-      ));
+      )) as ElementHandle;
     });
 
     it.each(headings)(
