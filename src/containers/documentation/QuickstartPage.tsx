@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { Redirect, useParams } from 'react-router';
 
-import { getApiDefinitions } from '../../apiDefs/query';
+import { getApiDefinitions, lookupApiByFragment } from '../../apiDefs/query';
 import { QuickstartWrapper } from '../../components';
 import { APINameParam } from '../../types';
 
@@ -21,7 +21,11 @@ const QuickstartPage = (): JSX.Element => {
   if (quickstartContent) {
     return <QuickstartWrapper categoryName={name} quickstartContent={quickstartContent} />;
   } else {
-    return <Redirect to={`/explore/${apiCategoryKey}`} />;
+    const apiLookup = lookupApiByFragment(apiCategoryKey);
+    if (apiLookup) {
+      return <Redirect to={`/explore/${apiCategoryKey}`} />;
+    }
+    return <Redirect to="/404" />;
   }
 };
 
