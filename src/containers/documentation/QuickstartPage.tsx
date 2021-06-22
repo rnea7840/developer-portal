@@ -23,7 +23,7 @@ const QuickstartPage = (): JSX.Element => {
   } else {
     const apiLookup = lookupApiByFragment(apiCategoryKey);
     if (apiLookup) {
-      return <Redirect to={`/explore/${apiCategoryKey}`} />;
+      return <Redirect to={`/explore/${apiLookup.urlFragment}`} />;
     }
     return <Redirect to="/404" />;
   }
