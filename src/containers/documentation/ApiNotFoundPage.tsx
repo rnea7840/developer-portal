@@ -1,11 +1,11 @@
 import * as React from 'react';
 
 import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
-import { Redirect, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { isApiDeactivated } from '../../apiDefs/deprecated';
-import { lookupApiCategory } from '../../apiDefs/query';
+import { getAllCategorySlugs, lookupApiCategory } from '../../apiDefs/query';
 import { APIDescription } from '../../apiDefs/schema';
 import { PageHeader } from '../../components';
 import { APINameParam } from '../../types';
@@ -14,9 +14,8 @@ import { PAGE_HEADER_ID } from '../../types/constants';
 const ApiNotFoundPage = (): JSX.Element => {
   const { apiCategoryKey } = useParams<APINameParam>();
   const category = lookupApiCategory(apiCategoryKey);
-  if (!category) {
-    return <Redirect to="/404" />;
-  }
+  const categories = getAllCategorySlugs();
+  const categoryUrlFragment = categories[categories.indexOf(apiCategoryKey)];
 
   return (
     <div role="region" aria-labelledby={PAGE_HEADER_ID}>
@@ -26,13 +25,15 @@ const ApiNotFoundPage = (): JSX.Element => {
         content="Try using the links below or the search bar to find your way forward."
         status="warning"
       />
-      {category.name && <PageHeader header={category.name} />}
+      {category?.name && <PageHeader header={category.name} />}
       <ul>
-        {category.apis
+        {category?.apis
           .filter((item: APIDescription) => !isApiDeactivated(item))
           .map((item: APIDescription) => (
             <li key={item.urlFragment}>
-              <Link to={`/explore/${apiCategoryKey}/docs/${item.urlFragment}`}>{item.name}</Link>
+              <Link to={`/explore/${categoryUrlFragment}/docs/${item.urlFragment}`}>
+                {item.name}
+              </Link>
             </li>
           ))}
       </ul>

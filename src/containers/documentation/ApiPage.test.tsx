@@ -139,7 +139,7 @@ describe('ApiPage', () => {
     });
 
     it('calls lookupApi methods with correct parameters', () => {
-      expect(lookupApiByFragmentMock).toHaveBeenCalledTimes(1);
+      expect(lookupApiByFragmentMock).toHaveBeenCalledTimes(0);
       expect(lookupApiCategoryMock).toHaveBeenCalledWith('lotr');
     });
 
