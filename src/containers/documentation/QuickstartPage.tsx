@@ -17,15 +17,12 @@ const QuickstartPage = (): JSX.Element => {
     content: { quickstart: quickstartContent },
     name,
   } = getApiDefinitions()[apiCategoryKey];
+  const modifiedApiCategoryKey = `${apiCategoryKey}`;
 
   if (quickstartContent) {
     return <QuickstartWrapper categoryName={name} quickstartContent={quickstartContent} />;
   } else {
-    const apiLookup = lookupApiByFragment(apiCategoryKey);
-    if (apiLookup) {
-      return <Redirect to={`/explore/${apiLookup.urlFragment}`} />;
-    }
-    return <Redirect to="/404" />;
+    return <Redirect to={`/explore/${modifiedApiCategoryKey}`} />;
   }
 };
 

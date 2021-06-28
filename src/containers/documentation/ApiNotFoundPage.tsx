@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { isApiDeactivated } from '../../apiDefs/deprecated';
-import { lookupApiByFragment, lookupApiCategory } from '../../apiDefs/query';
+import { lookupApiCategory } from '../../apiDefs/query';
 import { APIDescription } from '../../apiDefs/schema';
 import { PageHeader } from '../../components';
 import { APINameParam } from '../../types';
@@ -14,8 +14,7 @@ import { PAGE_HEADER_ID } from '../../types/constants';
 const ApiNotFoundPage = (): JSX.Element => {
   const { apiCategoryKey } = useParams<APINameParam>();
   const category = lookupApiCategory(apiCategoryKey);
-  // You can't get to this page without a valid API so this ?? is just for TypeScript's benefit
-  const api = lookupApiByFragment(apiCategoryKey) ?? { urlFragment: '' };
+  const modifiedApiCategoryKey = `${apiCategoryKey}`;
 
   return (
     <div role="region" aria-labelledby={PAGE_HEADER_ID}>
@@ -31,7 +30,9 @@ const ApiNotFoundPage = (): JSX.Element => {
           .filter((item: APIDescription) => !isApiDeactivated(item))
           .map((item: APIDescription) => (
             <li key={item.urlFragment}>
-              <Link to={`/explore/${api.urlFragment}/docs/${item.urlFragment}`}>{item.name}</Link>
+              <Link to={`/explore/${modifiedApiCategoryKey}/docs/${item.urlFragment}`}>
+                {item.name}
+              </Link>
             </li>
           ))}
       </ul>
