@@ -1,8 +1,13 @@
 import classNames from 'classnames';
 import React, { FC } from 'react';
+import { ContactUsContent } from '../../../../types/content';
 import { TextField } from '../../../../components';
 
-const ConsumerFormFields: FC = () => (
+interface ConsumerFormFieldsProps {
+  content: ContactUsContent;
+}
+
+const ConsumerFormFields: FC<ConsumerFormFieldsProps> = ({ content }) => (
   <>
     <legend>
       <h2
@@ -16,7 +21,7 @@ const ConsumerFormFields: FC = () => (
       </h2>
     </legend>
     <TextField
-      label="Describe your question or issue in as much detail as you can. If your question is about an error, include steps you took to get it and any error messaging you received."
+      label={content.consumerDescription}
       name="description"
       as="textarea"
       required

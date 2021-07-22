@@ -27,3 +27,16 @@ export const loadFAQContent = async (): Promise<FAQContent | null> => {
 
   return null;
 };
+
+export const loadContent = async <T extends unknown>(contentKey: string): Promise<T | null> => {
+  const response = await makeRequest<T>(
+    `${CONTENT_HOST}/${contentKey}`,
+    { method: 'GET' },
+  );
+
+  if (response.ok) {
+    return (response as HttpSuccessResponse<T>).body;
+  }
+
+  return null;
+};

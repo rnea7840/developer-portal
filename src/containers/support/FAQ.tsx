@@ -2,7 +2,7 @@ import LoadingIndicator from '@department-of-veterans-affairs/component-library/
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import Markdown from 'react-markdown';
-import { loadFAQContent } from '../../content/loaders';
+import { loadContent } from '../../content/loaders';
 import { FAQContent } from '../../types/content';
 import { AccordionPanelContent, GroupedAccordions, PageHeader } from '../../components';
 
@@ -28,12 +28,12 @@ const SupportQuestions = (props: SupportQuestionsProps): JSX.Element => {
 const SupportFAQ: () => JSX.Element = () => {
   const [content, setContent] = useState<FAQContent | null>(null);
   useEffect(() => {
-    const loadContent = async (): Promise<void> => {
-      const newContent = await loadFAQContent();
+    const loadFAQContent = async (): Promise<void> => {
+      const newContent = await loadContent<FAQContent>('faq');
       setContent(newContent);
     };
 
-    void loadContent();
+    void loadFAQContent();
   }, []);
 
   const headerProps = {

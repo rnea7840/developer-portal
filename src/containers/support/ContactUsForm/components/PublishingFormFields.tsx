@@ -1,38 +1,39 @@
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import React, { FC } from 'react';
+import Markdown from 'react-markdown';
 import { TextField, CheckboxRadioField } from '../../../../components';
 import { ContactUsFormState } from '../../../../types/contactUsForm';
+import { ContactUsContent } from '../../../../types/content';
+
+interface PublishingFormFieldsProps {
+  content: ContactUsContent;
+}
 
 const titleClass = classNames(
   'vads-u-margin-top--4',
   'vads-u-margin-bottom--2p5',
   'vads-u-font-size--lg',
 );
-const PublishingFormFields: FC = () => {
+
+const PublishingFormFields: FC<PublishingFormFieldsProps> = ({ content }) => {
   const { values } = useFormikContext<ContactUsFormState>();
   return (
     <>
       <h2 className={titleClass}>Tell us about your API</h2>
       <TextField
-        label="Include as much information about your API as possible"
+        label={content.providerDescription}
         name="apiDetails"
         as="textarea"
         description={
-          <ul className="vads-u-margin-y--2p5">
-            <li>Your API’s background, purpose, target users, and functionality </li>
-            <li>Any current or future consumers, including estimated volume of calls</li>
-            <li>Key performance indicators and service level objectives</li>
-            <li>A desired go-live date</li>
-            <li>The business and technical points of contact for your API</li>
-          </ul>
+          <Markdown>{content.providerDescriptionChecklist}</Markdown>
         }
         required
       />
 
       <h2 className={titleClass}>Description</h2>
       <TextField
-        label="Send us your OpenAPI specification. Include a public-facing description of your API."
+        label={content.providerOpenAPISpec}
         name="apiDescription"
         as="textarea"
       />
@@ -64,7 +65,7 @@ const PublishingFormFields: FC = () => {
 
       <h2 className={titleClass}>Other information</h2>
       <TextField
-        label="Is there anything else we should know about your API, how it’s used, or what you need from us?"
+        label={content.providerOtherInformation}
         name="apiOtherInfo"
         as="textarea"
       />

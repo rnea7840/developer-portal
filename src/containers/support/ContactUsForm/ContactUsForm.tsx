@@ -5,6 +5,7 @@ import { Formik, Form } from 'formik';
 import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
 import { CheckboxRadioField } from '../../../components';
 import { CONTACT_US_URL } from '../../../types/constants';
+import { ContactUsContent } from '../../../types/content';
 import { makeRequest, ResponseType } from '../../../utils/makeRequest';
 import './ContactUsForm.scss';
 import { ContactUsFormState, FormType, SubmissionData } from '../../../types/contactUsForm';
@@ -14,11 +15,14 @@ import PublishingFormFields from './components/PublishingFormFields';
 import validateForm from './validateForm';
 
 const ContactUsFormPropTypes = {
+  content: PropTypes.object.isRequired,
   defaultType: PropTypes.oneOf([FormType.CONSUMER, FormType.PUBLISHING]).isRequired,
   onSuccess: PropTypes.func.isRequired,
 };
 
-type ContactUsFormProps = PropTypes.InferProps<typeof ContactUsFormPropTypes>;
+type ContactUsFormProps = PropTypes.InferProps<typeof ContactUsFormPropTypes> & {
+  content: ContactUsContent;
+};
 
 const processedData = (values: ContactUsFormState): SubmissionData => {
   const contactFormData = {
@@ -53,7 +57,11 @@ const processedData = (values: ContactUsFormState): SubmissionData => {
   }
 };
 
-const ContactUsFormPublishing = ({ onSuccess, defaultType }: ContactUsFormProps): JSX.Element => {
+const ContactUsFormPublishing = ({
+  onSuccess,
+  defaultType,
+  content,
+}: ContactUsFormProps): JSX.Element => {
   const [submissionError, setSubmissionError] = useState(false);
   const initialValues: ContactUsFormState = {
     apiDescription: '',
@@ -90,25 +98,25 @@ const ContactUsFormPublishing = ({ onSuccess, defaultType }: ContactUsFormProps)
     <Formik initialValues={initialValues} onSubmit={formSubmission} validate={validateForm}>
       {({ values, isSubmitting, isValid, dirty }): ReactNode => (
         <Form className={classNames('va-api-contact-us-form', 'vads-u-margin-top--6')}>
-          <ContactDetailsFormFields />
+          <ContactDetailsFormFields content={content} />
 
           <fieldset className="vads-u-margin-top--6">
             <legend className="vads-u-margin-bottom--2p5">
               <h2 className={classNames('vads-u-font-size--lg', 'vads-u-margin-y--0')}>
-                What can we help you with?
+                {content.formTypeHeading}
               </h2>
             </legend>
-            <CheckboxRadioField type="radio" label="Report a problem or ask a question" name="type" value={FormType.CONSUMER}  />
-            <CheckboxRadioField type="radio" label="Publish your API to Lighthouse - Internal VA use only" name="type" value={FormType.PUBLISHING}  />
+            <CheckboxRadioField type="radio" label={content.consumerOptionLabel} name="type" value={FormType.CONSUMER} />
+            <CheckboxRadioField type="radio" label={content.providerOptionLabel} name="type" value={FormType.PUBLISHING} />
           </fieldset>
 
           {
             values.type === FormType.CONSUMER &&
-            <ConsumerFormFields />
+            <ConsumerFormFields content={content} />
           }
           {
             values.type === FormType.PUBLISHING &&
-            <PublishingFormFields />
+            <PublishingFormFields content={content} />
           }
 
           <button type="submit" className="vads-u-width--auto" disabled={!dirty || !isValid}>{isSubmitting ? 'Sending...' : 'Submit'}</button>

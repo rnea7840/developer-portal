@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
 import { TextField } from '../../../../components';
+import { ContactUsContent } from '../../../../types/content';
 
 const textFieldClasses = (paddingDirection: string): string =>
   classNames(
@@ -9,11 +10,15 @@ const textFieldClasses = (paddingDirection: string): string =>
     `small-screen:vads-u-padding-${paddingDirection}--2`,
   );
 
-const ContactDetailsFormFields: FC = () => (
+interface ContactDetailsFormFieldsProps {
+  content: ContactUsContent;
+}
+
+const ContactDetailsFormFields: FC<ContactDetailsFormFieldsProps> = ({ content }) => (
   <fieldset className={classNames('vads-l-grid-container', 'vads-u-padding-x--0', 'contact-details')}>
     <legend>
       <h2 className={classNames('vads-u-font-size--lg', 'vads-u-margin-y--0')}>
-        Tell us about you
+        {content.contactInfoHeading}
       </h2>
     </legend>
     <div className={classNames('vads-l-row', 'vads-u-margin-top--2p5')}>
