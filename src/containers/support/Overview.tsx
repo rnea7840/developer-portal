@@ -1,15 +1,14 @@
-import * as React from 'react';
+import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
+import LoadingIndicator from '@department-of-veterans-affairs/component-library/LoadingIndicator';
+import camelCase from 'lodash.camelcase';
+import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
+import Markdown from 'react-markdown';
 import { CardLinkLegacy, PageHeader } from '../../components';
+import { loadSupportOverviewContent } from '../../content/loaders';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
+import { SupportOverviewContent } from '../../types/content';
 import { SupportSection } from './Support';
-import { ContactUsAlertBox } from './ContactUsAlertBox';
-
-const headerProps = {
-  description:
-    "Welcome to support for the VA Lighthouse API program. You can visit our FAQ page for answers to common questions. For support or general feedback, use our 'Contact Us' form. Our customer support team is happy to help and will respond within one business day.",
-  header: 'Support',
-};
 
 interface SupportOverviewProps {
   readonly sections: SupportSection[];
@@ -17,21 +16,46 @@ interface SupportOverviewProps {
 
 const SupportOverview: React.FunctionComponent<SupportOverviewProps> = (
   props: SupportOverviewProps,
-): JSX.Element => (
-  <>
-    <Helmet>
-      <title>Support</title>
-    </Helmet>
-    <PageHeader {...headerProps} />
-    <ContactUsAlertBox />
-    <div className={defaultFlexContainer()}>
-      {props.sections.map((section: SupportSection) => (
-        <CardLinkLegacy name={section.name} url={`/support/${section.id}`} key={section.id}>
-          {section.description}
-        </CardLinkLegacy>
-      ))}
-    </div>
-  </>
-);
+): JSX.Element => {
+  const [content, setContent] = useState<SupportOverviewContent | null>(null);
+  useEffect(() => {
+    const loadContent = async (): Promise<void> => {
+      const newContent = await loadSupportOverviewContent();
+      setContent(newContent);
+    };
+
+    void loadContent();
+  }, []);
+
+  const headerProps = {
+    description: content?.leadParagraph,
+    header: 'Support',
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>Support</title>
+      </Helmet>
+      <PageHeader {...headerProps} />
+      {content ? (
+        <>
+          <AlertBox status="info" className="vads-u-margin-bottom--2 vads-u-padding-y--1">
+            <Markdown>{content.veteranNotice}</Markdown>
+          </AlertBox>
+          <div className={defaultFlexContainer()}>
+            {props.sections.map((section: SupportSection) => (
+              <CardLinkLegacy name={section.name} url={`/support/${section.id}`} key={section.id}>
+                {content[`${camelCase(section.id)}Description`]}
+              </CardLinkLegacy>
+            ))}
+          </div>
+        </>
+      ) : (
+        <LoadingIndicator message="Loading..." />
+      )}
+    </>
+  );
+};
 
 export default SupportOverview;
