@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
+import Markdown from 'react-markdown';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
@@ -9,27 +11,38 @@ import { getApiDefinitions } from '../../apiDefs/query';
 import { APIDescription } from '../../apiDefs/schema';
 import { CardLinkLegacy, OnlyTags, PageHeader } from '../../components';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
-import { APINameParam } from '../../types';
+import { APINameParam, APIsContent, RootState } from '../../types';
 import { FLAG_HOSTED_APIS, PAGE_HEADER_ID, FLAG_CONSUMER_DOCS } from '../../types/constants';
 import { CONSUMER_PATH } from '../../types/constants/paths';
+import { APICategoryContent } from '../../types/content';
 
 const CategoryPage = (): JSX.Element => {
   const { apiCategoryKey } = useParams<APINameParam>();
 
   const {
     apis,
-    name: categoryName,
-    content: { overview, veteranRedirect, consumerDocsLinkText },
   } = getApiDefinitions()[apiCategoryKey];
+
+  const categoryContent = useSelector<
+    RootState,
+    APICategoryContent
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  >(state => state.content.categories![apiCategoryKey]);
+
+  const apiContent = useSelector<RootState, APIsContent>(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.content.apis!,
+  );
 
   let cardSection;
   if (apis.length > 0) {
     const apiCards = apis.map((apiDesc: APIDescription) => {
-      const { description, name, urlFragment, vaInternalOnly, trustedPartnerOnly } = apiDesc;
+      const { urlFragment, vaInternalOnly, trustedPartnerOnly } = apiDesc;
+      const content = apiContent[apiDesc.urlFragment];
       return (
-        <Flag key={name} name={[FLAG_HOSTED_APIS, urlFragment]}>
+        <Flag key={apiDesc.urlFragment} name={[FLAG_HOSTED_APIS, urlFragment]}>
           <CardLinkLegacy
-            name={name}
+            name={content.name}
             subhead={
               vaInternalOnly || trustedPartnerOnly ? (
                 <OnlyTags {...{ trustedPartnerOnly, vaInternalOnly }} />
@@ -37,7 +50,7 @@ const CategoryPage = (): JSX.Element => {
             }
             url={`/explore/${apiCategoryKey}/docs/${urlFragment}`}
           >
-            {description}
+            {content.description}
           </CardLinkLegacy>
         </Flag>
       );
@@ -53,24 +66,23 @@ const CategoryPage = (): JSX.Element => {
   return (
     <div className="va-api-api-overview">
       <Helmet>
-        <title>{categoryName}</title>
+        <title>{categoryContent.name}</title>
       </Helmet>
-      <PageHeader header={categoryName} />
-      {veteranRedirect && (
+      <PageHeader header={categoryContent.name} />
+      {categoryContent.veteranNotice && (
         <AlertBox
           status="info"
           key={apiCategoryKey}
           className={classNames('vads-u-margin-bottom--2', 'vads-u-padding-y--1')}
         >
-          {veteranRedirect.message}&nbsp;
-          <a href={veteranRedirect.linkUrl}>{veteranRedirect.linkText}</a>.
+          <Markdown>{categoryContent.veteranNotice}</Markdown>
         </AlertBox>
       )}
       <div className="vads-u-width--full">
-        {overview({})}
+        <Markdown>{categoryContent.overview}</Markdown>
         <Flag name={[FLAG_CONSUMER_DOCS]}>
           <p>
-            <Link to={CONSUMER_PATH}>{consumerDocsLinkText}</Link>.
+            <Link to={CONSUMER_PATH}>{categoryContent.consumerDocsLink}</Link>.
           </p>
         </Flag>
       </div>

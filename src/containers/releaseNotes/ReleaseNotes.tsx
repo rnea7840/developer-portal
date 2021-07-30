@@ -1,4 +1,6 @@
-import * as React from 'react';
+import LoadingIndicator from '@department-of-veterans-affairs/component-library/LoadingIndicator';
+import React, { useEffect, Dispatch } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { FLAG_CATEGORIES, PAGE_HEADER_AND_HALO_ID } from '../../types/constants';
 import {
@@ -6,12 +8,20 @@ import {
   RELEASE_NOTES_DEACTIVATED_PATH,
   RELEASE_NOTES_PATH,
 } from '../../types/constants/paths';
+import {
+  loadAPIContent,
+  LoadAPIContentThunk,
+  loadCategoryContent,
+  LoadCategoryContentThunk,
+} from '../../actions/content';
 import { getDeactivatedCategory, isApiDeactivated } from '../../apiDefs/deprecated';
 import { isHostedApiEnabled } from '../../apiDefs/env';
 import { getApiCategoryOrder, getApiDefinitions } from '../../apiDefs/query';
 import { APIDescription, BaseAPICategory } from '../../apiDefs/schema';
 import { ContentWithNav, SideNavEntry } from '../../components';
 import { Flag } from '../../flags';
+import { RootState } from '../../types';
+import { APICategoryContent, APIContent } from '../../types/content';
 import { CategoryReleaseNotes, DeactivatedReleaseNotes } from './CategoryReleaseNotes';
 import ReleaseNotesOverview from './ReleaseNotesOverview';
 
@@ -23,13 +33,19 @@ interface SideNavAPIEntryProps {
 const SideNavAPIEntry = (props: SideNavAPIEntryProps): JSX.Element => {
   const { api, categoryKey } = props;
   const dashUrlFragment = props.api.urlFragment.replace('_', '-');
+
+  const content = useSelector<RootState, APIContent>(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.content.apis![api.urlFragment],
+  );
+
   return (
     <SideNavEntry
       key={api.urlFragment}
       to={`/release-notes/${categoryKey}#${dashUrlFragment}`}
       name={
         <React.Fragment>
-          {api.name}
+          {content.name}
           <br />
           {api.vaInternalOnly && (
             <span>
@@ -60,9 +76,14 @@ const SideNavCategoryEntry = (props: SideNavCategoryEntryProps): JSX.Element => 
     api => !isApiDeactivated(api) && isHostedApiEnabled(api.urlFragment, api.enabledByDefault),
   );
 
+  const content = useSelector<RootState, APICategoryContent>(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.content.categories![categoryKey],
+  );
+
   return (
     <Flag name={[FLAG_CATEGORIES, categoryKey]} key={categoryKey}>
-      <SideNavEntry to={`/release-notes/${categoryKey}`} name={apiCategory.name}>
+      <SideNavEntry to={`/release-notes/${categoryKey}`} name={content.name}>
         {apis.length > 1 &&
           apis.map(api => (
             <SideNavAPIEntry api={api} key={api.urlFragment} categoryKey={categoryKey} />
@@ -73,6 +94,12 @@ const SideNavCategoryEntry = (props: SideNavCategoryEntryProps): JSX.Element => 
 };
 
 const ReleaseNotes = (): JSX.Element => {
+  const dispatch = useDispatch<Dispatch<LoadCategoryContentThunk | LoadAPIContentThunk>>();
+  useEffect(() => {
+    dispatch(loadCategoryContent());
+    dispatch(loadAPIContent());
+  }, [dispatch]);
+
   const categoryOrder = getApiCategoryOrder();
   const apiDefs = getApiDefinitions();
   const deactivatedCategory = getDeactivatedCategory();
@@ -80,7 +107,11 @@ const ReleaseNotes = (): JSX.Element => {
     isHostedApiEnabled(api.urlFragment, api.enabledByDefault),
   );
 
-  return (
+  const categoryContent = useSelector<RootState>(state => state.content.categories);
+  const apiContent = useSelector<RootState>(state => state.content.apis);
+  const isContentLoaded = !!(categoryContent && apiContent);
+
+  return isContentLoaded ? (
     <ContentWithNav
       nav={
         <>
@@ -108,7 +139,7 @@ const ReleaseNotes = (): JSX.Element => {
       navAriaLabel="Release Notes Side Nav"
       contentAriaLabelledBy={PAGE_HEADER_AND_HALO_ID}
     />
-  );
+  ) : <LoadingIndicator message="Loading release notes..." />;
 };
 
 export default ReleaseNotes;

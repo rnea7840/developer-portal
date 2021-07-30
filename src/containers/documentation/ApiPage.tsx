@@ -1,6 +1,8 @@
 import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
 import * as React from 'react';
 import Helmet from 'react-helmet';
+import Markdown from 'react-markdown';
+import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import classNames from 'classnames';
 import { isApiDeactivated, isApiDeprecated } from '../../apiDefs/deprecated';
@@ -11,12 +13,16 @@ import { PageHeader } from '../../components';
 import ExplorePage from '../../content/explorePage.mdx';
 import { Flag } from '../../flags';
 
-import { APINameParam } from '../../types';
+import { APINameParam, RootState } from '../../types';
+import { APIContent } from '../../types/content';
 import { FLAG_API_ENABLED_PROPERTY } from '../../types/constants';
 import ApiDocumentation from './ApiDocumentation';
 import ApiNotFoundPage from './ApiNotFoundPage';
 
-const DeactivationMessage = ({ api }: { api: APIDescription }): JSX.Element | null => {
+const DeactivationMessage = ({
+  api,
+  content,
+}: { api: APIDescription; content: APIContent }): JSX.Element | null => {
   /*
    * This code should be unneeded but is required for the linter. Without this
    * code DeactivationMessage will still return null (isApiDeprecated and
@@ -37,12 +43,13 @@ const DeactivationMessage = ({ api }: { api: APIDescription }): JSX.Element | nu
     return null;
   }
 
-  const { deactivationContent, deprecationContent } = api.deactivationInfo;
-  const content = isDeactivated ? deactivationContent : deprecationContent;
-
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const message = isDeactivated ? content.deactivationNotice! : content.deprecationNotice!;
   return (
     <div className={classNames('usa-alert', 'usa-alert-info', 'va-api-alert-box')}>
-      <div className={classNames('usa-alert-body')}>{content({})}</div>
+      <div className={classNames('usa-alert-body')}>
+        <Markdown>{message}</Markdown>
+      </div>
     </div>
   );
 };
@@ -61,8 +68,12 @@ const ApiPage = (): JSX.Element => {
 
   const api = getApi(params.apiName);
   const category = lookupApiCategory(params.apiCategoryKey);
+  const content = useSelector<RootState, APIContent | undefined>(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.content.apis![api?.urlFragment ?? '']
+  );
 
-  if (api === null || !category?.apis.includes(api)) {
+  if (api === null || !category?.apis.includes(api) || !content) {
     return <ApiNotFoundPage />;
   }
 
@@ -75,17 +86,16 @@ const ApiPage = (): JSX.Element => {
         <title>{api.name} Documentation</title>
       </Helmet>
       <PageHeader halo={category.name} header={api.name} />
-      {api.veteranRedirect && (
+      {content.veteranNotice && (
         <AlertBox
           status="info"
           key={api.urlFragment}
           className={classNames('vads-u-margin-bottom--2', 'vads-u-padding-y--1')}
         >
-          {api.veteranRedirect.message}&nbsp;
-          <a href={api.veteranRedirect.linkUrl}>{api.veteranRedirect.linkText}</a>.
+          <Markdown>{content.veteranNotice}</Markdown>
         </AlertBox>
       )}
-      <DeactivationMessage api={api} />
+      <DeactivationMessage api={api} content={content} />
       {!isApiDeactivated(api) && <ApiDocumentation apiDefinition={api} location={location} />}
     </Flag>
   );

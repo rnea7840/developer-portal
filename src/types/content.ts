@@ -1,3 +1,24 @@
+export interface APICategoryContent {
+  friendlyId: string;
+  name: string;
+  description: string;
+  overview: string;
+  consumerDocsLink: string;
+  quickstart: string;
+  veteranNotice: string;
+}
+
+export interface APIContent {
+  friendlyId: string;
+  name: string;
+  description: string;
+  releaseNotes: string;
+  deactivationNotice?: string;
+  deprecationNotice?: string;
+  veteranNotice?: string;
+}
+
+/* SUPPORT */
 export interface SupportOverviewContent {
   leadParagraph: string;
   veteranNotice: string;

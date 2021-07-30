@@ -1,7 +1,9 @@
 import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
 import classNames from 'classnames';
-import * as React from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
+import Markdown from 'react-markdown';
+import { useSelector } from 'react-redux';
 import { Redirect, useParams } from 'react-router';
 import {
   PAGE_HEADER_AND_HALO_ID,
@@ -15,7 +17,7 @@ import { APIDescription, BaseAPICategory } from '../../apiDefs/schema';
 import { CardLinkLegacy, OnlyTags, PageHeader } from '../../components';
 import { Flag, getFlags } from '../../flags';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
-import { APINameParam } from '../../types';
+import { APINameParam, APIsContent, RootState } from '../../types';
 
 interface ReleaseNotesCardLinksProps {
   categoryKey: string;
@@ -29,6 +31,10 @@ const ReleaseNotesCardLinks: React.FunctionComponent<ReleaseNotesCardLinksProps>
   const { apiCategory, categoryKey, flagName } = props;
   const flags: { [apiId: string]: boolean } = getFlags()[flagName];
   const apis: APIDescription[] = apiCategory.apis.filter(api => flags[api.urlFragment]);
+  const apiContent = useSelector<RootState, APIsContent>(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.content.apis!,
+  );
   if (apis.length < 2) {
     return null;
   }
@@ -37,13 +43,13 @@ const ReleaseNotesCardLinks: React.FunctionComponent<ReleaseNotesCardLinksProps>
     <div role="navigation" aria-labelledby={PAGE_HEADER_AND_HALO_ID}>
       <div className={defaultFlexContainer()}>
         {apis.map((apiDesc: APIDescription) => {
-          const { description, name, urlFragment, vaInternalOnly, trustedPartnerOnly } = apiDesc;
+          const { urlFragment, vaInternalOnly, trustedPartnerOnly } = apiDesc;
           const dashUrlFragment = urlFragment.replace('_', '-');
-
+          const content = apiContent[apiDesc.urlFragment];
           return (
             <CardLinkLegacy
-              key={name}
-              name={name}
+              key={apiDesc.urlFragment}
+              name={content.name}
               subhead={
                 vaInternalOnly || trustedPartnerOnly ? (
                   <OnlyTags {...{ trustedPartnerOnly, vaInternalOnly }} />
@@ -51,7 +57,7 @@ const ReleaseNotesCardLinks: React.FunctionComponent<ReleaseNotesCardLinksProps>
               }
               url={`/release-notes/${categoryKey}#${dashUrlFragment}`}
             >
-              {description}
+              {content.description}
             </CardLinkLegacy>
           );
         })}
@@ -68,6 +74,10 @@ const APIReleaseNote = ({
   flagName: 'enabled' | 'hosted_apis';
 }): JSX.Element => {
   const dashUrlFragment = api.urlFragment.replace('_', '-');
+  const apiContent = useSelector<RootState, APIsContent>(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.content.apis!,
+  );
 
   return (
     <Flag name={[flagName, api.urlFragment]}>
@@ -76,10 +86,10 @@ const APIReleaseNote = ({
       </h2>
       {api.deactivationInfo && isApiDeactivated(api) && (
         <AlertBox headline="Deactivated API" status="info">
-          {api.deactivationInfo.deactivationContent({})}
+          <Markdown>{apiContent[api.urlFragment].deactivationNotice ?? ''}</Markdown>
         </AlertBox>
       )}
-      {api.releaseNotes({})}
+      <Markdown>{apiContent[api.urlFragment].releaseNotes}</Markdown>
       <hr />
     </Flag>
   );

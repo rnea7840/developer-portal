@@ -1,15 +1,19 @@
+import LoadingIndicator from '@department-of-veterans-affairs/component-library/LoadingIndicator';
 import classNames from 'classnames';
-import * as React from 'react';
+import React, { useEffect, Dispatch } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import documentationImage from '../assets/documentation.svg';
 import rocketImage from '../assets/rocket.svg';
 import branchImage from '../assets/branch.svg';
 import './Home.scss';
 
-import apiDefinitions, { apiCategoryOrder } from '../apiDefs/data/categories';
+import { apiCategoryOrder } from '../apiDefs/data/categories';
 import { CardLink, Hero } from '../components';
 import { Flag } from '../flags';
 import { FLAG_CATEGORIES, FLAG_CONSUMER_DOCS } from '../types/constants';
+import { loadCategoryContent, LoadCategoryContentThunk } from '../actions/content';
+import { CategoriesContent, RootState } from '../types';
 
 const columnContentClasses = classNames(
   'vads-u-flex--1',
@@ -70,43 +74,51 @@ const ColumnContent = (props: ColumnContentProps): JSX.Element => {
   );
 };
 
-const ApiList = (): JSX.Element => (
-  <section className="api-list vads-u-padding-top--3 vads-u-padding-x--2  vads-u-padding-bottom--2">
-    <div className="vads-l-grid-container--full vads-u-padding-x--4 va-api-u-max-width--1200">
-      <h2 className="vads-u-margin-top--0">A modern, reliable API library.</h2>
-      <p>
-        Our API library makes accessing VA data easier and safer across many categories, including
-        appeals, benefits, health, facilities, forms, and Veteran verification. With our APIs,
-        individuals and organizations can securely access the VA data they need to build helpful
-        tools and services for Veterans at no cost. We’re actively expanding our API library to
-        include new categories and APIs, with the goal of better serving those who have served us.
-      </p>
-      <div className="vads-l-row">
-        <div className="vads-l-row vads-u-justify-content--space-evenly">
-          {apiCategoryOrder.map((apiCategoryKey: string) => {
-            const { name, content } = apiDefinitions[apiCategoryKey];
-            return (
+const ApiList: React.FunctionComponent = (): JSX.Element => {
+  const dispatch = useDispatch<Dispatch<LoadCategoryContentThunk>>();
+  useEffect(() => {
+    dispatch(loadCategoryContent());
+  }, [dispatch]);
+
+  const content = useSelector<RootState, CategoriesContent | null>(
+    state => state.content.categories,
+  );
+
+  return content ? (
+    <section className="api-list vads-u-padding-top--3 vads-u-padding-x--2  vads-u-padding-bottom--2">
+      <div className="vads-l-grid-container--full vads-u-padding-x--4 va-api-u-max-width--1200">
+        <h2 className="vads-u-margin-top--0">A modern, reliable API library.</h2>
+        <p>
+          Our API library makes accessing VA data easier and safer across many categories, including
+          appeals, benefits, health, facilities, forms, and Veteran verification. With our APIs,
+          individuals and organizations can securely access the VA data they need to build helpful
+          tools and services for Veterans at no cost. We’re actively expanding our API library to
+          include new categories and APIs, with the goal of better serving those who have served us.
+        </p>
+        <div className="vads-l-row">
+          <div className="vads-l-row vads-u-justify-content--space-evenly">
+            {apiCategoryOrder.map((apiCategoryKey: string) => (
               <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
                 <div
                   className="vads-l-col--12 vads-u-margin-y--2 medium-screen:vads-l-col--6 large-screen:vads-l-col--4"
                   key={apiCategoryKey}
                 >
                   <CardLink
-                    name={name}
+                    name={content[apiCategoryKey].name}
                     url={`/explore/${apiCategoryKey}`}
-                    callToAction={`View the ${name}`}
+                    callToAction={`View the ${content[apiCategoryKey].name}`}
                   >
-                    {content.shortDescription}
+                    {content[apiCategoryKey].description}
                   </CardLink>
                 </div>
               </Flag>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  ) : <LoadingIndicator message="Loading APIs..." />;
+};
 
 const Home = (): JSX.Element => (
   <div className="home vads-l-grid-container--full">

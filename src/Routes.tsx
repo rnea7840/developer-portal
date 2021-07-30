@@ -5,7 +5,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { getDeactivatedFlags } from './apiDefs/deprecated';
 import { getEnvFlags } from './apiDefs/env';
 import {
-  getAllQuickstartCategorySlugs,
+  // getAllQuickstartCategorySlugs,
   getApiCategoryOrder,
   getApiDefinitions,
 } from './apiDefs/query';
@@ -139,7 +139,8 @@ export const sitemapConfig = (): SitemapConfig => {
   };
 
   const apiCategoryOrder = getApiCategoryOrder();
-  const apiQuickstartCategories = getAllQuickstartCategorySlugs();
+  // const apiQuickstartCategories = getAllQuickstartCategorySlugs();
+  const apiQuickstartCategories = ['health'];
   return {
     paramsConfig: {
       '/explore/:apiCategoryKey/docs/:apiName': apiCategoryOrder

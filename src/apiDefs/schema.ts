@@ -8,28 +8,6 @@
 import * as moment from 'moment';
 import * as PropTypes from 'prop-types';
 
-export interface VeteranRedirectMessage {
-  linkUrl: string;
-  linkText: string;
-  message: string;
-}
-
-export interface APICategoryContent {
-  readonly consumerDocsLinkText: string;
-  readonly overview: React.FunctionComponent;
-  readonly shortDescription: string;
-  readonly quickstart?: React.FunctionComponent;
-  readonly veteranRedirect?: VeteranRedirectMessage;
-}
-
-export const ApiCategoryContentPropType = PropTypes.shape({
-  consumerDocsLinkText: PropTypes.string,
-  overview: PropTypes.any.isRequired,
-  quickstart: PropTypes.any,
-  shortDescription: PropTypes.string.isRequired,
-  veteranRedirect: PropTypes.any,
-});
-
 export interface APIDocSource {
   readonly metadataUrl?: string;
   readonly openApiUrl: string;
@@ -46,16 +24,12 @@ export const ApiDocSourcePropType = PropTypes.shape({
   openApiUrl: PropTypes.string.isRequired,
 });
 export interface APIDeactivationInfo {
-  readonly deprecationContent: React.FunctionComponent;
   readonly deprecationDate: moment.Moment;
-  readonly deactivationContent: React.FunctionComponent;
   readonly deactivationDate: moment.Moment;
 }
 
 export const ApiDeactivationInfoPropType = PropTypes.shape({
-  deactivationContent: PropTypes.any.isRequired,
   deactivationDate: PropTypes.any.isRequired,
-  deprecationContent: PropTypes.any.isRequired,
   deprecationDate: PropTypes.any.isRequired,
 });
 
@@ -63,16 +37,13 @@ export interface APIDescription {
   readonly name: string;
   readonly docSources: APIDocSource[];
   readonly urlFragment: string;
-  readonly description: string;
   readonly enabledByDefault: boolean;
   readonly vaInternalOnly: boolean;
   readonly trustedPartnerOnly: boolean;
   readonly oAuth?: boolean;
   readonly oAuthInfo?: OAuthInfo;
-  readonly releaseNotes: React.FunctionComponent;
   readonly deactivationInfo?: APIDeactivationInfo;
   readonly multiOpenAPIIntro?: React.FunctionComponent;
-  readonly veteranRedirect?: VeteranRedirectMessage;
   readonly altID?: string;
 }
 
@@ -100,9 +71,7 @@ export interface BaseAPICategory {
   readonly name: string;
 }
 
-export interface APICategory extends BaseAPICategory {
-  readonly content: APICategoryContent;
-}
+export type APICategory = BaseAPICategory;
 
 export interface APICategories {
   [key: string]: APICategory;

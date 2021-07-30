@@ -13,6 +13,7 @@
  * - schema.ts
  */
 
+import { APICategoryContent } from '../types/content';
 import apiDefs, { apiCategoryOrder } from './data/categories';
 import { APICategories, APICategory, APIDescription } from './schema';
 
@@ -32,10 +33,8 @@ const getAllKeyAuthApis = (): APIDescription[] =>
     .filter((item: APIDescription) => !item.oAuth)
     .sort((a, b) => (a.name > b.name ? 1 : -1));
 
-const getAllQuickstartCategorySlugs = (): string[] =>
-  Object.entries(getApiDefinitions())
-    .filter((item: [string, APICategory]) => !!item[1].content.quickstart)
-    .map((item: [string, APICategory]) => item[0]);
+const getAllQuickstartCategorySlugs = (categoryContent: APICategoryContent[]): string[] =>
+  categoryContent.filter(content => !!content.quickstart).map(content => content.friendlyId);
 
 const lookupApiByFragment = (apiKey: string): APIDescription | null => {
   const hasMatchingIdentifier = (apiDesc: APIDescription): boolean =>

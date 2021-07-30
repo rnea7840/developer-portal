@@ -1,5 +1,8 @@
 import { makeRequest, HttpSuccessResponse } from '../utils/makeRequest';
-import { FAQContent, SupportOverviewContent } from '../types/content';
+import {
+  FAQContent,
+  SupportOverviewContent,
+} from '../types/content';
 
 const CONTENT_HOST = 'http://localhost:1337';
 export const loadSupportOverviewContent = async (): Promise<SupportOverviewContent | null> => {

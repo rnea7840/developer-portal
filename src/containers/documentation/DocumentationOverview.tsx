@@ -1,14 +1,19 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { getApiCategoryOrder, getApiDefinitions } from '../../apiDefs/query';
+import { useSelector } from 'react-redux';
+import { CategoriesContent, RootState } from '../../types';
+import { getApiCategoryOrder } from '../../apiDefs/query';
 import { AuthorizationCard, CardLinkLegacy, PageHeader } from '../../components';
 import { Flag } from '../../flags';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
 import { FLAG_CATEGORIES } from '../../types/constants';
 
 const DocumentationOverview = (): JSX.Element => {
-  const apiDefinitions = getApiDefinitions();
   const apiCategoryOrder = getApiCategoryOrder();
+  const categoryContent = useSelector<
+    RootState,
+    CategoriesContent
+  >(state => state.content.categories!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
 
   return (
     <div>
@@ -22,11 +27,11 @@ const DocumentationOverview = (): JSX.Element => {
       <div className={defaultFlexContainer()}>
         <AuthorizationCard />
         {apiCategoryOrder.map((apiCategoryKey: string) => {
-          const { name, content } = apiDefinitions[apiCategoryKey];
+          const { name, description } = categoryContent[apiCategoryKey];
           return (
             <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
               <CardLinkLegacy name={name} url={`/explore/${apiCategoryKey}`}>
-                {content.shortDescription}
+                {description}
               </CardLinkLegacy>
             </Flag>
           );

@@ -1,4 +1,6 @@
-import * as React from 'react';
+import LoadingIndicator from '@department-of-veterans-affairs/component-library/LoadingIndicator';
+import React, { Dispatch, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Route, Switch, useParams } from 'react-router-dom';
 
@@ -6,7 +8,13 @@ import { getApiCategoryOrder, getApiDefinitions, lookupApiCategory } from '../..
 import { APICategory, APIDescription } from '../../apiDefs/schema';
 import { ContentWithNav, SideNavEntry } from '../../components';
 import { Flag } from '../../flags';
-import { APINameParam } from '../../types';
+import { APINameParam, CategoriesContent, RootState } from '../../types';
+import {
+  loadAPIContent,
+  LoadAPIContentThunk,
+  loadCategoryContent,
+  LoadCategoryContentThunk,
+} from '../../actions/content';
 import {
   CURRENT_VERSION_IDENTIFIER,
   FLAG_CATEGORIES,
@@ -47,6 +55,10 @@ const SideNavApiEntry = (apiCategoryKey: string, api: APIDescription): JSX.Eleme
 const ExploreSideNav = (): JSX.Element => {
   const apiCategoryOrder: string[] = getApiCategoryOrder();
   const apiDefinitions = getApiDefinitions();
+  const categoryContent = useSelector<RootState, CategoriesContent>(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.content.categories!,
+  );
 
   return (
     <>
@@ -67,7 +79,7 @@ const ExploreSideNav = (): JSX.Element => {
               className="side-nav-category-link"
               name={apiCategory.name}
             >
-              {apiCategory.content.quickstart && (
+              {categoryContent[categoryKey].quickstart && (
                 <SideNavEntry
                   exact
                   to={`/explore/${categoryKey}/docs/quickstart`}
@@ -104,10 +116,21 @@ const oldRouteToNew = [
 ];
 
 const DocumentationRoot = (): JSX.Element => {
+  const dispatch = useDispatch<Dispatch<LoadCategoryContentThunk | LoadAPIContentThunk>>();
+  useEffect(() => {
+    dispatch(loadCategoryContent());
+    dispatch(loadAPIContent());
+  }, [dispatch]);
+
   const { apiCategoryKey } = useParams<APINameParam>();
   const shouldRouteCategory = !apiCategoryKey || lookupApiCategory(apiCategoryKey) != null;
+  const categoryContent = useSelector<RootState>(state => state.content.categories);
+  const apiContent = useSelector<RootState>(state => state.content.apis);
+  // console.log('DocumentationRoot categories', categoryContent);
+  // console.log('DocumentationRoot APIs', apiContent);
+  const isContentLoaded = !!(categoryContent && apiContent);
 
-  return (
+  return isContentLoaded ? (
     <ContentWithNav
       nav={<ExploreSideNav />}
       content={
@@ -129,7 +152,7 @@ const DocumentationRoot = (): JSX.Element => {
       navAriaLabel="API Docs Side Nav"
       className="documentation"
     />
-  );
+  ) : <LoadingIndicator message="Loading..." />;
 };
 
 export default DocumentationRoot;

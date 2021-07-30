@@ -18,7 +18,7 @@
 import 'jest';
 import { FacilitiesReleaseNotes } from '../content/apiDocs/facilities';
 import {
-  getAllQuickstartCategorySlugs,
+  // getAllQuickstartCategorySlugs,
   includesOAuthAPI,
   lookupApiByFragment,
   lookupApiCategory,
@@ -106,9 +106,9 @@ describe('query module', () => {
     });
   });
 
-  describe('getAllQuickstartCategorySlugs', () => {
-    it('returns the list of all API category slugs that have a quickstart page', () => {
-      expect(getAllQuickstartCategorySlugs()).toStrictEqual(['health']);
-    });
-  });
+  // describe('getAllQuickstartCategorySlugs', () => {
+  //   it('returns the list of all API category slugs that have a quickstart page', () => {
+  //     expect(getAllQuickstartCategorySlugs()).toStrictEqual(['health']);
+  //   });
+  // });
 });

@@ -1,15 +1,21 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
+import { useSelector } from 'react-redux';
+import { CategoriesContent, RootState } from '../../types';
 import { getDeactivatedCategory } from '../../apiDefs/deprecated';
-import { getApiCategoryOrder, getApiDefinitions } from '../../apiDefs/query';
+import { getApiCategoryOrder } from '../../apiDefs/query';
 import { CardLinkLegacy, PageHeader } from '../../components';
 import { Flag } from '../../flags';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
 import { FLAG_CATEGORIES } from '../../types/constants';
 
 const ReleaseNotesOverview = (): JSX.Element => {
-  const apiDefs = getApiDefinitions();
   const deactivatedCategory = getDeactivatedCategory();
+  const content = useSelector<RootState, CategoriesContent>(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    state => state.content.categories!,
+  );
+
   return (
     <div>
       <Helmet>
@@ -31,16 +37,13 @@ const ReleaseNotesOverview = (): JSX.Element => {
         </p>
       </div>
       <div className={defaultFlexContainer()}>
-        {getApiCategoryOrder().map((apiCategoryKey: string) => {
-          const { name, content } = apiDefs[apiCategoryKey];
-          return (
-            <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
-              <CardLinkLegacy name={name} url={`/release-notes/${apiCategoryKey}`}>
-                {content.shortDescription}
-              </CardLinkLegacy>
-            </Flag>
-          );
-        })}
+        {getApiCategoryOrder().map((apiCategoryKey: string) => (
+          <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
+            <CardLinkLegacy name={content[apiCategoryKey].name} url={`/release-notes/${apiCategoryKey}`}>
+              {content[apiCategoryKey].description}
+            </CardLinkLegacy>
+          </Flag>
+        ))}
         {deactivatedCategory.apis.length > 0 && (
           <CardLinkLegacy name={deactivatedCategory.name} url="/release-notes/deactivated">
             This is a repository for deactivated APIs and related documentation and release notes.

@@ -3,9 +3,9 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import 'jest';
 import * as React from 'react';
 import { MemoryRouter } from 'react-router';
-import { fakeAPIs, fakeCategories, fakeCategoryOrder } from '../../__mocks__/fakeCategories';
+import { fakeAPIs, fakeCategoryOrder } from '../../__mocks__/fakeCategories';
 import * as apiQueries from '../../apiDefs/query';
-import { APICategories, APIDescription } from '../../apiDefs/schema';
+import { APIDescription } from '../../apiDefs/schema';
 import { FlagsProvider, getFlags } from '../../flags';
 import ReleaseNotesOverview from './ReleaseNotesOverview';
 
@@ -21,12 +21,12 @@ const renderComponent = async (): Promise<void> => {
 };
 
 describe('ReleaseNotesOverview', () => {
-  let apiDefsSpy: jest.SpyInstance<APICategories>;
+  // let apiDefsSpy: jest.SpyInstance<APICategories>;
   let allAPIsSpy: jest.SpyInstance<APIDescription[]>;
 
   beforeAll(() => {
     jest.spyOn(apiQueries, 'getApiCategoryOrder').mockReturnValue(fakeCategoryOrder);
-    apiDefsSpy = jest.spyOn(apiQueries, 'getApiDefinitions').mockReturnValue(fakeCategories);
+    // apiDefsSpy = jest.spyOn(apiQueries, 'getApiDefinitions').mockReturnValue(fakeCategories);
     allAPIsSpy = jest.spyOn(apiQueries, 'getAllApis').mockReturnValue(fakeAPIs);
   });
 
@@ -58,29 +58,29 @@ describe('ReleaseNotesOverview', () => {
       expect(cardLink.getAttribute('href')).toBe('/release-notes/sports');
     });
 
-    it('does not render a card for a disabled category', async () => {
-      const sportsAPIs = fakeCategories.sports.apis.map(
-        (api: APIDescription): APIDescription => ({
-          ...api,
-          enabledByDefault: false,
-        }),
-      );
+    // it('does not render a card for a disabled category', async () => {
+    //   const sportsAPIs = fakeCategories.sports.apis.map(
+    //     (api: APIDescription): APIDescription => ({
+    //       ...api,
+    //       enabledByDefault: false,
+    //     }),
+    //   );
 
-      apiDefsSpy.mockReturnValue({
-        ...fakeCategories,
-        sports: {
-          ...fakeCategories.sports,
-          apis: sportsAPIs,
-        },
-      });
+    //   apiDefsSpy.mockReturnValue({
+    //     ...fakeCategories,
+    //     sports: {
+    //       ...fakeCategories.sports,
+    //       apis: sportsAPIs,
+    //     },
+    //   });
 
-      await renderComponent();
-      expect(
-        screen.queryByRole('link', {
-          name: `Sports API ${fakeCategories.sports.content.shortDescription}`,
-        }),
-      ).toBeNull();
-    });
+    //   await renderComponent();
+    //   expect(
+    //     screen.queryByRole('link', {
+    //       name: `Sports API ${fakeCategories.sports.content.shortDescription}`,
+    //     }),
+    //   ).toBeNull();
+    // });
 
     it('has a card link for deactivated APIs if there is at least one deactivated API', () => {
       const cardLink = screen.getByRole('link', {
