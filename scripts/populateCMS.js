@@ -398,6 +398,8 @@ Our Urgent Care Eligibility API was deactivated on July 21, 2020. The API and re
 
 The Urgent Care Eligibility API is deprecated and scheduled for deactivation in the 3rd quarter of 2020.
     `,
+    deprecationNotice: 'This API is deprecated and scheduled for deactivation in the 3rd quarter of 2020.',
+    deactivationNotice: 'Our Urgent Care Eligibility API was deactivated on July 20, 2020. The API and related documentation is no longer accessible. For more information, [contact us](/support/contact-us) or visit our [Google Developer Forum](https://groups.google.com/forum/m/#!forum/va-lighthouse).',
   },
   {
     friendlyId: 'veteran_confirmation',
