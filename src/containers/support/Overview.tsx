@@ -4,8 +4,8 @@ import camelCase from 'lodash.camelcase';
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import Markdown from 'react-markdown';
-import { CardLinkLegacy, PageHeader } from '../../components';
 import { loadSupportOverviewContent } from '../../content/loaders';
+import { CardLink, PageHeader } from '../../components';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
 import { SupportOverviewContent } from '../../types/content';
 import { SupportSection } from './Support';
@@ -45,9 +45,14 @@ const SupportOverview: React.FunctionComponent<SupportOverviewProps> = (
           </AlertBox>
           <div className={defaultFlexContainer()}>
             {props.sections.map((section: SupportSection) => (
-              <CardLinkLegacy name={section.name} url={`/support/${section.id}`} key={section.id}>
+              <CardLink
+                name={section.name}
+                url={`/support/${section.id}`}
+                key={section.id}
+                callToAction={section.callToAction}
+              >
                 {content[`${camelCase(section.id)}Description`]}
-              </CardLinkLegacy>
+              </CardLink>
             ))}
           </div>
         </>

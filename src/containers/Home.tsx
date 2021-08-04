@@ -99,18 +99,14 @@ const ApiList: React.FunctionComponent = (): JSX.Element => {
           <div className="vads-l-row vads-u-justify-content--space-evenly">
             {apiCategoryOrder.map((apiCategoryKey: string) => (
               <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
-                <div
-                  className="vads-l-col--12 vads-u-margin-y--2 medium-screen:vads-l-col--6 large-screen:vads-l-col--4"
-                  key={apiCategoryKey}
+                <CardLink
+                  name={content[apiCategoryKey].name}
+                  url={`/explore/${apiCategoryKey}`}
+                  callToAction={`View the ${content[apiCategoryKey].name}`}
+                  centered
                 >
-                  <CardLink
-                    name={content[apiCategoryKey].name}
-                    url={`/explore/${apiCategoryKey}`}
-                    callToAction={`View the ${content[apiCategoryKey].name}`}
-                  >
-                    {content[apiCategoryKey].description}
-                  </CardLink>
-                </div>
+                  {content[apiCategoryKey].description}
+                </CardLink>
               </Flag>
             ))}
           </div>

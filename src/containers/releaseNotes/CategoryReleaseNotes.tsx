@@ -4,7 +4,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Markdown from 'react-markdown';
 import { useSelector } from 'react-redux';
-import { Redirect, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import {
   PAGE_HEADER_AND_HALO_ID,
   FLAG_API_ENABLED_PROPERTY,
@@ -14,7 +14,7 @@ import {
 import { getDeactivatedCategory, isApiDeactivated } from '../../apiDefs/deprecated';
 import { getApiDefinitions } from '../../apiDefs/query';
 import { APIDescription, BaseAPICategory } from '../../apiDefs/schema';
-import { CardLinkLegacy, OnlyTags, PageHeader } from '../../components';
+import { CardLink, OnlyTags, PageHeader } from '../../components';
 import { Flag, getFlags } from '../../flags';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
 import { APINameParam, APIsContent, RootState } from '../../types';
@@ -47,7 +47,7 @@ const ReleaseNotesCardLinks: React.FunctionComponent<ReleaseNotesCardLinksProps>
           const dashUrlFragment = urlFragment.replace('_', '-');
           const content = apiContent[apiDesc.urlFragment];
           return (
-            <CardLinkLegacy
+            <CardLink
               key={apiDesc.urlFragment}
               name={content.name}
               subhead={
@@ -56,9 +56,10 @@ const ReleaseNotesCardLinks: React.FunctionComponent<ReleaseNotesCardLinksProps>
                 ) : undefined
               }
               url={`/release-notes/${categoryKey}#${dashUrlFragment}`}
+              callToAction={`View the release notes for the ${content.name}`}
             >
               {content.description}
-            </CardLinkLegacy>
+            </CardLink>
           );
         })}
       </div>
@@ -131,9 +132,6 @@ const ReleaseNotesCollection: React.FunctionComponent<ReleaseNotesCollectionProp
 export const CategoryReleaseNotes = (): JSX.Element => {
   const { apiCategoryKey } = useParams<APINameParam>();
   const categories = getApiDefinitions();
-  if (!(apiCategoryKey in categories)) {
-    return <Redirect to="/404" />;
-  }
 
   return (
     <ReleaseNotesCollection

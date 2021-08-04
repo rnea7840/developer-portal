@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { CategoriesContent, RootState } from '../../types';
 import { getDeactivatedCategory } from '../../apiDefs/deprecated';
 import { getApiCategoryOrder } from '../../apiDefs/query';
-import { CardLinkLegacy, PageHeader } from '../../components';
+import { CardLink, PageHeader } from '../../components';
 import { Flag } from '../../flags';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
 import { FLAG_CATEGORIES } from '../../types/constants';
@@ -39,18 +39,26 @@ const ReleaseNotesOverview = (): JSX.Element => {
       <div className={defaultFlexContainer()}>
         {getApiCategoryOrder().map((apiCategoryKey: string) => (
           <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
-            <CardLinkLegacy name={content[apiCategoryKey].name} url={`/release-notes/${apiCategoryKey}`}>
+            <CardLink
+              name={content[apiCategoryKey].name}
+              url={`/release-notes/${apiCategoryKey}`}
+              callToAction={`View release notes for the ${content[apiCategoryKey].name}`}
+            >
               {content[apiCategoryKey].description}
-            </CardLinkLegacy>
+            </CardLink>
           </Flag>
         ))}
         {deactivatedCategory.apis.length > 0 && (
-          <CardLinkLegacy name={deactivatedCategory.name} url="/release-notes/deactivated">
+          <CardLink
+            name={deactivatedCategory.name}
+            url="/release-notes/deactivated"
+            callToAction="View release notes for deactivated APIs"
+          >
             This is a repository for deactivated APIs and related documentation and release notes.
-          </CardLinkLegacy>
+          </CardLink>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 

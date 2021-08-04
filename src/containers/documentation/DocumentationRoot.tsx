@@ -2,13 +2,13 @@ import LoadingIndicator from '@department-of-veterans-affairs/component-library/
 import React, { Dispatch, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
-import { Route, Switch, useParams } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import { getApiCategoryOrder, getApiDefinitions, lookupApiCategory } from '../../apiDefs/query';
+import { getApiCategoryOrder, getApiDefinitions } from '../../apiDefs/query';
 import { APICategory, APIDescription } from '../../apiDefs/schema';
 import { ContentWithNav, SideNavEntry } from '../../components';
 import { Flag } from '../../flags';
-import { APINameParam, CategoriesContent, RootState } from '../../types';
+import { CategoriesContent, RootState } from '../../types';
 import {
   loadAPIContent,
   LoadAPIContentThunk,
@@ -122,8 +122,6 @@ const DocumentationRoot = (): JSX.Element => {
     dispatch(loadAPIContent());
   }, [dispatch]);
 
-  const { apiCategoryKey } = useParams<APINameParam>();
-  const shouldRouteCategory = !apiCategoryKey || lookupApiCategory(apiCategoryKey) != null;
   const categoryContent = useSelector<RootState>(state => state.content.categories);
   const apiContent = useSelector<RootState>(state => state.content.apis);
   // console.log('DocumentationRoot categories', categoryContent);
@@ -139,7 +137,6 @@ const DocumentationRoot = (): JSX.Element => {
             <Redirect key={routes.from} exact from={routes.from} to={routes.to} />
           ))}
           <Route path="/explore/authorization" component={AuthorizationDocs} exact />
-          {!shouldRouteCategory && <Redirect from="/explore/:apiCategoryKey" to="/404" />}
           <Route exact path="/explore/" component={DocumentationOverview} />
           <Route exact path="/explore/:apiCategoryKey" component={CategoryPage} />
           <Route exact path="/explore/:apiCategoryKey/docs/authorization">

@@ -12,7 +12,7 @@ const benefitsApis: APIDescription[] = [
       },
     ],
     enabledByDefault: true,
-    name: 'Benefits Claims',
+    name: 'Benefits Claims API',
     oAuth: true,
     oAuthInfo: {
       baseAuthPath: '/oauth2/claims/v1',
@@ -26,7 +26,8 @@ const benefitsApis: APIDescription[] = [
     altID: 'benefits',
     docSources: [
       {
-        openApiUrl: `${OPEN_API_SPEC_HOST}/internal/docs/benefits-intake/v1/openapi.json`,
+        metadataUrl: `${OPEN_API_SPEC_HOST}/services/vba_documents/metadata`,
+        openApiUrl: `${OPEN_API_SPEC_HOST}/services/vba_documents/docs/v2/api`,
       },
     ],
     enabledByDefault: true,
