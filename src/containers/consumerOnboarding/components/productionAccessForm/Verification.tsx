@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { CheckboxRadioField, FieldSet } from '../../../../components';
 import { SelectedAPIs } from './SelectedApis';
 
@@ -58,7 +57,7 @@ const Verification: FC<VerificationProps> = props => {
       <CheckboxRadioField
         label={
           <span>
-            I agree to the <Link to="/terms-of-service">Terms of Service</Link>{' '}
+            I agree to the <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">Terms of Service</a>{' '}
             <span className="form-required-span">(*Required)</span>
           </span>
         }
