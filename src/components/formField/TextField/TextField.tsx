@@ -54,6 +54,12 @@ const TextField: FC<TextFieldProps> = ({
 
   return (
     <div className={classNames('va-api-text-field', containerClass, className)}>
+      {/*
+          if an ancestor has a non-off aria-live value, only the input should be read or not read,
+          which can be determined by the parent component of the TextField by passing an additional
+          aria-live="off" prop. to prevent it beinig read twice, we explicitly set aria-live="off" on the
+          label. if this logic isn't correct for some reason in the future, feel free to rework this.
+        */}
       <label htmlFor={fieldId} className={classNames('vads-u-margin-top--0', labelClass)}>
         {label}
         {required && <span className="form-required-span">(*Required)</span>}

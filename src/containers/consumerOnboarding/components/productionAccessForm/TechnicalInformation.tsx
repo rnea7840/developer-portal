@@ -60,7 +60,10 @@ const TechnicalInformation: FC = () => {
         <CheckboxRadioField type="radio" label="Yes" name="storePIIOrPHI" value="yes" required />
         <CheckboxRadioField type="radio" label="No" name="storePIIOrPHI" value="no" required />
         {storePIIOrPHI === 'yes' && (
-          <div className="vads-u-margin-left--4">
+          <fieldset className="vads-u-margin-left--4">
+            <legend aria-live="polite" className="screen-reader-legend">
+              Details about securing PII and PHI
+            </legend>
             <TextField
               label="Describe why this information is stored, and how it is securely stored/encrypted."
               name="piiStorageMethod"
@@ -85,7 +88,7 @@ const TechnicalInformation: FC = () => {
               className="vads-u-margin-top--4"
               required
             />
-          </div>
+          </fieldset>
         )}
       </FieldSet>
       {includesOAuthAPI(apis) && (
@@ -123,6 +126,7 @@ const TechnicalInformation: FC = () => {
                 name="thirdPartyInfoDescription"
                 className="vads-u-margin-top--4 vads-u-margin-left--4"
                 required
+                aria-live="polite"
               />
             )}
           </FieldSet>
@@ -166,7 +170,10 @@ const TechnicalInformation: FC = () => {
             required
           />
           {distributingAPIKeysToCustomers === 'yes' && (
-            <div className="vads-u-margin-left--4">
+            <fieldset className="vads-u-margin-left--4">
+              <legend aria-live="polite" className="screen-reader-legend">
+                Details about hosted instances of your application
+              </legend>
               <TextField
                 label={
                   <p>
@@ -185,7 +192,7 @@ const TechnicalInformation: FC = () => {
                 className="vads-u-margin-top--4"
                 required
               />
-            </div>
+            </fieldset>
           )}
         </FieldSet>
       )}

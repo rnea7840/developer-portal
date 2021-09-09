@@ -18,6 +18,7 @@ import { useModalController } from '../../hooks';
 import { ProductionAccessRequest } from '../../types/forms/productionAccess';
 import { makeRequest, ResponseType } from '../../utils/makeRequest';
 import { FLAG_LIST_AND_LOOP, PRODUCTION_ACCESS_URL, yesOrNoValues } from '../../types/constants';
+import { CONSUMER_APIS_PATH, CONSUMER_PROD_PATH } from '../../types/constants/paths';
 import {
   BasicInformation,
   PolicyGovernance,
@@ -351,12 +352,12 @@ const ProductionAccess: FC = () => {
               {activeStep === 0 ? (
                 <>
                   <SegmentedProgressBar current={1} total={4} />
-                  <h2 className="vads-u-font-size--h4">Step 1: Verification</h2>
+                  <h2 className="vads-u-font-size--h4" aria-live="polite">Step 1: Verification</h2>
                 </>
               ) : (
                 <>
                   <SegmentedProgressBar current={activeStep + 1} total={steps.length} />
-                  <h2 className="vads-u-font-size--h4">
+                  <h2 className="vads-u-font-size--h4" aria-live="polite">
                     {`Step ${activeStep + 1} of ${steps.length}: ${steps[activeStep]}`}
                   </h2>
                 </>
@@ -454,12 +455,12 @@ const ProductionAccess: FC = () => {
             </p>
             <p>
               It’s good to remember that getting production access can take over a month. For open
-              data APIs, this takes a week or less. Learn more about the production access
-              timelines.
+              data APIs, this takes a week or less. Learn more about the&nbsp;
+              <Link to={CONSUMER_PROD_PATH}>production access timelines</Link>.
             </p>
             <p>
-              In the meantime, you may <Link to="/support/contact-us">contact us </Link>if you have
-              any questions or learn more about working with our APIs.
+              In the meantime, you may <Link to="/support/contact-us">contact us </Link>if you have any
+              questions or learn more about <Link to={CONSUMER_APIS_PATH}>working with our APIs</Link>.
             </p>
           </Modal>
           {submissionError && (

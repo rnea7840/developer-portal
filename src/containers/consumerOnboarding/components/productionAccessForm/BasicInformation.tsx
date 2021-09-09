@@ -177,6 +177,7 @@ const BasicInformation: FC = () => {
             name="monitizationExplanation"
             className="vads-u-margin-top--4 vads-u-margin-left--4"
             required
+            aria-live="polite"
           />
         )}
       </FieldSet>
@@ -197,7 +198,10 @@ const BasicInformation: FC = () => {
 
         <CheckboxRadioField type="radio" label="No" name="veteranFacing" value="no" required />
         {veteranFacing === 'yes' && (
-          <div className="vads-u-margin-left--4">
+          <fieldset className="vads-u-margin-left--4">
+            <legend aria-live="polite" className="screen-reader-legend">
+              Details about how Veterans will use your app
+            </legend>
             <TextField
               label="Provide a link to your app’s primary webpage."
               name="website"
@@ -293,7 +297,7 @@ const BasicInformation: FC = () => {
               className="vads-u-margin-top--4"
               required
             />
-          </div>
+          </fieldset>
         )}
       </FieldSet>
       {includesInternalOnlyAPI(apis) && (
