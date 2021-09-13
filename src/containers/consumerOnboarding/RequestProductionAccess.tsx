@@ -71,10 +71,6 @@ const RequestProductionAccess = (): JSX.Element => (
                 Information for the app directory, such as key URLs, a brief app description, and a
                 list of compatible devices and browsers
               </li>
-              <li>
-                An app icon with a transparent background (1024x1024 pixel image, in PNG, JPG, or
-                GIF file format)
-              </li>
             </ul>
           </li>
           <li>
