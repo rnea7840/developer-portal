@@ -160,7 +160,7 @@ const RequestProductionAccess = (): JSX.Element => (
           </li>
         </ul>
       </va-accordion-item>
-      <va-accordion-item header="Privacy policy and terms of service (OAuth APIs only)">
+      <va-accordion-item header="Privacy policy and terms of service">
         <ul className="checklist">
           <li>URL for your application’s terms of service</li>
           <li>URL for your application’s privacy policy</li>
