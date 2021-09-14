@@ -1,7 +1,0 @@
-config/**/*
-scripts/**/*
-
-.eslintrc.js
-*.jest.config.js
-jest-puppeteer.config.js
-SitemapBuilderWebpackPlugin.js
