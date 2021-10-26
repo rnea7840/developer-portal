@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import { CONSUMER_SANDBOX_PATH } from '../../types/constants/paths';
-import { SectionHeaderWrapper } from '../index';
+import { CONSUMER_SANDBOX_PATH } from '../../../types/constants/paths';
+import { SectionHeaderWrapper } from '../../index';
 
 const GettingStarted = (): JSX.Element => (
   <>

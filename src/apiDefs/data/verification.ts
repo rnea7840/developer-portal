@@ -67,6 +67,9 @@ const verificationApis: APIDescription[] = [
         'veteran_status.read',
       ],
     },
+    oAuthTypes: [
+      'AuthorizationCodeGrant',
+    ],
     openData: false,
     releaseNotes: VeteranVerificationReleaseNotes,
     urlFragment: 'veteran_verification',

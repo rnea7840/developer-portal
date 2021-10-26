@@ -27,6 +27,9 @@ const benefitsApis: APIDescription[] = [
       baseAuthPath: '/oauth2/claims/v1',
       scopes: ['profile', 'openid', 'offline_access', 'claim.read', 'claim.write'],
     },
+    oAuthTypes: [
+      'AuthorizationCodeGrant',
+    ],
     openData: false,
     releaseNotes: ClaimsReleaseNotes,
     urlFragment: 'claims',

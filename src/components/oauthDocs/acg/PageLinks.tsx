@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import { AuthCodeFlowContentProps } from '../../containers/documentation/AuthorizationDocs';
-import { CONSUMER_PROD_PATH } from '../../types/constants/paths';
-import { APISelector } from '../apiSelector/APISelector';
+import { AuthCodeFlowContentProps } from '../../../containers/documentation/AuthorizationCodeGrant/AuthorizationCodeGrantDocs';
+import { CONSUMER_PROD_PATH } from '../../../types/constants/paths';
+import { APISelector } from '../../apiSelector/APISelector';
 
 const PageLinks = (props: AuthCodeFlowContentProps): JSX.Element => (
   <>
@@ -16,7 +16,7 @@ const PageLinks = (props: AuthCodeFlowContentProps): JSX.Element => (
       Select your API from the drop-downs to populate the examples with your API-specific URLs,
       parameters, and scopes.
     </p>
-    <APISelector options={props.options} selectedOption={props.selectedOption} />
+    <APISelector options={props.options} selectedOption={props.selectedOption} withButton />
     <h2 tabIndex={-1} id="on-this-page">
       On this Page:
     </h2>

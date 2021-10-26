@@ -56,6 +56,10 @@ const healthApis: APIDescription[] = [
         'patient/Practitioner.read',
       ],
     },
+    oAuthTypes: [
+      'AuthorizationCodeGrant',
+      'ClientCredentialsGrant',
+    ],
     openData: false,
     releaseNotes: ClinicalHealthReleaseNotes,
     urlFragment: 'clinical_health',
@@ -85,6 +89,9 @@ const healthApis: APIDescription[] = [
         'patient/CommunityCareEligibility.read',
       ],
     },
+    oAuthTypes: [
+      'AuthorizationCodeGrant',
+    ],
     openData: false,
     releaseNotes: CommunityCareReleaseNotes,
     urlFragment: 'community_care',
@@ -171,6 +178,10 @@ const healthApis: APIDescription[] = [
         'patient/Procedure.read',
       ],
     },
+    oAuthTypes: [
+      'AuthorizationCodeGrant',
+      'ClientCredentialsGrant',
+    ],
     openData: false,
     releaseNotes: FhirApiReleaseNotes,
     urlFragment: 'fhir',

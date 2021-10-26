@@ -2,12 +2,12 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { FlagsProvider, getFlags } from '../../flags';
+import { FlagsProvider, getFlags } from '../../../flags';
 
-import { getAllOauthApis, lookupApiByFragment } from '../../apiDefs/query';
-import store from '../../store';
-import { isApiDeactivated } from '../../apiDefs/deprecated';
-import { APIDescription } from '../../apiDefs/schema';
+import { getAllOauthApis, lookupApiByFragment } from '../../../apiDefs/query';
+import store from '../../../store';
+import { isApiDeactivated } from '../../../apiDefs/deprecated';
+import { APIDescription } from '../../../apiDefs/schema';
 import { PKCEAuthContent } from './PKCEAuthContent';
 
 describe('Auth Flow Content', () => {
