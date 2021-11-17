@@ -12,6 +12,7 @@ export interface CheckboxRadioFieldProps {
   value?: string;
   innerRef?: React.RefObject<HTMLElement>;
   showError?: boolean;
+  showErrorPos?: 'above' | 'below';
   description?: ReactNode;
 }
 
@@ -24,6 +25,7 @@ const CheckboxRadioField: FC<CheckboxRadioFieldProps> = ({
   value,
   description,
   showError = false,
+  showErrorPos = 'above',
   ...props
 }) => {
   const { errors, touched } = useFormikContext();
@@ -48,7 +50,7 @@ const CheckboxRadioField: FC<CheckboxRadioFieldProps> = ({
           {description}
         </div>
       )}
-      {showError && (
+      {(showError && showErrorPos === 'above') && (
         <span
           id={errorId}
           className={classNames({ 'usa-input-error-message': shouldDisplayErrors })}
@@ -70,6 +72,15 @@ const CheckboxRadioField: FC<CheckboxRadioFieldProps> = ({
       <label htmlFor={fieldId} className={radioClass}>
         {label}
       </label>
+      {(showError && showErrorPos === 'below') && (
+        <span
+          id={errorId}
+          className={classNames({ 'usa-input-error-message': shouldDisplayErrors })}
+          role="alert"
+        >
+          <ErrorMessage name={name} />
+        </span>
+      )}
     </div>
   );
 };
