@@ -13,9 +13,10 @@ import './SelectedApis.scss';
 
 interface APICheckboxListProps {
   apiCheckboxes: APIDescription[];
+  showSelectionBorder?: boolean;
 }
 
-const ApiCheckboxList = ({ apiCheckboxes }: APICheckboxListProps): JSX.Element => {
+const ApiCheckboxList = ({ apiCheckboxes, showSelectionBorder = true }: APICheckboxListProps): JSX.Element => {
   const formValues = useFormikContext<Values>().values;
   const hostedApis = apiCheckboxes.filter(
     api =>
@@ -33,8 +34,8 @@ const ApiCheckboxList = ({ apiCheckboxes }: APICheckboxListProps): JSX.Element =
           <Flag name={[FLAG_HOSTED_APIS, api.urlFragment]} key={api.urlFragment}>
             <div
               className={classNames(
-                internalApiSelected ? 'vads-u-border-left--4px' : '',
-                internalApiSelected ? 'vads-u-border-color--primary-alt-light' : '',
+                showSelectionBorder && internalApiSelected ? 'vads-u-border-left--4px' : '',
+                showSelectionBorder && internalApiSelected ? 'vads-u-border-color--primary-alt-light' : '',
               )}
             >
               <CheckboxRadioField
@@ -142,7 +143,7 @@ const SelectedAPIs = ({ selectedApis }: SelectedApisProps): JSX.Element => {
           legendClassName={classNames('vads-u-font-size--lg', 'vads-u-padding-left--1p5')}
           name="oauthApis"
         >
-          <ApiCheckboxList apiCheckboxes={oauthApis} />
+          <ApiCheckboxList apiCheckboxes={oauthApis} showSelectionBorder={false} />
           {oauthApisSelected && <OAuthAppInfo />}
         </FieldSet>
       </div>
