@@ -32,7 +32,7 @@ const benefitsApis: APIDescription[] = [
         baseAuthPath: '/oauth2/claims/system/v1',
         productionAud: '',
         sandboxAud: '',
-        scopes: ['profile', 'openid', 'offline_access', 'claim.read', 'claim.write'],
+        scopes: ['claim.read', 'claim.write'],
       },
     },
     oAuthTypes: ['AuthorizationCodeGrant', 'ClientCredentialsGrant'],
