@@ -27,12 +27,11 @@ void applyPolyfills().then(() => {
  */
 const App = (): JSX.Element => {
   const dispatch: React.Dispatch<SetAPIs> = useDispatch();
-  const apisRequest = (): Promise<APIDescription[]> =>
-    fetch('http://localhost:8080/platform-backend/v0/providers')
+  const apisRequest = (): Promise<void> =>
+    fetch('/platform-backend/v0/providers')
       .then(res => res.json())
       .then(res => res as APIDescription[])
-      .then(apis => dispatch(setApis(apis)))
-      .then(() => [] as APIDescription[]);
+      .then(apis => dispatch(setApis(apis)));
 
   apisRequest();
 

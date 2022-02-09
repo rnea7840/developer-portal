@@ -13,6 +13,7 @@
  * - schema.ts
  */
 
+import store from '../store';
 import apiDefs, { apiCategoryOrder } from './data/categories';
 import { isApiDeactivated } from './deprecated';
 import { isHostedApiEnabled } from './env';
@@ -38,9 +39,10 @@ const getActiveApiDefinitions = (): APICategories => {
   return output;
 };
 
-const getAllApis = (): APIDescription[] =>
-  Object.values(getApiDefinitions()).flatMap((category: APICategory) => category.apis)
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
+const getAllApis = (): APIDescription[] => {
+  const state = store.getState();
+  return state.apiList.apis;
+};
 
 const getAllOauthApis = (): APIDescription[] =>
   getAllApis()
