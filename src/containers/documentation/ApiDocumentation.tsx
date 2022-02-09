@@ -1,7 +1,8 @@
 import { Location } from 'history';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../types';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import { Link } from 'react-router-dom';
 import * as actions from '../../actions';
@@ -68,6 +69,10 @@ const ApiDocumentation = (props: ApiDocumentationProps): JSX.Element => {
   const queryParams = new URLSearchParams(location.search || undefined);
   const apiVersion = queryParams.get('version');
 
+  const apiList = useSelector(
+    (state: RootState) => state.apiList.apis,
+  );
+
   React.useEffect((): void => {
     dispatch(actions.setRequestedApiVersion(apiVersion));
   }, [dispatch, apiVersion, location.pathname]);
@@ -88,6 +93,7 @@ const ApiDocumentation = (props: ApiDocumentationProps): JSX.Element => {
           </Link>
         </div>
       )}
+      {console.log(apiList)}
       {apiDefinition.docSources.length === 1 ? (
         <SwaggerDocs docSource={apiDefinition.docSources[0]} apiName={apiDefinition.urlFragment} />
       ) : (

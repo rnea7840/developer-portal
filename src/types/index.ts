@@ -1,3 +1,5 @@
+import { APIDescription } from '../apiDefs/schema';
+
 export * from './forms/apply';
 
 export interface APINameParam {
@@ -29,7 +31,12 @@ export interface OAuthAPISelection {
   selectedOAuthApi: string;
 }
 
+export interface ApiList {
+  apis: APIDescription[];
+}
+
 export interface RootState {
   oAuthApiSelection: OAuthAPISelection;
   apiVersioning: APIVersioning;
+  apiList: ApiList;
 }

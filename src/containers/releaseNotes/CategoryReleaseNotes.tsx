@@ -79,7 +79,6 @@ const APIReleaseNote = ({
           {api.deactivationInfo.deactivationContent({})}
         </AlertBox>
       )}
-      {api.releaseNotes({})}
       <hr />
     </Flag>
   );
