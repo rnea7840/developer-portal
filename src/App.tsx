@@ -2,13 +2,14 @@ import * as React from 'react';
 
 import classNames from 'classnames';
 import { Route, Router } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
 import { applyPolyfills, defineCustomElements } from 'web-components/loader';
 import { SetAPIs, setApis } from './actions';
 import { APICategories } from './apiDefs/schema';
 import { Footer, Header, PageContent } from './components';
 import { FlagsProvider, getFlags } from './flags';
 import { history } from './store';
+import { RootState } from './types';
 
 import 'highlight.js/styles/atom-one-dark-reasonable.css';
 import './styles/atom-one-dark-reasonable-overrides.scss';
@@ -33,7 +34,9 @@ const App = (): JSX.Element => {
       .then(res => res as APICategories)
       .then(apis => dispatch(setApis(apis)));
 
-  apisRequest();
+  React.useEffect(() => {
+    apisRequest();
+  }, []);
 
   return (
     <FlagsProvider flags={getFlags()}>
@@ -57,4 +60,7 @@ const App = (): JSX.Element => {
   );
 };
 
-export default App;
+const mapStateToProps = (state: RootState): APICategories =>
+  state.apiList.apis;
+
+export default connect(mapStateToProps)(App);
