@@ -5,7 +5,7 @@ import { Route, Router } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { applyPolyfills, defineCustomElements } from 'web-components/loader';
 import { SetAPIs, setApis } from './actions';
-import { APIDescription } from './apiDefs/schema';
+import { APICategories } from './apiDefs/schema';
 import { Footer, Header, PageContent } from './components';
 import { FlagsProvider, getFlags } from './flags';
 import { history } from './store';
@@ -28,9 +28,9 @@ void applyPolyfills().then(() => {
 const App = (): JSX.Element => {
   const dispatch: React.Dispatch<SetAPIs> = useDispatch();
   const apisRequest = (): Promise<void> =>
-    fetch('/platform-backend/v0/providers')
+    fetch('/platform-backend/v0/providers/transformations/legacy')
       .then(res => res.json())
-      .then(res => res as APIDescription[])
+      .then(res => res as APICategories)
       .then(apis => dispatch(setApis(apis)));
 
   apisRequest();

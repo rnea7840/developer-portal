@@ -3,7 +3,7 @@ import { ApiList } from '../types';
 import * as constants from '../types/constants';
 
 const defaultApis = {
-  apis: [],
+  apis: {},
 };
 
 export const apiList = (

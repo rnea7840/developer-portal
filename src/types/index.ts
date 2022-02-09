@@ -1,4 +1,4 @@
-import { APIDescription } from '../apiDefs/schema';
+import { APICategories } from '../apiDefs/schema';
 
 export * from './forms/apply';
 
@@ -32,7 +32,7 @@ export interface OAuthAPISelection {
 }
 
 export interface ApiList {
-  apis: APIDescription[];
+  apis: APICategories;
 }
 
 export interface RootState {

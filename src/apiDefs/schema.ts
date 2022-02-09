@@ -69,53 +69,24 @@ export enum ProdAccessFormSteps {
   Four = 4,
 }
 
-// export interface APIDescription {
-//   readonly name: string;
-//   readonly docSources: APIDocSource[];
-//   readonly urlFragment: string;
-//   readonly description: string;
-//   readonly enabledByDefault: boolean;
-//   readonly vaInternalOnly: boolean;
-//   readonly openData: boolean;
-//   readonly oAuth?: boolean;
-//   readonly oAuthTypes?: string[];
-//   readonly oAuthInfo?: OAuthInfo;
-//   readonly releaseNotes: React.FunctionComponent;
-//   readonly deactivationInfo?: APIDeactivationInfo;
-//   readonly multiOpenAPIIntro?: React.FunctionComponent;
-//   readonly veteranRedirect?: VeteranRedirectMessage;
-//   readonly altID?: string;
-//   readonly lastProdAccessStep: ProdAccessFormSteps;
-// }
-
 export interface APIDescription {
-  readonly id?: string;
   readonly name: string;
   readonly docSources: APIDocSource[];
+  readonly urlFragment: string;
   readonly description: string;
   readonly enabledByDefault: boolean;
   readonly vaInternalOnly: boolean;
   readonly openData: boolean;
-  readonly oAuthInfo?: OAuthInfo;
-
-  readonly lastProdAccessStep?: ProdAccessFormSteps;
-  readonly releaseNotes?: React.FunctionComponent;
-  readonly urlFragment: string;
-  readonly deactivationInfo?: APIDeactivationInfo;
-  readonly veteranRedirect?: VeteranRedirectMessage;
-  readonly altID?: string;
   readonly oAuth?: boolean;
   readonly oAuthTypes?: string[];
+  readonly oAuthInfo?: OAuthInfo;
+  readonly releaseNotes: React.FunctionComponent;
+  readonly deactivationInfo?: APIDeactivationInfo;
   readonly multiOpenAPIIntro?: React.FunctionComponent;
+  readonly veteranRedirect?: VeteranRedirectMessage;
+  readonly altID?: string;
+  readonly lastProdAccessStep: ProdAccessFormSteps;
 }
-
-// export class APIDescriptionInstance implements APIDescription {
-//   public urlFragment: string;
-
-//   public constructor(value: APIDescription) {
-//     this.urlFragment = value.id;
-//   }
-// }
 
 export interface OAuthInfo {
   readonly acgInfo?: ACGInfo;

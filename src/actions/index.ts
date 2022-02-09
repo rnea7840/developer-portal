@@ -1,7 +1,7 @@
 import { Action, ActionCreator } from 'redux';
 import { VersionMetadata } from '../types';
 import * as constants from '../types/constants';
-import { APIDescription } from '../apiDefs/schema';
+import { APICategories } from '../apiDefs/schema';
 
 export interface ResetVersioning extends Action {
   type: constants.RESET_VERSIONING;
@@ -34,7 +34,7 @@ export interface ResetAPIs extends Action {
 
 export interface SetAPIs extends Action {
   type: constants.SET_APIS;
-  apis: APIDescription[];
+  apis: APICategories;
 }
 
 export const resetVersioning: ActionCreator<ResetVersioning> = () => ({
@@ -69,7 +69,7 @@ export const setOAuthApiSelection: ActionCreator<SetOAuthAPISelection> = (
 });
 
 export const setApis: ActionCreator<SetAPIs> = (
-  apis: APIDescription[],
+  apis: APICategories,
 ) => ({
   apis,
   type: constants.SET_APIS_VALUE,
