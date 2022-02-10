@@ -16,7 +16,7 @@ export interface VeteranRedirectMessage {
 
 export interface APICategoryContent {
   readonly consumerDocsLinkText: string;
-  readonly overview: React.FunctionComponent;
+  readonly overview: string;
   readonly shortDescription: string;
   readonly quickstart?: React.FunctionComponent;
   readonly veteranRedirect?: VeteranRedirectMessage;

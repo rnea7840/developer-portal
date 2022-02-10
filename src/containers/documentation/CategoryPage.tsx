@@ -12,6 +12,7 @@ import { defaultFlexContainer } from '../../styles/vadsUtils';
 import { APINameParam } from '../../types';
 import { FLAG_HOSTED_APIS, PAGE_HEADER_ID } from '../../types/constants';
 import { CONSUMER_PATH } from '../../types/constants/paths';
+import ReactMarkdown from 'react-markdown'
 
 const CategoryPage = (): JSX.Element => {
   const { apiCategoryKey } = useParams<APINameParam>();
@@ -64,7 +65,7 @@ const CategoryPage = (): JSX.Element => {
         </AlertBox>
       )}
       <div className="vads-u-width--full">
-        {overview({})}
+        <ReactMarkdown children={overview} />
         <p>
           <Link to={CONSUMER_PATH}>{consumerDocsLinkText}</Link>.
         </p>
