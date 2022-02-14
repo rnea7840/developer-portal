@@ -18,7 +18,7 @@ export interface APICategoryContent {
   readonly consumerDocsLinkText: string;
   readonly overview: string;
   readonly shortDescription: string;
-  readonly quickstart?: React.FunctionComponent;
+  readonly quickstart?: string;
   readonly veteranRedirect?: VeteranRedirectMessage;
 }
 

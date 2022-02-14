@@ -8,7 +8,6 @@ import FhirApiReleaseNotes from './fhirAPIReleaseNotes.mdx';
 import FhirArgonautApiIntro from './fhirArgonautApiIntro.mdx';
 import FhirDSTU2ApiIntro from './fhirDSTU2ApiIntro.mdx';
 import FHIRMultiOpenAPIIntro from './FHIRMultiOpenAPIIntro.mdx';
-import HealthQuickstart from './healthQuickstart.mdx';
 import PgdReleaseNotes from './pgdReleaseNotes.mdx';
 import UrgentCareApiIntro from './urgentCareApiIntro.mdx';
 import UrgentCareDeactivationNotice from './urgentCareDeactivationNotice.mdx';
@@ -18,7 +17,7 @@ import UrgentCareReleaseNotes from './urgentCareReleaseNotes.mdx';
 const healthContent: APICategoryContent = {
   consumerDocsLinkText: 'Read the consumer onboarding guide for getting production access',
   overview: '',
-  quickstart: HealthQuickstart,
+  quickstart: '',
   shortDescription: 'Use our APIs to build tools that help Veterans manage their health.',
 };
 
