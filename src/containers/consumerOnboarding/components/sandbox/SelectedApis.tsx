@@ -5,7 +5,7 @@ import { CheckboxRadioField, FieldSet, ApiTags } from '../../../../components';
 import { getAllOauthApis, getAllKeyAuthApis, includesOAuthAPI } from '../../../../apiDefs/query';
 import { APIDescription } from '../../../../apiDefs/schema';
 import { Flag } from '../../../../flags';
-import { FLAG_HOSTED_APIS, APPLY_INTERNAL_APIS } from '../../../../types/constants';
+import { FLAG_HOSTED_APIS } from '../../../../types/constants';
 import { OAuthAppInfo } from './OAuthAppInfo';
 import { InternalOnlyInfo } from './InternalOnlyInfo';
 import { Values } from './SandboxAccessForm';
@@ -17,15 +17,10 @@ interface APICheckboxListProps {
 
 const ApiCheckboxList = ({ apiCheckboxes }: APICheckboxListProps): JSX.Element => {
   const formValues = useFormikContext<Values>().values;
-  const hostedApis = apiCheckboxes.filter(
-    api =>
-      !api.vaInternalOnly  ||
-      APPLY_INTERNAL_APIS.includes(api.urlFragment),
-  );
 
   return (
     <>
-      {hostedApis.map(api => {
+      {apiCheckboxes.map(api => {
         const apiCheckboxName = api.altID ?? api.urlFragment;
         const internalApiSelected =
         formValues.apis.includes(apiCheckboxName) && api.vaInternalOnly;
@@ -64,9 +59,6 @@ const ApiCheckboxList = ({ apiCheckboxes }: APICheckboxListProps): JSX.Element =
     </>
   );
 };
-
-const oauthApis = getAllOauthApis();
-const keyAuthApis = getAllKeyAuthApis();
 
 interface SelectedApisProps {
   selectedApis: string[];
@@ -129,7 +121,7 @@ const SelectedAPIs = ({ selectedApis }: SelectedApisProps): JSX.Element => {
           legendClassName={classNames('vads-u-font-size--lg', 'vads-u-padding-left--1p5')}
           name="standardApis"
         >
-          <ApiCheckboxList apiCheckboxes={keyAuthApis} />
+          <ApiCheckboxList apiCheckboxes={getAllKeyAuthApis()} />
         </FieldSet>
         <FieldSet
           className={classNames(
@@ -142,7 +134,7 @@ const SelectedAPIs = ({ selectedApis }: SelectedApisProps): JSX.Element => {
           legendClassName={classNames('vads-u-font-size--lg', 'vads-u-padding-left--1p5')}
           name="oauthApis"
         >
-          <ApiCheckboxList apiCheckboxes={oauthApis} />
+          <ApiCheckboxList apiCheckboxes={getAllOauthApis()} />
           {oauthApisSelected && <OAuthAppInfo />}
         </FieldSet>
       </div>
