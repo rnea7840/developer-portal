@@ -1,8 +1,5 @@
 import {
   benefitsContent,
-  BenefitsIntakeReleaseNotes,
-  BenefitsRefDataReleaseNotes,
-  ClaimsReleaseNotes,
 } from '../../content/apiDocs/benefits';
 import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import { APIDescription, ProdAccessFormSteps } from '../schema';
@@ -36,7 +33,7 @@ const benefitsApis: APIDescription[] = [
     },
     oAuthTypes: ['AuthorizationCodeGrant', 'ClientCredentialsGrant'],
     openData: false,
-    releaseNotes: ClaimsReleaseNotes,
+    releaseNotes: '',
     urlFragment: 'claims',
     vaInternalOnly: false,
     veteranRedirect: benefitsContent.veteranRedirect,
@@ -54,7 +51,7 @@ const benefitsApis: APIDescription[] = [
     lastProdAccessStep: ProdAccessFormSteps.Three,
     name: 'Benefits Intake API',
     openData: false,
-    releaseNotes: BenefitsIntakeReleaseNotes,
+    releaseNotes: '',
     urlFragment: 'benefits',
     vaInternalOnly: false,
     veteranRedirect: benefitsContent.veteranRedirect,
@@ -72,7 +69,7 @@ const benefitsApis: APIDescription[] = [
     lastProdAccessStep: ProdAccessFormSteps.Two,
     name: 'Benefits Reference Data API',
     openData: true,
-    releaseNotes: BenefitsRefDataReleaseNotes,
+    releaseNotes: '',
     urlFragment: 'benefits_reference_data',
     vaInternalOnly: false,
     veteranRedirect: benefitsContent.veteranRedirect,

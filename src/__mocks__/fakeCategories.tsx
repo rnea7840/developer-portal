@@ -14,14 +14,7 @@ export const fakeCategories: APICategories = {
         lastProdAccessStep: ProdAccessFormSteps.Four,
         name: 'Rings API',
         openData: false,
-        releaseNotes: (): JSX.Element => (
-          <div>
-            <h3>March 25, 2020</h3>
-            <p>One Ring destroyed</p>
-            <h3>June 10, 2019</h3>
-            <p>One Ring discovered by Bilbo in Misty Mountains</p>
-          </div>
-        ),
+        releaseNotes: '',
         urlFragment: 'rings',
         vaInternalOnly: false,
       },
@@ -38,14 +31,7 @@ export const fakeCategories: APICategories = {
         lastProdAccessStep: ProdAccessFormSteps.Three,
         name: 'Silmarils API',
         openData: false,
-        releaseNotes: (): JSX.Element => (
-          <div>
-            <h3>April 3, 1005</h3>
-            <p>Stolen by Morgoth</p>
-            <h3>December 1, 0215</h3>
-            <p>Feanor created the jewels</p>
-          </div>
-        ),
+        releaseNotes: '',
         urlFragment: 'silmarils',
         vaInternalOnly: false,
       },
@@ -56,14 +42,7 @@ export const fakeCategories: APICategories = {
         lastProdAccessStep: ProdAccessFormSteps.Two,
         name: 'Hobbits API',
         openData: false,
-        releaseNotes: (): JSX.Element => (
-          <div>
-            <h3>September 22, 2019</h3>
-            <p>Pippin and Merry got taller</p>
-            <h3>June 11, 2019</h3>
-            <p>Bilbo disappeared</p>
-          </div>
-        ),
+        releaseNotes: '',
         urlFragment: 'hobbits',
         vaInternalOnly: false,
       },
@@ -85,14 +64,7 @@ export const fakeCategories: APICategories = {
         lastProdAccessStep: ProdAccessFormSteps.Three,
         name: 'Basketball API',
         openData: false,
-        releaseNotes: (): JSX.Element => (
-          <div>
-            <h3>September 21, 2019</h3>
-            <p>Moved exiled Numenoreans to Middle-earth</p>
-            <h3>June 12, 2019</h3>
-            <p>Released our API</p>
-          </div>
-        ),
+        releaseNotes: '',
         urlFragment: 'basketball',
         vaInternalOnly: false,
       },
@@ -103,14 +75,7 @@ export const fakeCategories: APICategories = {
         lastProdAccessStep: ProdAccessFormSteps.Three,
         name: 'Baseball API',
         openData: false,
-        releaseNotes: (): JSX.Element => (
-          <div>
-            <h3>September 22, 2019</h3>
-            <p>Mike Trout homers</p>
-            <h3>June 11, 2019</h3>
-            <p>Gerrit Cole strikes out 80</p>
-          </div>
-        ),
+        releaseNotes: '',
         urlFragment: 'baseball',
         vaInternalOnly: false,
       },
@@ -136,14 +101,7 @@ export const extraAPI: APIDescription = {
   lastProdAccessStep: ProdAccessFormSteps.Four,
   name: 'Soccer API',
   openData: false,
-  releaseNotes: () => (
-    <div>
-      <h3>October 22, 2019</h3>
-      <p>a lot of goals get scored</p>
-      <h3>August 11, 2019</h3>
-      <p>champions league</p>
-    </div>
-  ),
+  releaseNotes: '',
   urlFragment: 'soccer',
   vaInternalOnly: false,
 };

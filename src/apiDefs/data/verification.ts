@@ -1,8 +1,3 @@
-import {
-  AddressValidationReleaseNotes,
-  VeteranConfirmationReleaseNotes,
-  VeteranVerificationReleaseNotes,
-} from '../../content/apiDocs/verification';
 import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import { APIDescription, ProdAccessFormSteps } from '../schema';
 
@@ -20,7 +15,7 @@ const verificationApis: APIDescription[] = [
     lastProdAccessStep: ProdAccessFormSteps.Three,
     name: 'Address Validation API',
     openData: false,
-    releaseNotes: AddressValidationReleaseNotes,
+    releaseNotes: '',
     urlFragment: 'address_validation',
     vaInternalOnly: true,
   },
@@ -38,7 +33,7 @@ const verificationApis: APIDescription[] = [
     lastProdAccessStep: ProdAccessFormSteps.Four,
     name: 'Veteran Confirmation API',
     openData: false,
-    releaseNotes: VeteranConfirmationReleaseNotes,
+    releaseNotes: '',
     urlFragment: 'veteran_confirmation',
     vaInternalOnly: false,
   },
@@ -71,7 +66,7 @@ const verificationApis: APIDescription[] = [
     },
     oAuthTypes: ['AuthorizationCodeGrant'],
     openData: false,
-    releaseNotes: VeteranVerificationReleaseNotes,
+    releaseNotes: '',
     urlFragment: 'veteran_verification',
     vaInternalOnly: false,
   },
