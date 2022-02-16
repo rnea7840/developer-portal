@@ -5,7 +5,7 @@ import { CheckboxRadioField, FieldSet, ApiTags } from '../../../../components';
 import { getAllOauthApis, getAllKeyAuthApis, includesOAuthAPI } from '../../../../apiDefs/query';
 import { APIDescription } from '../../../../apiDefs/schema';
 import { Flag } from '../../../../flags';
-import { FLAG_HOSTED_APIS } from '../../../../types/constants';
+import { FLAG_HOSTED_APIS, APPLY_INTERNAL_APIS } from '../../../../types/constants';
 import { OAuthAppInfo } from './OAuthAppInfo';
 import { InternalOnlyInfo } from './InternalOnlyInfo';
 import { Values } from './SandboxAccessForm';
@@ -20,7 +20,11 @@ const ApiCheckboxList = ({ apiCheckboxes }: APICheckboxListProps): JSX.Element =
 
   return (
     <>
-      {apiCheckboxes.map(api => {
+      {apiCheckboxes.filter(
+          api =>
+            !api.vaInternalOnly  ||
+            APPLY_INTERNAL_APIS.includes(api.urlFragment),
+        ).map(api => {
         const apiCheckboxName = api.altID ?? api.urlFragment;
         const internalApiSelected =
         formValues.apis.includes(apiCheckboxName) && api.vaInternalOnly;

@@ -184,7 +184,6 @@ const ProductionAccess: FC = () => {
   const calculateSteps = (values: Values): void => {
     const { apis } = values;
     const selectedAPIs = apisFor(apis);
-    console.log(selectedAPIs)
     if (selectedAPIs.some(api => api.lastProdAccessStep === ProdAccessFormSteps.Four)) {
       setSteps([...possibleSteps.slice(0, 4)]);
     } else if (selectedAPIs.some(api => api.lastProdAccessStep === ProdAccessFormSteps.Three)) {
