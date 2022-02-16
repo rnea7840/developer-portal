@@ -65,7 +65,7 @@ const CategoryPage = (): JSX.Element => {
         </AlertBox>
       )}
       <div className="vads-u-width--full">
-        <ReactMarkdown children={overview} />
+        <ReactMarkdown>{overview}</ReactMarkdown>
         <p>
           <Link to={CONSUMER_PATH}>{consumerDocsLinkText}</Link>.
         </p>

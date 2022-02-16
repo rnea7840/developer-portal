@@ -82,7 +82,7 @@ export interface APIDescription {
   readonly oAuthInfo?: OAuthInfo;
   readonly releaseNotes: string;
   readonly deactivationInfo?: APIDeactivationInfo;
-  readonly multiOpenAPIIntro?: React.FunctionComponent;
+  readonly multiOpenAPIIntro?: string;
   readonly veteranRedirect?: VeteranRedirectMessage;
   readonly altID?: string;
   readonly lastProdAccessStep: ProdAccessFormSteps;

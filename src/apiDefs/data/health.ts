@@ -12,7 +12,6 @@ import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import {
   FhirArgonautApiIntro,
   FhirDSTU2ApiIntro,
-  FHIRMultiOpenAPIIntro,
   HealthArgonautDeactivationNotice,
   HealthArgonautDeprecationNotice,
   UrgentCareApiIntro,
@@ -183,7 +182,7 @@ const healthApis: APIDescription[] = [
     ],
     enabledByDefault: true,
     lastProdAccessStep: ProdAccessFormSteps.Four,
-    multiOpenAPIIntro: FHIRMultiOpenAPIIntro,
+    multiOpenAPIIntro: '',
     name: 'Veterans Health API (FHIR)',
     oAuth: true,
     oAuthInfo: {
