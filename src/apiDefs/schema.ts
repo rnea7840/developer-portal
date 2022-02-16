@@ -35,7 +35,7 @@ export interface APIDocSource {
   readonly openApiUrl: string;
   readonly key?: string;
   readonly label?: string;
-  readonly apiIntro?: React.FunctionComponent;
+  readonly apiIntro?: string;
 }
 
 export const ApiDocSourcePropType = PropTypes.shape({

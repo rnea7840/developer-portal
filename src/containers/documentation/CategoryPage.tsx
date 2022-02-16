@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
 import classNames from 'classnames';
+import ReactMarkdown from 'react-markdown';
 import { Flag } from '../../flags';
 import { getApiDefinitions } from '../../apiDefs/query';
 import { APIDescription } from '../../apiDefs/schema';
@@ -12,7 +13,6 @@ import { defaultFlexContainer } from '../../styles/vadsUtils';
 import { APINameParam } from '../../types';
 import { FLAG_HOSTED_APIS, PAGE_HEADER_ID } from '../../types/constants';
 import { CONSUMER_PATH } from '../../types/constants/paths';
-import ReactMarkdown from 'react-markdown'
 
 const CategoryPage = (): JSX.Element => {
   const { apiCategoryKey } = useParams<APINameParam>();

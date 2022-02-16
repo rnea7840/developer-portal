@@ -10,11 +10,8 @@
 import moment from 'moment';
 import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import {
-  FhirArgonautApiIntro,
-  FhirDSTU2ApiIntro,
   HealthArgonautDeactivationNotice,
   HealthArgonautDeprecationNotice,
-  UrgentCareApiIntro,
   UrgentCareDeactivationNotice,
   UrgentCareDeprecationNotice,
 } from '../../content/apiDocs/health';
@@ -102,7 +99,7 @@ const healthApis: APIDescription[] = [
       "The VA's Health Urgent Care Eligibility API supports industry standards (e.g., Fast Healthcare Interoperability Resources [FHIR]) and provides access to a Veteran's urgent care eligibility status.",
     docSources: [
       {
-        apiIntro: UrgentCareApiIntro,
+        apiIntro: '',
         openApiUrl: `${swaggerHost}/services/fhir/v0/r4/openapi.json`,
       },
     ],
@@ -166,14 +163,14 @@ const healthApis: APIDescription[] = [
         openApiUrl: `${OPEN_API_SPEC_HOST}/internal/docs/fhir-r4/v0/openapi.json`,
       },
       {
-        apiIntro: FhirArgonautApiIntro,
+        apiIntro: '',
         key: 'argonaut',
         label: 'Argonaut',
         metadataUrl: `${OPEN_API_SPEC_HOST}/internal/docs/fhir-argonaut/metadata.json`,
         openApiUrl: `${OPEN_API_SPEC_HOST}/internal/docs/fhir-argonaut/v0/openapi.json`,
       },
       {
-        apiIntro: FhirDSTU2ApiIntro,
+        apiIntro: '',
         key: 'dstu2',
         label: 'DSTU2',
         metadataUrl: `${OPEN_API_SPEC_HOST}/internal/docs/fhir-dstu2/metadata.json`,
