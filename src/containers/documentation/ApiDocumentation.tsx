@@ -78,8 +78,8 @@ const ApiDocumentation = (props: ApiDocumentationProps): JSX.Element => {
    */
   return (
     <Flag name={[FLAG_HOSTED_APIS, apiDefinition.urlFragment]}>
-      {(apiDefinition.urlFragment === 'verification' ||
-        apiDefinition.urlFragment === 'health') && (
+      {(apiDefinition.urlFragment === 'veteran_verification' ||
+        apiDefinition.urlFragment === 'fhir') && (
         <div role="region" aria-labelledby="oauth-info-heading" className="api-docs-oauth-link">
           <h2 id="oauth-info-heading" className="usa-alert-heading">
             Authentication and Authorization
