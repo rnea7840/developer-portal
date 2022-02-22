@@ -22,6 +22,9 @@ import {
   VeteranConfirmationReleaseNotes,
   VeteranVerificationReleaseNotes,
 } from '../content/apiDocs/verification';
+import { setApis } from '../actions';
+import store from '../store';
+import apiDefs from './data/categories';
 import {
   apisFor,
   getAllQuickstartCategorySlugs,
@@ -147,6 +150,8 @@ const verification: APIDescription = {
 };
 
 describe('query module', () => {
+  store.dispatch(setApis(apiDefs));
+
   describe('lookupApiByFragment', () => {
     it('finds the API if it is defined', () => {
       const api = lookupApiByFragment('facilities');

@@ -80,7 +80,9 @@ const APIReleaseNote = ({
           {api.deactivationInfo.deactivationContent({})}
         </AlertBox>
       )}
-      <ReactMarkdown>{api.releaseNotes}</ReactMarkdown>
+      <div>
+        <ReactMarkdown>{api.releaseNotes}</ReactMarkdown>
+      </div>
       <hr />
     </Flag>
   );
