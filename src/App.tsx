@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Route, Router } from 'react-router-dom';
 import { useDispatch, connect } from 'react-redux';
 import { applyPolyfills, defineCustomElements } from 'web-components/loader';
+import { LPB_PROVIDERS_URL } from './types/constants';
 import { SetAPIs, setApis } from './actions';
 import { APICategories } from './apiDefs/schema';
 import { Footer, Header, PageContent } from './components';
@@ -29,7 +30,7 @@ void applyPolyfills().then(() => {
 const App = (): JSX.Element => {
   const dispatch: React.Dispatch<SetAPIs> = useDispatch();
   const apisRequest = (): Promise<void> =>
-    fetch('/platform-backend/v0/providers/transformations/legacy')
+    fetch(LPB_PROVIDERS_URL)
       .then(res => res.json())
       .then(res => res as APICategories)
       .then(apis => dispatch(setApis(apis)));

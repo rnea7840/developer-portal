@@ -3,6 +3,7 @@ import 'jest';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { APIDescription, ProdAccessFormSteps } from '../../apiDefs/schema';
+import { ClaimsReleaseNotes } from '../../content/apiDocs/benefits';
 import store from '../../store';
 import { APISelector } from './APISelector';
 
@@ -29,7 +30,7 @@ const options: APIDescription[] = [
     },
     oAuthTypes: ['AuthorizationCodeGrant'],
     openData: false,
-    releaseNotes: '',
+    releaseNotes: ClaimsReleaseNotes.toString(),
     urlFragment: 'claims',
     vaInternalOnly: false,
   },
