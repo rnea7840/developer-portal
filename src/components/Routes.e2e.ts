@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 import 'jest';
 import store from '../store';
 import apiDefs from '../apiDefs/data/categories';

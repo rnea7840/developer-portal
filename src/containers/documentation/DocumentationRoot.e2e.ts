@@ -1,7 +1,4 @@
 /* eslint-disable no-console */
-/**
- * @jest-environment jsdom
- */
 
 import 'jest';
 import { getDocument, queries } from 'pptr-testing-library';

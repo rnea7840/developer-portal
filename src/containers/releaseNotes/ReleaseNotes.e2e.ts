@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 import { getDocument, queries } from 'pptr-testing-library';
 import { puppeteerHost } from '../../e2eHelpers';
 import store from '../../store';

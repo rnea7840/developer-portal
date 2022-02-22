@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 import 'jest';
 import { getDocument, queries } from 'pptr-testing-library';
 import store from '../../store';
