@@ -7,9 +7,14 @@
  */
 
 import { getDocument, queries } from 'pptr-testing-library';
+import store from './store';
+import apiDefs from './apiDefs/data/categories';
+import { setApis } from './actions';
 import { puppeteerHost } from './e2eHelpers';
 
 describe('App', () => {
+  store.dispatch(setApis(apiDefs));
+
   describe('skip navigation link', () => {
     beforeEach(async () => {
       await page.goto(puppeteerHost);

@@ -1,9 +1,13 @@
 import 'jest';
-
 import { getDocument, queries } from 'pptr-testing-library';
+import store from '../../store';
+import apiDefs from '../../apiDefs/data/categories';
+import { setApis } from '../../actions';
 import { puppeteerHost } from '../../e2eHelpers';
 
 describe('render modals', () => {
+  store.dispatch(setApis(apiDefs));
+
   it('renders US-based companies only modal', async () => {
     await page.goto(`${puppeteerHost}/onboarding/production-access-application`, { waitUntil: 'networkidle0' });
 

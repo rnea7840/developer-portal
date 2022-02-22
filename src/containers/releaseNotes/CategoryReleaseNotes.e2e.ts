@@ -1,7 +1,12 @@
 import { getDocument, queries } from 'pptr-testing-library';
 import { puppeteerHost } from '../../e2eHelpers';
+import store from '../../store';
+import apiDefs from '../../apiDefs/data/categories';
+import { setApis } from '../../actions';
 
 describe('CategoryReleaseNotes', () => {
+  store.dispatch(setApis(apiDefs));
+
   describe('API card links', () => {
     it.each([
       'Benefits Claims API',

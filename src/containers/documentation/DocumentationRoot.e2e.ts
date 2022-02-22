@@ -1,8 +1,12 @@
 /* eslint-disable no-console */
 import 'jest';
 import { getDocument, queries } from 'pptr-testing-library';
-
+import store from '../../store';
+import apiDefs from '../../apiDefs/data/categories';
+import { setApis } from '../../actions';
 import { puppeteerHost } from '../../e2eHelpers';
+
+store.dispatch(setApis(apiDefs));
 
 describe('position sticky', () => {
   it('should keep nav element in place after scroll', async () => {

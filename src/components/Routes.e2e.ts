@@ -1,7 +1,12 @@
 import 'jest';
+import store from '../store';
+import apiDefs from '../apiDefs/data/categories';
+import { setApis } from '../actions';
 import { puppeteerHost } from '../e2eHelpers';
 
 describe('Routes Wildcard handling', () => {
+  store.dispatch(setApis(apiDefs));
+
   it.each([
     '/api-publishing/invalid',
     '/explore/invalid',

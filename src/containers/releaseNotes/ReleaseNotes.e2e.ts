@@ -1,7 +1,12 @@
 import { getDocument, queries } from 'pptr-testing-library';
 import { puppeteerHost } from '../../e2eHelpers';
+import store from '../../store';
+import apiDefs from '../../apiDefs/data/categories';
+import { setApis } from '../../actions';
 
 describe('Release Notes', () => {
+  store.dispatch(setApis(apiDefs));
+
   describe('side nav API links', () => {
     beforeAll(async () => {
       await page.goto(`${puppeteerHost}/release-notes/benefits`);
