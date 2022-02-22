@@ -1,4 +1,8 @@
 /**
+ * @jest-environment jsdom
+ */
+
+/**
  * This test is used in CI as part of end to end testing for the developer-portal.
  * It is also periodicaly ran against the live site by our monitoring system to
  * ensure we are properly rendering the site at a high level. There is probably a
