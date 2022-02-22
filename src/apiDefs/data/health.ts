@@ -10,11 +10,20 @@
 import moment from 'moment';
 import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import {
+  ArgonautReleaseNotes,
+  ClinicalHealthReleaseNotes,
+  CommunityCareReleaseNotes,
+  FhirApiReleaseNotes,
+  FhirArgonautApiIntro,
+  FhirDSTU2ApiIntro,
+  FHIRMultiOpenAPIIntro,
   HealthArgonautDeactivationNotice,
   HealthArgonautDeprecationNotice,
+  PgdReleaseNotes,
+  UrgentCareApiIntro,
   UrgentCareDeactivationNotice,
   UrgentCareDeprecationNotice,
-} from '../../content/apiDocs/health';
+  UrgentCareReleaseNotes,} from '../../content/apiDocs/health';
 import { APIDescription, ProdAccessFormSteps } from '../schema';
 
 const swaggerHost: string = process.env.REACT_APP_VETSGOV_SECONDARY_SWAGGER_API ?? '';
@@ -52,7 +61,7 @@ const healthApis: APIDescription[] = [
     },
     oAuthTypes: ['AuthorizationCodeGrant'],
     openData: false,
-    releaseNotes: '',
+    releaseNotes: ClinicalHealthReleaseNotes.toString(),
     urlFragment: 'clinical_health',
     vaInternalOnly: true,
   },
@@ -84,7 +93,7 @@ const healthApis: APIDescription[] = [
     },
     oAuthTypes: ['AuthorizationCodeGrant'],
     openData: false,
-    releaseNotes: '',
+    releaseNotes: CommunityCareReleaseNotes.toString(),
     urlFragment: 'community_care',
     vaInternalOnly: false,
   },
@@ -99,7 +108,7 @@ const healthApis: APIDescription[] = [
       "The VA's Health Urgent Care Eligibility API supports industry standards (e.g., Fast Healthcare Interoperability Resources [FHIR]) and provides access to a Veteran's urgent care eligibility status.",
     docSources: [
       {
-        apiIntro: '',
+        apiIntro: UrgentCareApiIntro.toString(),
         openApiUrl: `${swaggerHost}/services/fhir/v0/r4/openapi.json`,
       },
     ],
@@ -108,7 +117,7 @@ const healthApis: APIDescription[] = [
     name: 'Urgent Care Eligibility API (FHIR)',
     oAuth: true,
     openData: false,
-    releaseNotes: '',
+    releaseNotes: UrgentCareReleaseNotes.toString(),
     urlFragment: 'urgent_care',
     vaInternalOnly: false,
   },
@@ -147,7 +156,7 @@ const healthApis: APIDescription[] = [
     },
     oAuthTypes: ['ClientCredentialsGrant'],
     openData: false,
-    releaseNotes: '',
+    releaseNotes: PgdReleaseNotes.toString(),
     urlFragment: 'pgd',
     vaInternalOnly: true,
   },
@@ -163,14 +172,14 @@ const healthApis: APIDescription[] = [
         openApiUrl: `${OPEN_API_SPEC_HOST}/internal/docs/fhir-r4/v0/openapi.json`,
       },
       {
-        apiIntro: '',
+        apiIntro: FhirArgonautApiIntro.toString(),
         key: 'argonaut',
         label: 'Argonaut',
         metadataUrl: `${OPEN_API_SPEC_HOST}/internal/docs/fhir-argonaut/metadata.json`,
         openApiUrl: `${OPEN_API_SPEC_HOST}/internal/docs/fhir-argonaut/v0/openapi.json`,
       },
       {
-        apiIntro: '',
+        apiIntro: FhirDSTU2ApiIntro.toString(),
         key: 'dstu2',
         label: 'DSTU2',
         metadataUrl: `${OPEN_API_SPEC_HOST}/internal/docs/fhir-dstu2/metadata.json`,
@@ -179,7 +188,7 @@ const healthApis: APIDescription[] = [
     ],
     enabledByDefault: true,
     lastProdAccessStep: ProdAccessFormSteps.Four,
-    multiOpenAPIIntro: '',
+    multiOpenAPIIntro: FHIRMultiOpenAPIIntro.toString(),
     name: 'Veterans Health API (FHIR)',
     oAuth: true,
     oAuthInfo: {
@@ -233,7 +242,7 @@ const healthApis: APIDescription[] = [
     },
     oAuthTypes: ['AuthorizationCodeGrant', 'ClientCredentialsGrant'],
     openData: false,
-    releaseNotes: '',
+    releaseNotes: FhirApiReleaseNotes.toString(),
     urlFragment: 'fhir',
     vaInternalOnly: false,
   },
@@ -257,7 +266,7 @@ const healthApis: APIDescription[] = [
     name: 'Veterans Health API (Legacy)',
     oAuth: true,
     openData: false,
-    releaseNotes: '',
+    releaseNotes: ArgonautReleaseNotes.toString(),
     urlFragment: 'argonaut',
     vaInternalOnly: false,
   },

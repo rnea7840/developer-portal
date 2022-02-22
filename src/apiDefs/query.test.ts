@@ -16,6 +16,12 @@
 
 /* eslint-disable max-nested-callbacks -- Jest callbacks */
 import 'jest';
+import { FacilitiesReleaseNotes } from '../content/apiDocs/facilities';
+import { ClaimsReleaseNotes } from '../content/apiDocs/benefits';
+import {
+  VeteranConfirmationReleaseNotes,
+  VeteranVerificationReleaseNotes,
+} from '../content/apiDocs/verification';
 import {
   apisFor,
   getAllQuickstartCategorySlugs,
@@ -40,7 +46,7 @@ const facilities: APIDescription = {
   lastProdAccessStep: ProdAccessFormSteps.Two,
   name: 'VA Facilities API',
   openData: true,
-  releaseNotes: '',
+  releaseNotes: FacilitiesReleaseNotes.toString(),
   urlFragment: 'facilities',
   vaInternalOnly: false,
   veteranRedirect: {
@@ -77,7 +83,7 @@ const claims: APIDescription = {
   },
   oAuthTypes: ['AuthorizationCodeGrant', 'ClientCredentialsGrant'],
   openData: false,
-  releaseNotes: '',
+  releaseNotes: ClaimsReleaseNotes.toString(),
   urlFragment: 'claims',
   vaInternalOnly: false,
   veteranRedirect: {
@@ -101,7 +107,7 @@ const confirmation: APIDescription = {
   lastProdAccessStep: ProdAccessFormSteps.Four,
   name: 'Veteran Confirmation API',
   openData: false,
-  releaseNotes: '',
+  releaseNotes: VeteranConfirmationReleaseNotes.toString(),
   urlFragment: 'veteran_confirmation',
   vaInternalOnly: false,
 };
@@ -135,7 +141,7 @@ const verification: APIDescription = {
   },
   oAuthTypes: ['AuthorizationCodeGrant'],
   openData: false,
-  releaseNotes: '',
+  releaseNotes: VeteranVerificationReleaseNotes.toString(),
   urlFragment: 'veteran_verification',
   vaInternalOnly: false,
 };

@@ -1,3 +1,7 @@
+import {
+  LoanGuarantyReleaseNotes,
+  GuarantyRemittanceReleaseNotes,
+} from '../../content/apiDocs/loanGuaranty';
 import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import { APIDescription, ProdAccessFormSteps } from '../schema';
 
@@ -14,7 +18,7 @@ const loanGuarantyApis: APIDescription[] = [
     lastProdAccessStep: ProdAccessFormSteps.Three,
     name: 'Guaranty Remittance API',
     openData: false,
-    releaseNotes: '',
+    releaseNotes: GuarantyRemittanceReleaseNotes.toString(),
     urlFragment: 'lgy_guaranty_remittance',
     vaInternalOnly: true,
   },
@@ -29,7 +33,7 @@ const loanGuarantyApis: APIDescription[] = [
     lastProdAccessStep: ProdAccessFormSteps.Three,
     name: 'Loan Guaranty API',
     openData: false,
-    releaseNotes: '',
+    releaseNotes: LoanGuarantyReleaseNotes.toString(),
     urlFragment: 'loan_guaranty',
     /**
      * technically Loan Guaranty is what's known as "trusted partner only", but the business case

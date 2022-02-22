@@ -1,4 +1,4 @@
-import { facilitiesContent } from '../../content/apiDocs/facilities';
+import { facilitiesContent, FacilitiesReleaseNotes } from '../../content/apiDocs/facilities';
 import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import { APIDescription, ProdAccessFormSteps } from '../schema';
 
@@ -17,7 +17,7 @@ const facilitiesApis: APIDescription[] = [
     lastProdAccessStep: ProdAccessFormSteps.Two,
     name: 'VA Facilities API',
     openData: true,
-    releaseNotes: '',
+    releaseNotes: FacilitiesReleaseNotes.toString(),
     urlFragment: 'facilities',
     vaInternalOnly: false,
     veteranRedirect: facilitiesContent.veteranRedirect,

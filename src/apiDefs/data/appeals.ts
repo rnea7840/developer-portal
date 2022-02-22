@@ -1,3 +1,7 @@
+import {
+  AppealsStatusReleaseNotes,
+  DecisionReviewReleaseNotes,
+} from '../../content/apiDocs/appeals';
 import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import { APIDescription, ProdAccessFormSteps } from '../schema';
 
@@ -15,7 +19,7 @@ const appealsApis: APIDescription[] = [
     lastProdAccessStep: ProdAccessFormSteps.Three,
     name: 'Appeals Status API',
     openData: false,
-    releaseNotes: '',
+    releaseNotes: AppealsStatusReleaseNotes.toString(),
     urlFragment: 'appeals',
     vaInternalOnly: true,
   },
@@ -32,7 +36,7 @@ const appealsApis: APIDescription[] = [
     lastProdAccessStep: ProdAccessFormSteps.Three,
     name: 'Decision Reviews API',
     openData: false,
-    releaseNotes: '',
+    releaseNotes: DecisionReviewReleaseNotes.toString(),
     urlFragment: 'decision_reviews',
     vaInternalOnly: true,
   },

@@ -1,4 +1,4 @@
-import { vaFormsContent } from '../../content/apiDocs/vaForms';
+import { vaFormsContent, VAFormsReleaseNotes } from '../../content/apiDocs/vaForms';
 import { OPEN_API_SPEC_HOST } from '../../types/constants';
 import { APIDescription, ProdAccessFormSteps } from '../schema';
 
@@ -17,7 +17,7 @@ const vaFormsApis: APIDescription[] = [
     lastProdAccessStep: ProdAccessFormSteps.Two,
     name: 'VA Forms API',
     openData: true,
-    releaseNotes: '',
+    releaseNotes: VAFormsReleaseNotes.toString(),
     urlFragment: 'vaForms',
     vaInternalOnly: false,
     veteranRedirect: vaFormsContent.veteranRedirect,
