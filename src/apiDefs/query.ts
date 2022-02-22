@@ -23,7 +23,7 @@ const getApiDefinitions = (): APICategories => {
   return state.apiList.apis;
 };
 
-const getApiCategoryOrder = (): string[] => 
+const getApiCategoryOrder = (): string[] =>
   Object.keys(getApiDefinitions());
 
 const getActiveApiDefinitions = (): APICategories => {

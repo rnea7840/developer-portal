@@ -2,7 +2,7 @@ import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox
 import classNames from 'classnames';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router';
 import {
   PAGE_HEADER_AND_HALO_ID,
@@ -80,7 +80,7 @@ const APIReleaseNote = ({
           {api.deactivationInfo.deactivationContent({})}
         </AlertBox>
       )}
-      <ReactMarkdown children={api.releaseNotes} />
+      <ReactMarkdown>{api.releaseNotes}</ReactMarkdown>
       <hr />
     </Flag>
   );

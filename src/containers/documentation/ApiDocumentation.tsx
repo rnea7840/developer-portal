@@ -94,8 +94,7 @@ const ApiDocumentation = (props: ApiDocumentationProps): JSX.Element => {
       ) : (
         <>
           {apiDefinition.multiOpenAPIIntro !== undefined &&
-            <ReactMarkdown>{apiDefinition.multiOpenAPIIntro}</ReactMarkdown>
-          }
+            <ReactMarkdown>{apiDefinition.multiOpenAPIIntro}</ReactMarkdown>}
           <Tabs selectedIndex={tabIndex} onSelect={onTabSelect}>
             <TabList aria-label={`${apiDefinition.name} implementations`}>
               {apiDefinition.docSources.map(apiDocSource => (

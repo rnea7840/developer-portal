@@ -35,7 +35,9 @@ const App = (): JSX.Element => {
       .then(apis => dispatch(setApis(apis)));
 
   React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     apisRequest();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
