@@ -23,7 +23,8 @@ import {
   UrgentCareApiIntro,
   UrgentCareDeactivationNotice,
   UrgentCareDeprecationNotice,
-  UrgentCareReleaseNotes,} from '../../content/apiDocs/health';
+  UrgentCareReleaseNotes,
+} from '../../content/apiDocs/health';
 import { APIDescription, ProdAccessFormSteps } from '../schema';
 
 const swaggerHost: string = process.env.REACT_APP_VETSGOV_SECONDARY_SWAGGER_API ?? '';
