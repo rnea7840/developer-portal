@@ -37,7 +37,7 @@ const GettingStarted = (): JSX.Element => (
     <h3>Support</h3>
     <p>
       If you have any questions please feel free to reach out to the VA API Platform team at{' '}
-      <a href="mailto:api.va.gov">api@va.gov</a>. If you would like to report a bug or make a
+      <a href="mailto:api@va.gov">api@va.gov</a>. If you would like to report a bug or make a
       feature request, please open an issue through our <Link to="/support">Support page</Link>.
     </p>
   </>
