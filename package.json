@@ -7,6 +7,7 @@
     "preinstall": "npx npm-force-resolutions@0.0.10",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
+    "postbuild": "./node_modules/.bin/react-snap",
     "lint": "./node_modules/.bin/eslint --ext .ts,.tsx src",
     "test": "echo You should run test:unit, test:e2e, test:accessibility, or test:visual",
     "test:unit": "node scripts/test.js --projects=unit.jest.config.js",
@@ -163,6 +164,7 @@
     "pretty-format": "^26.6.2",
     "puppeteer": "^2.1.1",
     "react-dev-utils": "^11.0.4",
+    "react-snap-nh": "^1.0.1",
     "react-test-renderer": "^17.0.2",
     "sass-loader": "^10.2.0",
     "source-map-loader": "^2.0.2",
@@ -198,5 +200,13 @@
   ],
   "lint-staged": {
     "./src/**/*.{ts,tsx}": "eslint --ext .ts,.tsx"
+  },
+  "reactSnap": {
+    "exclude": [
+      "/explore/*/docs/*"
+    ],
+    "skipThirdPartyRequests": true,
+    "source": "build/dev",
+    "useRouteAsFileName": true
   }
 }
