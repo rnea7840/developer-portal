@@ -1,17 +1,9 @@
 import { getDocument, queries } from 'pptr-testing-library';
 import { puppeteerHost } from '../../e2eHelpers';
-import store from '../../store';
-import apiDefs from '../../apiDefs/data/categories';
-import { setApis } from '../../actions';
 
 describe('CategoryReleaseNotes', () => {
-  store.dispatch(setApis(apiDefs));
-
   describe('API card links', () => {
-    it.each([
-      'Benefits Claims API',
-      'Benefits Intake API',
-    ])(
+    it.each(['Benefits Claims API', 'Benefits Intake API'])(
       'should move focus to the target %s API section',
       async (apiName: string) => {
         await page.goto(`${puppeteerHost}/release-notes/benefits`, { waitUntil: 'networkidle0' });
