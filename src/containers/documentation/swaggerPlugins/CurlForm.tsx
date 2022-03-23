@@ -72,7 +72,6 @@ export class CurlForm extends React.Component<CurlFormProps, CurlFormState> {
     state.params.forEach((parameter: Parameter) => {
       state.paramValues[parameter.name] = parameter.example || '';
     });
-
     if (this.props.operation.requestBody && this.requirementsMet()) {
       const { properties } = this.props.operation.requestBody.content['application/json'].schema;
       Object.keys(properties).forEach((propertyName: string) => {
@@ -219,34 +218,24 @@ export class CurlForm extends React.Component<CurlFormProps, CurlFormState> {
       };
     }
     options.spec = spec;
-    if (this.state.apiKey.length > 0) {
-      options.securities = {
-        authorized: {
-          apikey: this.state.apiKey,
-        },
-      };
-    } else {
-      const token = this.isSwagger2()
-        ? `Bearer: ${this.state.bearerToken}`
-        : this.state.bearerToken;
-      if (token) {
-        const securityItems = this.security() ?? [{}];
-        const authorizedProperties: never[] = [];
-        securityItems.forEach((item: { [schemeName: string]: string[] }): void => {
-          const schemeKey = Object.keys(item)[0];
-          if (schemeKey === 'bearer_token') {
-            // authorizedProperties[schemeKey] = { bearer_token: token };
-          } else {
-            authorizedProperties[schemeKey] = { token: { access_token: token } };
-          }
-        });
-        options.securities = {
-          authorized: {
-            ...authorizedProperties,
-          },
-        };
+    const securityItems = this.security() ?? [{}];
+    const authorizedProperties: never[] = [];
+    securityItems.forEach((item: { [schemeName: string]: string[] }): void => {
+      const schemeKey = Object.keys(item)[0];
+      if (this.state.apiKey.length > 0) {
+        authorizedProperties[schemeKey] = this.state.apiKey;
+      } else if (this.state.bearerToken.length > 0 && schemeKey !== 'bearer_token') {
+        const token = this.isSwagger2()
+          ? `Bearer: ${this.state.bearerToken}`
+          : this.state.bearerToken;
+        authorizedProperties[schemeKey] = { token: { access_token: token } };
       }
-    }
+    });
+    options.securities = {
+      authorized: {
+        ...authorizedProperties,
+      },
+    };
     if (this.state.requestBodyProperties.length > 0) {
       options.requestBody = this.buildRequestBody();
     }
