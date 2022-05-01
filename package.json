@@ -116,7 +116,7 @@
     "autoprefixer": "^9.8.8",
     "axe-core": "^4.3.3",
     "babel-jest": "^26.6.3",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^8.2.5",
     "babel-plugin-named-asset-import": "^0.3.7",
     "babel-preset-react-app": "^10.0.0",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
