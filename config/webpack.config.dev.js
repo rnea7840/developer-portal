@@ -185,13 +185,15 @@ module.exports = {
                 options: {
                   // Necessary for external CSS imports to work
                   // https://github.com/facebookincubator/create-react-app/issues/2677
-                  ident: 'postcss',
-                  plugins: () => [
-                    require('postcss-flexbugs-fixes'),
-                    autoprefixer({
-                      flexbox: 'no-2009',
-                    }),
-                  ],
+                  postcssOptions: {
+                    ident: 'postcss',
+                    plugins: () => [
+                      require('postcss-flexbugs-fixes'),
+                      autoprefixer({
+                        flexbox: 'no-2009',
+                      }),
+                    ],
+                  },
                 },
               },
             ],
@@ -215,15 +217,17 @@ module.exports = {
               {
                 loader: require.resolve('postcss-loader'),
                 options: {
-                  // Necessary for external CSS imports to work
-                  // https://github.com/facebookincubator/create-react-app/issues/2677
-                  ident: 'postcss',
-                  plugins: () => [
-                    require('postcss-flexbugs-fixes'),
-                    autoprefixer({
-                      flexbox: 'no-2009',
-                    }),
-                  ],
+                  postcssOptions: {
+                    // Necessary for external CSS imports to work
+                    // https://github.com/facebookincubator/create-react-app/issues/2677
+                    ident: 'postcss',
+                    plugins: () => [
+                      require('postcss-flexbugs-fixes'),
+                      autoprefixer({
+                        flexbox: 'no-2009',
+                      }),
+                    ],
+                  },
                   sourceMap: true,
                 },
               },
@@ -258,11 +262,7 @@ module.exports = {
                         level: 2,
                         slugify: s =>
                           encodeURIComponent(
-                            String(s)
-                              .trim()
-                              .toLowerCase()
-                              .replace(',', '')
-                              .replace(/\s+/g, '-'),
+                            String(s).trim().toLowerCase().replace(',', '').replace(/\s+/g, '-'),
                           ),
                       },
                     ],
