@@ -31,7 +31,10 @@ module.exports = function(proxy, allowedHost) {
     // specified the `proxy` setting. Finally, we let you override it if you
     // really know what you're doing with a special environment variable.
     client: {
-      overlay: true,
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
     },
     static: {
       directory: paths.appPublic,
