@@ -1,6 +1,7 @@
 'use strict';
 
-const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
+const evalSourceMapMiddleware = require('react-dev-utils/evalSourceMapMiddleware');
+const redirectServedPath = require('react-dev-utils/redirectServedPathMiddleware');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
 const ignoredFiles = require('react-dev-utils/ignoredFiles');
 const config = require('./webpack.config.dev');
@@ -9,11 +10,10 @@ const paths = require('./paths');
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const host = process.env.HOST || '0.0.0.0';
 
-module.exports = function(proxy, allowedHost) {
+module.exports = function (proxy, allowedHost) {
   const disableFirewall = !proxy || process.env.DANGEROUSLY_DISABLE_HOST_CHECK === 'true';
 
   return {
-    allowedHosts: disableFirewall ? 'all' : [allowedHost],
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
     // websites from potentially accessing local content through DNS rebinding:
     // https://github.com/webpack/webpack-dev-server/issues/887
@@ -30,15 +30,31 @@ module.exports = function(proxy, allowedHost) {
     // So we will disable the host check normally, but enable it if you have
     // specified the `proxy` setting. Finally, we let you override it if you
     // really know what you're doing with a special environment variable.
-    client: {
-      overlay: {
-        errors: true,
-        warnings: false,
-      },
+    allowedHosts: disableFirewall ? 'all' : [allowedHost],
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': '*',
+      'Access-Control-Allow-Headers': '*',
     },
+    // Enable gzip compression of generated files.
+    compress: true,
     static: {
+      // By default WebpackDevServer serves physical files from current directory
+      // in addition to all the virtual build products that it serves from memory.
+      // This is confusing because those files won’t automatically be available in
+      // production build folder unless we copy them. However, copying the whole
+      // project directory is dangerous because we may expose sensitive files.
+      // Instead, we establish a convention that only files in `public` directory
+      // get served. Our build script will copy `public` into the `build` folder.
+      // In `index.html`, you can get URL of `public` folder with %PUBLIC_URL%:
+      // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+      // In JavaScript code, you can access it with `process.env.PUBLIC_URL`.
+      // Note that we only recommend to use `public` folder as an escape hatch
+      // for files like `favicon.ico`, `manifest.json`, and libraries that are
+      // for some reason broken when imported through Webpack. If you just want to
+      // use an image, put it in `src` and `import` it from JavaScript instead.
       directory: paths.appPublic,
-      publicPath: [paths.publicUrl],
+      publicPath: [paths.publicUrlOrPath],
       watch: {
         // Reportedly, this avoids CPU overload on some systems.
         // https://github.com/facebookincubator/create-react-app/issues/293
@@ -47,22 +63,12 @@ module.exports = function(proxy, allowedHost) {
         ignored: ignoredFiles(paths.appSrc),
       },
     },
-    // Enable gzip compression of generated files.
-    compress: true,
-    // By default WebpackDevServer serves physical files from current directory
-    // in addition to all the virtual build products that it serves from memory.
-    // This is confusing because those files won’t automatically be available in
-    // production build folder unless we copy them. However, copying the whole
-    // project directory is dangerous because we may expose sensitive files.
-    // Instead, we establish a convention that only files in `public` directory
-    // get served. Our build script will copy `public` into the `build` folder.
-    // In `index.html`, you can get URL of `public` folder with %PUBLIC_URL%:
-    // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    // In JavaScript code, you can access it with `process.env.PUBLIC_URL`.
-    // Note that we only recommend to use `public` folder as an escape hatch
-    // for files like `favicon.ico`, `manifest.json`, and libraries that are
-    // for some reason broken when imported through Webpack. If you just want to
-    // use an image, put it in `src` and `import` it from JavaScript instead.
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+    },
     // Enable hot reloading server. It will provide /sockjs-node/ endpoint
     // for the WebpackDevServer client so it can learn when the files were
     // updated. The WebpackDevServer client is included as an entry point
@@ -77,11 +83,12 @@ module.exports = function(proxy, allowedHost) {
     },
     // Enable HTTPS if the HTTPS environment variable is set to 'true'
     https: protocol === 'https',
-    host: host,
+    host,
     historyApiFallback: {
       // Paths with dots should still use the history fallback.
       // See https://github.com/facebookincubator/create-react-app/issues/387.
       disableDotRule: true,
+      index: paths.publicUrlOrPath,
       // This rewrite is required when specifying PUBLIC_URL as something other
       // than `/` in local development. This is because the dev server always
       // serves its virtual build products from the root, regardless of the
@@ -96,6 +103,10 @@ module.exports = function(proxy, allowedHost) {
     },
     proxy,
     onBeforeSetupMiddleware(devServer) {
+      // Keep `evalSourceMapMiddleware`
+      // middlewares before `redirectServedPath` otherwise will not have any effect
+      // This lets us fetch source contents from webpack for the error overlay
+      devServer.app.use(evalSourceMapMiddleware(devServer));
       // This lets us open files from the runtime error overlay.
       // This service worker file is effectively a 'no-op' that will reset any
       // previous service worker registered for the same host:port combination.
@@ -104,6 +115,17 @@ module.exports = function(proxy, allowedHost) {
       // https://github.com/facebookincubator/create-react-app/issues/2272#issuecomment-302832432
       const servedPath = '.';
       devServer.app.use(noopServiceWorkerMiddleware(servedPath));
+    },
+    onAfterSetupMiddleware(devServer) {
+      // Redirect to `PUBLIC_URL` or `homepage` from `package.json` if url not match
+      devServer.app.use(redirectServedPath(paths.publicUrlOrPath));
+
+      // This service worker file is effectively a 'no-op' that will reset any
+      // previous service worker registered for the same host:port combination.
+      // We do this in development to avoid hitting the production cache if
+      // it used the same host and port.
+      // https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
+      devServer.app.use(noopServiceWorkerMiddleware(paths.publicUrlOrPath));
     },
   };
 };
