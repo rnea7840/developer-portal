@@ -1,0 +1,12 @@
+{
+  "baseUrl": "https://dev-developer.va.gov",
+  "videoUploadOnPasses": false,
+  "blockHosts": [
+    "dap.digitalgov.gov",
+    "search.usa.gov",
+    "www.google-analytics.com",
+    "www.googletagmanager.com",
+    "googleads.g.doubleclick.net",
+    "www.youtube.com"
+  ]
+}

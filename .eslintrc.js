@@ -325,7 +325,7 @@ module.exports = {
     browser: true,
     node: true,
   },
-  ignorePatterns: ['*.spec.js'],
+  ignorePatterns: ['*.spec.js', '*.smoke.js'],
   root: true,
   // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser
   parser: '@typescript-eslint/parser',
