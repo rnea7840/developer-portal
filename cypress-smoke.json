@@ -1,5 +1,6 @@
 {
   "baseUrl": "https://dev-developer.va.gov",
+  "ignoreTestFiles": "*.spec.js",
   "videoUploadOnPasses": false,
   "blockHosts": [
     "dap.digitalgov.gov",

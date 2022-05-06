@@ -29,14 +29,12 @@ describe('Apply Form on Dev', () => {
     cy.get('#main button[type="submit"]').click();
 
     cy.wait('@submission').then(interception => {
-      console.log(interception.response.body);
       assert.isNotNull(interception.response.body, 'Form submission has a response.');
       assert.equal(interception.response.body.email, 'test@test.com');
       assert.isNotEmpty(interception.response.body.kongUsername, 'Kong username is not empty');
       assert.isNotEmpty(interception.response.body.token, 'Token is not empty');
     });
     cy.wait('@submissionLPB').then(interception => {
-      console.log(interception.response.body);
       assert.isNotNull(interception.response.body, 'Form submission has a response.');
       assert.equal(interception.response.body.apis, 'benefits');
       assert.equal(interception.response.body.email, 'test@test.com');
