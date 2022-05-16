@@ -24,6 +24,7 @@ import {
 } from './types/constants/paths';
 import { buildApiDetailRoutes } from './utils/routesHelper';
 import ProductionAccess from './containers/consumerOnboarding/ProductionAccess';
+import DocumentationOverview from './containers/documentation/DocumentationOverview';
 
 export const SiteRoutes: React.FunctionComponent = (): JSX.Element => {
   const apiDefinitions = getActiveApiDefinitions();
@@ -45,7 +46,7 @@ export const SiteRoutes: React.FunctionComponent = (): JSX.Element => {
       <Route path="/terms-of-service" render={(): JSX.Element => MarkdownPage(TermsOfService)} />
 
       {/* API Documentation */}
-      <Route exact path="/explore" component={DocumentationRoot} />
+      <Route exact path="/explore" component={DocumentationOverview} />
       <Route exact path="/explore/authorization" component={DocumentationRoot} />
       <Route
         exact

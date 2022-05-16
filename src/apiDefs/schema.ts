@@ -121,6 +121,7 @@ export interface BaseAPICategory {
   readonly apis: APIDescription[];
   readonly properName: string;
   readonly name: string;
+  isChecked?: boolean;
 }
 
 export interface APICategory extends BaseAPICategory {
