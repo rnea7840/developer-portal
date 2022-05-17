@@ -6,7 +6,9 @@
 const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
+
 const modules = require('./modules');
+
 const reactRefreshRuntimeEntry = require.resolve('react-refresh/runtime');
 const reactRefreshWebpackPluginRuntimeEntry = require.resolve(
   '@pmmmwh/react-refresh-webpack-plugin',
@@ -22,18 +24,26 @@ const babelRuntimeRegenerator = require.resolve('@babel/runtime/regenerator', {
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
+
 const paths = require('./paths');
+
 const getClientEnvironment = require('./env');
+
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 // const SitemapBuilderPlugin = require('../SitemapBuilderWebpackPlugin');
+
 const CopyPlugin = require('copy-webpack-plugin');
 
 // Webpack uses `output.publicPath`, from it's options object, to determine
@@ -481,11 +491,6 @@ module.exports = envName => {
         filename: 'static/css/[name].[contenthash:8].css',
         chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
       }),
-      new OptimizeCSSAssetsPlugin({
-        cssProcessorOptions: {
-          map: shouldUseSourceMap,
-        },
-      }),
       // Generate a manifest file which contains a mapping of all asset filenames
       // to their corresponding output file so that tools can pick it up without
       // having to parse `index.html`.
@@ -542,6 +547,9 @@ module.exports = envName => {
         // only check CSS bundle size, as our JS bundle is currently over 2M
         return assetFilename.endsWith('.css');
       },
+    },
+    optimization: {
+      minimizer: [new CssMinimizerPlugin()],
     },
   };
 };
