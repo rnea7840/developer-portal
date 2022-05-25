@@ -28,6 +28,7 @@ const cardsLayout = [
     id: 'a1',
     name: 'Appeals Status',
     row: 0,
+    url: '/explore/appeals/docs/appeals',
     w: 1,
   },
   {
@@ -37,6 +38,7 @@ const cardsLayout = [
     id: 'a2',
     name: 'Decision Reviews',
     row: 0,
+    url: '/explore/appeals/docs/decision_reviews',
     w: 1,
   },
   {
@@ -46,6 +48,7 @@ const cardsLayout = [
     id: 'b1',
     name: 'Benefits Claims',
     row: 0,
+    url: '/explore/benefits/docs/claims',
     w: 1,
   },
   {
@@ -55,6 +58,7 @@ const cardsLayout = [
     id: 'b2',
     name: 'Benefits Intake',
     row: 0,
+    url: '/explore/benefits/docs/benefits',
     w: 1,
   },
   {
@@ -64,6 +68,7 @@ const cardsLayout = [
     id: 'b3',
     name: 'Benefits Reference Data',
     row: 0,
+    url: '/explore/benefits/docs/benefits_reference_data',
     w: 1,
   },
   {
@@ -73,6 +78,7 @@ const cardsLayout = [
     id: 'c',
     name: 'VA Facilities',
     row: 0,
+    url: '/explore/facilities/docs/facilities',
     w: 1,
   },
   {
@@ -82,6 +88,7 @@ const cardsLayout = [
     id: 'd',
     name: 'VA Forms',
     row: 1,
+    url: '/explore/vaForms/docs/vaForms',
     w: 1,
   },
   {
@@ -91,6 +98,7 @@ const cardsLayout = [
     id: 'e1',
     name: 'Clinical Health',
     row: 1,
+    url: '/explore/health/docs/clinical_health',
     w: 1,
   },
   {
@@ -100,6 +108,7 @@ const cardsLayout = [
     id: 'e2',
     name: 'Community Care Eligibility',
     row: 1,
+    url: '/explore/health/docs/community_care',
     w: 1,
   },
   {
@@ -109,6 +118,7 @@ const cardsLayout = [
     id: 'e3',
     name: 'Veterans Health',
     row: 1,
+    url: '/explore/health/docs/fhir',
     w: 1,
   },
   {
@@ -118,6 +128,7 @@ const cardsLayout = [
     id: 'f',
     name: 'Loan Guaranty',
     row: 1,
+    url: '/explore/loanGuaranty/docs/loan_guaranty',
     w: 1,
   },
   {
@@ -127,6 +138,7 @@ const cardsLayout = [
     id: 'h1',
     name: 'Address Validation',
     row: 2,
+    url: '/explore/verification/docs/address_validation',
     w: 1,
   },
   {
@@ -136,6 +148,7 @@ const cardsLayout = [
     id: 'h2',
     name: 'Veteran Confirmation',
     row: 2,
+    url: '/explore/verification/docs/veteran_confirmation',
     w: 1,
   },
   {
@@ -145,6 +158,7 @@ const cardsLayout = [
     id: 'h3',
     name: 'Veteran Verification',
     row: 2,
+    url: '/explore/verification/docs/veteran_verification',
     w: 1,
   },
 ];
@@ -223,7 +237,7 @@ const DocumentationOverview = (): JSX.Element => {
                   <CardLink
                     key={card.id}
                     name={card.name}
-                    url={`/explore/${card.filter[0]}`}
+                    url={card.url}
                     callToAction={`View the ${card.name} API`}
                   >
                     {card.name} API
