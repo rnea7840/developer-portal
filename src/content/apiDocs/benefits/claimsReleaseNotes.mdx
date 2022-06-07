@@ -1,3 +1,7 @@
+### June 7, 2022
+
+- We corrected our validation logic for `homelessness` in our POST "/forms/526" endpoint. `pointOfContact` is a required sub-property of `homelessness` and must always be included. [These changes were made in PR #9947](https://github.com/department-of-veterans-affairs/vets-api/pull/9947).
+
 ### May 16, 2022
 
 - We corrected our validation logic for the `title10ActivationDate` in our POST "/forms/526" endpoint. The `title10ActivationDate` cannot be in the future and must be after the earliest `servicePeriod.activeDutyBeginDate`. [These changes were made in PR #9851](https://github.com/department-of-veterans-affairs/vets-api/pull/9851).
