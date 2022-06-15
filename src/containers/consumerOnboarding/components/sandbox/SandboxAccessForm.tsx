@@ -29,6 +29,7 @@ export interface Values {
   lastName: string;
   internalApiInfo: InternalApiInfo;
   oAuthApplicationType: string;
+  oAuthPublicKey: string;
   oAuthRedirectURI: string;
   organization: string;
   termsOfService: boolean;
@@ -46,6 +47,7 @@ const initialValues = {
   },
   lastName: '',
   oAuthApplicationType: '',
+  oAuthPublicKey: '',
   oAuthRedirectURI: '',
   organization: '',
   termsOfService: false,
@@ -83,8 +85,8 @@ const SandboxAccessForm: FC<SandboxAccessFormProps> = ({ onSuccess }) => {
     }
 
     try {
-      const forgeryToken = Math.random().toString(36)
-                                        .substring(2);
+      // eslint-disable-next-line newline-per-chained-call
+      const forgeryToken = Math.random().toString(36).substring(2);
       setCookie('CSRF-TOKEN', forgeryToken, {
         path: LPB_APPLY_URL,
         sameSite: 'strict',
