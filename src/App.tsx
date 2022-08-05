@@ -35,6 +35,9 @@ const App = (): JSX.Element => {
       .then(res => res as APICategories)
       .then(apis => dispatch(setApis(apis)));
 
+  fetch('/platform-backend/v0/users/current')
+      .then(res => res.json());
+
   React.useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     apisRequest();
@@ -55,6 +58,8 @@ const App = (): JSX.Element => {
           >
             <Header />
             <Route path="/" component={PageContent} />
+            <a href="http://localhost:8080/platform-backend/users/auth/github">Log in</a>
+            <a href="http://localhost:8080/platform-backend/users/sign_out">Log out</a>
             <Footer />
           </div>
         </div>
