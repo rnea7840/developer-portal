@@ -10,9 +10,6 @@ env:
 
 jobs:
   cypress_smoketest:
-    environment:
-      name: development
-      url: https://dev-developer.va.gov
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
