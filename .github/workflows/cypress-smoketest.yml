@@ -1,0 +1,71 @@
+name: Cypress Smoketest
+
+on:
+  schedule:
+    - cron: '20 * * * *'
+  workflow_dispatch:
+
+env:
+  CYPRESS_CACHE_FOLDER: cypress/cache
+
+jobs:
+  cypress_smoketest:
+    environment:
+      name: development
+      url: https://dev-developer.va.gov
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: cache_cypress_binary
+        name: Cache Cypress binary
+        uses: actions/cache@v2
+        env:
+          cache-name: developer-portal-cypress-binary
+        with:
+          path: cypress/cache
+          key: ${{ runner.os }}-cypress-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install Cypress
+        if: steps.cache_cypress_binary.outputs.cache-hit != 'true'
+        uses: cypress-io/github-action@v2
+        with:
+          runTests: false
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          config: ignoreTestFiles=null
+          install: false
+          spec: cypress/integration/accessibility.spec.js
+
+      - name: Upload failed screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
+      - name: Upload failed videos
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+
+      - name: Delete smoketest Okta apps
+        env:
+          OKTA_BASE_URL: 'https://deptva-eval.okta.com/api/v1'
+          OKTA_TOKEN: ${{ secrets.OKTA_TOKEN }}
+        run: |
+          acgClientId=`jq -r '.clientId' ./cypress/downloads/sandbox-form-post-response.json`;
+          ccgClientId=`jq -r '.ccgClientId' ./cypress/downloads/sandbox-form-post-response.json`;
+          echo "Deleting ACG Client: $acgClientId"
+          ruby ./smoketest/delete-smoketest-apps.rb $acgClientId;
+          echo "Deleting CCG Client: $ccgClientId"
+          ruby ./smoketest/delete-smoketest-apps.rb $ccgClientId;
