@@ -80,7 +80,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "@team_okapi please investigate"
+                    "text": "@teamokapi please investigate"
                   }
                 }
               ]
