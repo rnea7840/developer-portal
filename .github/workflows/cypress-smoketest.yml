@@ -13,7 +13,10 @@ jobs:
 
       - name: Cypress run
         run: |
-          docker run -t -v $PWD:/e2e -w /e2e cypress/included:9.6.0 --config supportFile=false,ignoreTestFiles=null,baseUrl=https://dev-developer.va.gov -s ./cypress/integration/smoketest.spec.js
+          # working but commented
+          # docker run -t -v $PWD:/e2e -w /e2e cypress/included:9.6.0 --config supportFile=false,ignoreTestFiles=null,baseUrl=https://dev-developer.va.gov -s ./cypress/integration/smoketest.spec.js
+          # intentionally broken for initial first test after merge
+          docker run -t -v $PWD:/e2e -w /e2e cypress/included:9.6.0 --config ignoreTestFiles=null,baseUrl=https://dev-developer.va.gov -s ./cypress/integration/smoketest.spec.js
 
       - name: Upload failed screenshots
         uses: actions/upload-artifact@v2
@@ -50,7 +53,7 @@ jobs:
           acgClientId=`jq -r '.clientID' ../cypress/downloads/sandbox-form-post-response.json`;
           ccgClientId=`jq -r '.ccgClientId' ../cypress/downloads/sandbox-form-post-response.json`;
           echo "Deleting ACG Client: $acgClientId"
-          bundle exec ruby ./delete-smoketest-apps.rb 1234$acgClientId;
+          bundle exec ruby ./delete-smoketest-apps.rb $acgClientId;
           echo "Deleting CCG Client: $ccgClientId"
           bundle exec ruby ./delete-smoketest-apps.rb $ccgClientId;
 
