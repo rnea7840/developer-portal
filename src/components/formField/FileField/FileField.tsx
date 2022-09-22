@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import { Field, ErrorMessage, useFormikContext, getIn } from 'formik';
-import React, { ComponentPropsWithRef, FC, ReactNode, KeyboardEvent } from 'react';
+import React, { ComponentPropsWithRef, FC, ReactNode } from 'react';
 import toHtmlId from '../../../toHtmlId';
 
-import './TextField.scss';
+import './FileField.scss';
 
 type FieldProps = ComponentPropsWithRef<typeof Field>;
 
-export interface TextFieldProps {
+export interface FileFieldProps {
   className?: string;
   label: ReactNode;
   name: string;
@@ -17,13 +17,12 @@ export interface TextFieldProps {
   type?: 'text' | 'email' | 'password';
   placeholder?: string;
   disabled?: boolean;
-  onKeyDown?: (event: KeyboardEvent) => void;
   innerRef?: React.RefObject<HTMLElement>;
   customFieldClass?: string;
   children?: ReactNode;
 }
 
-const TextField: FC<TextFieldProps> = ({
+const FileField: FC<FileFieldProps> = ({
   description,
   className,
   label,
@@ -32,7 +31,6 @@ const TextField: FC<TextFieldProps> = ({
   type = 'text',
   placeholder,
   disabled = false,
-  onKeyDown,
   customFieldClass,
   children,
   innerRef,
@@ -55,7 +53,7 @@ const TextField: FC<TextFieldProps> = ({
   const fieldId = `${idReadyName}FormField`;
 
   return (
-    <div className={classNames('va-api-text-field', containerClass, className)}>
+    <div className={classNames('va-api-file-field', containerClass, className)}>
       <label htmlFor={fieldId} className={classNames('vads-u-margin-top--0', labelClass)}>
         {label}
         {required && <span className="form-required-span">(*Required)</span>}
@@ -79,10 +77,9 @@ const TextField: FC<TextFieldProps> = ({
         required={required}
         aria-describedby={`${errorId} ${descriptionId}`}
         aria-invalid={shouldDisplayErrors}
-        type={props.as ? undefined : type}
+        type="file"
         placeholder={placeholder}
         disabled={disabled}
-        onKeyDown={onKeyDown}
         innerRef={innerRef}
         {...props}
       />
@@ -91,4 +88,4 @@ const TextField: FC<TextFieldProps> = ({
   );
 };
 
-export default TextField;
+export default FileField;

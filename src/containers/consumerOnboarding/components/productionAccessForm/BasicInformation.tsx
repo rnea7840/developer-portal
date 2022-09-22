@@ -7,6 +7,7 @@ import {
   CheckboxRadioField,
   FieldSet,
   MultiEntryEmailField,
+  FileField,
 } from '../../../../components';
 import { Values } from '../../ProductionAccess';
 import { includesInternalOnlyAPI, onlyOpenDataAPIs } from '../../../../apiDefs/query';
@@ -249,6 +250,12 @@ const BasicInformation: FC = () => {
                 name="appDescription"
                 className="vads-u-margin-top--4"
                 required
+              />
+              <FileField
+                label="Logo"
+                description={<p>Logo size needs to be 1024x1024</p>}
+                name="logo"
+                className="vads-u-margin-top--4"
               />
             </div>
           )}

@@ -64,6 +64,7 @@ export interface Values {
   website: string;
   platforms: string;
   appDescription: string;
+  logo: File | null;
   vasiSystemName: string;
   applicationName?: string;
   statusUpdateEmails: string[];
@@ -102,6 +103,7 @@ const initialValues: Values = {
   is508Compliant: '',
   isUSBasedCompany: '',
   listedOnMyHealthApplication: '',
+  logo: null,
   monitizationExplanation: '',
   monitizedVeteranInformation: '',
   multipleReqSafeguards: '',

@@ -1,0 +1,7 @@
+@import '../../../styles/variables';
+
+.va-api-file-field:not(.usa-input-error) {
+  input {
+    border: none;
+  }
+}
