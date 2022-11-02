@@ -368,7 +368,7 @@ const ProductionAccess: FC = () => {
                   <va-segmented-progress-bar
                     current={1}
                     total={4}
-                    ariaLabel="Step 1. There will be 1 to 3 more steps depending on the APIs you select."
+                    label="Step 1. There will be 1 to 3 more steps depending on the APIs you select."
                   />
                   <h2
                     id={STEP_HEADING_ID}
