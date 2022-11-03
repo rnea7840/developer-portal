@@ -1,4 +1,3 @@
-import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -109,23 +108,19 @@ const Header = (): JSX.Element => {
         </div>
         <NavBar isMobileMenuVisible={mobileNavVisible} onMobileNavClose={toggleMenuVisible} />
         <Flag name={[FLAG_PLATFORM_OUTAGE]}>
-          <AlertBox
-            status="error"
-            content={
-              <section aria-label="Network issue alert">
-                {/* message written for specific issue on 8/25/21, update next time it needs to be used */}
-                There were recent network issues affecting all VA sites and usage of VA Lighthouse
-                APIs in sandbox and production environments from 9:56 am to 10:44 am EDT. Please
-                review the{' '}
-                <a href="https://valighthouse.statuspage.io/" target="_blank" rel="noreferrer">
-                  Status Page
-                </a>{' '}
-                for details and reach out to <Link to="/support/contact-us">Support</Link> if you
-                have any questions.
-              </section>
-            }
-            className="vads-u-margin-top--0"
-          />
+          <va-alert status="error" className="vads-u-margin-top--0" visible>
+            <section aria-label="Network issue alert">
+              {/* message written for specific issue on 8/25/21, update next time it needs to be used */}
+              There were recent network issues affecting all VA sites and usage of VA Lighthouse
+              APIs in sandbox and production environments from 9:56 am to 10:44 am EDT. Please
+              review the{' '}
+              <a href="https://valighthouse.statuspage.io/" target="_blank" rel="noreferrer">
+                Status Page
+              </a>{' '}
+              for details and reach out to <Link to="/support/contact-us">Support</Link> if you have
+              any questions.
+            </section>
+          </va-alert>
         </Flag>
         {location.pathname === '/explore/facilities/docs/facilities' && (
           <va-alert status="info" visible>

@@ -24,10 +24,12 @@ interface VaAlertProps {
   ['disable-analytics']?: boolean;
   ['full-width']?: boolean;
   ['show-icon']?: boolean;
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | string;
   closeable?: boolean;
   status: 'info' | 'success' | 'error' | 'warning' | 'continue';
   visible: boolean;
+  className?: string;
+  key?: string;
 }
 
 declare namespace JSX {
