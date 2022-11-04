@@ -3,10 +3,9 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Route, Router } from 'react-router-dom';
 import { useDispatch, connect } from 'react-redux';
-import {
-  applyPolyfills,
-  defineCustomElements,
-} from '@department-of-veterans-affairs/component-library';
+import { defineCustomElements } from '@department-of-veterans-affairs/component-library';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { applyPolyfills } from '@department-of-veterans-affairs/web-components/loader';
 import { LPB_PROVIDERS_URL } from './types/constants';
 import { setApiLoadingError, SetAPIs, setApis } from './actions';
 import { APICategories } from './apiDefs/schema';
@@ -20,7 +19,9 @@ import './styles/atom-one-dark-reasonable-overrides.scss';
 import './styles/base.scss';
 
 // Apply Polyfills for IE11 for custom web-components
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 void applyPolyfills().then(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   void defineCustomElements();
   return null;
 });
