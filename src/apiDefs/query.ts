@@ -159,6 +159,7 @@ export {
   getApisLoadedState,
   getApisLoaded,
   getAllApis,
+  getActiveApis,
   getAllOauthApis,
   getAllAuthCodeApis,
   getActiveAuthCodeApis,

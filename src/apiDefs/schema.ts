@@ -72,6 +72,7 @@ export interface APIDescription {
   readonly name: string;
   readonly docSources: APIDocSource[];
   readonly urlFragment: string;
+  readonly categoryUrlFragment: string;
   readonly description: string;
   readonly enabledByDefault: boolean;
   readonly vaInternalOnly?: VaInternalOnly;
@@ -86,7 +87,6 @@ export interface APIDescription {
   readonly altID?: string;
   readonly lastProdAccessStep: ProdAccessFormSteps;
   readonly versionSelectorLabel?: string;
-  categoryUrlFragment: string; // This is added after the APIs are added to the store
 }
 
 export interface OAuthInfo {
