@@ -1,25 +1,14 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import Fuse from 'fuse.js';
-// import { Form, Formik } from 'formik';
-// import classNames from 'classnames';
 import { getActiveApis } from '../../apiDefs/query';
 import { CardLink, PageHeader } from '../../components';
 import { defaultFlexContainer } from '../../styles/vadsUtils';
 import ApisLoader from '../../components/apisLoader/ApisLoader';
 import { APIDescription } from '../../apiDefs/schema';
-// import validateForm from './validateForm';
-
-// interface SubmissionData {
-//   search: string;
-// }
 
 const DocumentationExplore = (): JSX.Element => {
   const [search, setSearch] = React.useState('');
-  // const initialSearchValue = { search: '' };
-  // const formSubmission = (values: SubmissionData): void => {
-  //   setSearch(values.search);
-  // };
   const allApis = getActiveApis();
 
   const options = {
@@ -50,13 +39,6 @@ const DocumentationExplore = (): JSX.Element => {
         header="Fuzzy Search Demo"
         description="Use search box to filter APIs in real time."
       />
-      {/* <Formik initialValues={initialSearchValue} onSubmit={formSubmission} validate={validateForm}>
-        {(): React.ReactNode => (
-          <Form className={classNames('va-api-contact-us-form', 'vads-u-margin-top--6')}>
-            <TextField label="Search" name="search" required />
-          </Form>
-        )}
-      </Formik> */}
       <input
         value={search}
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setSearch(e.target.value)}

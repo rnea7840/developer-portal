@@ -123,6 +123,21 @@ jobs:
             LPB_HOST='https://developer.va.gov'
           fi
           wget "$LPB_HOST/platform-backend/v0/providers/transformations/legacy.json?environment=sandbox" -O legacy.json
+          # Temporary workaround to add categoryUrlFragment to legacy.json for PR preview builds before LPB is updated
+          jq '.appeals = [ .appeals | .apis = [ .apis[] | .categoryUrlFragment = "appeals" ] ]' legacy.json > temp-legacy.json
+          mv temp-legacy.json legacy.json
+          jq '.benefits = [ .benefits | .apis = [ .apis[] | .categoryUrlFragment = "benefits" ] ]' legacy.json > temp-legacy.json
+          mv temp-legacy.json legacy.json
+          jq '.facilities = [ .facilities | .apis = [ .apis[] | .categoryUrlFragment = "facilities" ] ]' legacy.json > temp-legacy.json
+          mv temp-legacy.json legacy.json
+          jq '.vaForms = [ .vaForms | .apis = [ .apis[] | .categoryUrlFragment = "vaForms" ] ]' legacy.json > temp-legacy.json
+          mv temp-legacy.json legacy.json
+          jq '.health = [ .health | .apis = [ .apis[] | .categoryUrlFragment = "health" ] ]' legacy.json > temp-legacy.json
+          mv temp-legacy.json legacy.json
+          jq '.loanGuaranty = [ .loanGuaranty | .apis = [ .apis[] | .categoryUrlFragment = "loanGuaranty" ] ]' legacy.json > temp-legacy.json
+          mv temp-legacy.json legacy.json
+          jq '.verification = [ .verification | .apis = [ .apis[] | .categoryUrlFragment = "verification" ] ]' legacy.json > temp-legacy.json
+          mv temp-legacy.json legacy.json
           mkdir -p build/$BUILD_ENV/platform-backend/v0/providers/transformations
           mkdir -p build/$BUILD_ENV/platform-backend/v0/consumers
           mkdir -p build/$BUILD_ENV/platform-backend/v0/support/contact-us
