@@ -20,6 +20,7 @@ import DocumentationOverview from './DocumentationOverview';
 import QuickstartPage from './QuickstartPage';
 
 import './Documentation.scss';
+import DocumentationExplore from './DocumentationExplore';
 
 const SideNavApiEntry = (apiCategoryKey: string, api: APIDescription): JSX.Element => (
   <Flag key={api.urlFragment} name={[FLAG_HOSTED_APIS, api.urlFragment]}>
@@ -122,9 +123,18 @@ const DocumentationRoot = (): JSX.Element => (
         {oldRouteToNew.map(routes => (
           <Redirect key={routes.from} exact from={routes.from} to={routes.to} />
         ))}
+        <Route path="/new" component={DocumentationExplore} />
         <Route path="/explore/authorization" component={AuthorizationDocs} exact />
-        <Route path="/explore/authorization/docs/authorization-code" component={AuthorizationCodeGrantDocs} exact />
-        <Route path="/explore/authorization/docs/client-credentials" component={ClientCredentialsGrantDocs} exact />
+        <Route
+          path="/explore/authorization/docs/authorization-code"
+          component={AuthorizationCodeGrantDocs}
+          exact
+        />
+        <Route
+          path="/explore/authorization/docs/client-credentials"
+          component={ClientCredentialsGrantDocs}
+          exact
+        />
         <Route exact path="/explore/" component={DocumentationOverview} />
         <Route exact path="/explore/:apiCategoryKey" component={CategoryPage} />
         <Route exact path="/explore/:apiCategoryKey/docs/authorization">

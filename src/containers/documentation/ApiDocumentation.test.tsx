@@ -12,6 +12,7 @@ import ApiDocumentation from './ApiDocumentation';
 
 const ReleaseNotes: string = 'My API&apos;s release notes';
 const api: APIDescription = {
+  categoryUrlFragment: 'people',
   description: "it's a great API!",
   docSources: [
     {

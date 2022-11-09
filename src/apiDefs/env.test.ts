@@ -36,6 +36,7 @@ describe('env module', () => {
     const enableApiId = 'real_api';
     const disabledApiId = 'fake_api';
     const sharedApiValues = {
+      categoryUrlFragment: 'people',
       description: "it's a fabulous API, you really must try it sometime",
       docSources: [],
       lastProdAccessStep: ProdAccessFormSteps.Four,

@@ -10,6 +10,7 @@ const instructionText = 'Select an API';
 const options: APIDescription[] = [
   {
     altID: 'claims',
+    categoryUrlFragment: 'benefits',
     description: 'Submit and track claims',
     docSources: [
       {

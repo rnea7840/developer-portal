@@ -46,6 +46,7 @@ export const SiteRoutes: React.FunctionComponent = (): JSX.Element => {
       <Route path="/terms-of-service" render={(): JSX.Element => MarkdownPage(TermsOfService)} />
 
       {/* API Documentation */}
+      <Route exact path="/new" component={DocumentationRoot} />
       <Route exact path="/explore" component={DocumentationRoot} />
       <Route exact path="/explore/authorization" component={DocumentationRoot} />
       <Route

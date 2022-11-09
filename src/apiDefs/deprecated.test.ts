@@ -9,6 +9,7 @@ import { APIDescription, ProdAccessFormSteps } from './schema';
 const urgentCareDeprecationNotice: string = fakeCategories.movies.apis[0].releaseNotes;
 describe('deprecated API module', () => {
   const apiValues: APIDescription = {
+    categoryUrlFragment: 'people',
     description: "it's a fabulous API, you really must try it sometime",
     docSources: [],
     enabledByDefault: true,
