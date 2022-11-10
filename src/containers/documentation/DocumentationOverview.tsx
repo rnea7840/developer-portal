@@ -22,6 +22,9 @@ const DocumentationOverview = (): JSX.Element => {
       />
       <ApisLoader>
         <div className={defaultFlexContainer()}>
+          <CardLink name="Fuzzy Search Demo" url="/new" callToAction="View the Demo">
+            Temporary link to show off the demo fuzzy search page.
+          </CardLink>
           <CardLink
             name="Authorization"
             url="/explore/authorization"
