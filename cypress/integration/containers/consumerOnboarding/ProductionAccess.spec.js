@@ -55,7 +55,7 @@ describe('Production Access Form', () => {
   it('Test US-based companies only modal', () => {
     cy.get('#isUSBasedCompanyFormFieldno').click();
     cy.get('#is508CompliantFormFieldyes').click();
-    cy.get('#apisFormFieldappeals').click();
+    cy.get('#apisFormFieldapikeyappeals').click();
     cy.get('#termsOfServiceFormField').click();
     cy.get('button.usa-button[type=submit]').click();
     cy.get('#non-us-based-modal-title').should('be.visible');
@@ -93,7 +93,7 @@ describe('Production Access Form', () => {
     cy.get('#termsOfServiceFormField').click();
     cy.get('#main button[type="submit"]').click();
     cy.get('.usa-input-error').should('have.length', '1');
-    cy.get('#apisFormFieldappeals').click();
+    cy.get('#apisFormFieldapikeyappeals').click();
     cy.get('#main button[type="submit"]').click();
     cy.get('.usa-input-error').should('have.length', '0');
   });
@@ -108,7 +108,7 @@ describe('Production Access Form', () => {
     });
 
     verificationFields(cy);
-    cy.get('#apisFormFieldfacilities').click();
+    cy.get('#apisFormFieldapikeyfacilities').click();
     cy.get('#main button[type="submit"]').click();
 
     cy.focused()
@@ -136,7 +136,9 @@ describe('Production Access Form', () => {
     });
 
     verificationFields(cy);
-    cy.get('#apisFormFieldclinicalHealth').click();
+    cy.get('#apisFormFieldacgclinicalHealth').click();
+    cy.get('#oAuthApplicationTypeFormFieldweb').click();
+    cy.get('#oAuthRedirectURIFormField').type('http://localhost:3001/');
     cy.get('#main button[type="submit"]').click();
 
     cy.focused()
@@ -169,7 +171,8 @@ describe('Production Access Form', () => {
     });
 
     verificationFields(cy);
-    cy.get('#apisFormFieldclaims').click();
+    cy.get('#apisFormFieldccgclaims').click();
+    cy.get('#oAuthPublicKeyFormField').type('{ }');
     cy.get('#main button[type="submit"]').click();
 
     cy.focused()
