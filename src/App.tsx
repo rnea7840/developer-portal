@@ -3,6 +3,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Route, Router } from 'react-router-dom';
 import { useDispatch, connect } from 'react-redux';
+import '@department-of-veterans-affairs/component-library/dist/main.css';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
   applyPolyfills,

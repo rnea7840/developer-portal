@@ -23,12 +23,13 @@ export const VeteranResources = (): JSX.Element => {
         aria-describedby="veteran-resources-description"
         aria-labelledby="veteran-resources-header"
         clickToClose
-        // cssClass="veteran-resources-modal"
         onCloseEvent={handleModalClose}
         role="dialog"
         visible={modalVisible}
         primaryButtonText="Close"
         onPrimaryButtonClick={handleModalClose}
+        modalTitle="Veteran resources"
+        large
       >
         <VeteranResourcesContent />
       </VaModal>

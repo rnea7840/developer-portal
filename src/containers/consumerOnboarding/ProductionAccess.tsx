@@ -484,7 +484,7 @@ const ProductionAccess: FC = () => {
           {/* <Modal508Compliant /> */}
           <VaModal
             id="submission-complete-modal"
-            moldalTitle="Thanks for submitting!"
+            modalTitle="Thanks for submitting!"
             visible={modal4Visible}
             onCloseEvent={(): void => {
               setModal4Visible(false);
