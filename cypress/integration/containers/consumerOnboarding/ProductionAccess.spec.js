@@ -58,15 +58,13 @@ describe('Production Access Form', () => {
     cy.get('#apisFormFieldappeals').click();
     cy.get('#termsOfServiceFormField').click();
     cy.get('button.usa-button[type=submit]').click();
-    cy.get('#non-us-based-modal-title').should('be.visible');
+    cy.get('#non-us-based-modal').should('be.visible');
 
     cy.get('.va-modal-close').click();
-    cy.get('#non-us-based-modal-title').should('not.exist');
+    cy.get('#non-us-based-modal').should('have.attr', 'visible', 'false');
 
     cy.get('button.usa-button[type=submit]').click();
-    cy.get('#non-us-based-modal-title').should('be.visible');
-
-    cy.get('#non-us-based-modal .usa-button').click();
+    cy.get('#non-us-based-modal').should('have.attr', 'visible', 'true');
     cy.get('.vads-c-action-link--green').should('be.visible');
   });
 
