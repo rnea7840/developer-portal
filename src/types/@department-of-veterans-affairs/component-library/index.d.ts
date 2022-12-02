@@ -32,11 +32,25 @@ interface VaAlertProps {
   key?: string;
 }
 
+interface VaLoadingIndicatorProps {
+  message?: string;
+  label?: string;
+}
+
+interface VaSegmentedProgressBarProps {
+  current: number;
+  enableAnalytics?: boolean;
+  label?: string;
+  total: number;
+}
+
 declare namespace JSX {
   interface IntrinsicElements {
     'va-accordion': VaAccordionProps;
     'va-accordion-item': unknown;
     'va-alert': VaAlertProps;
+    'va-loading-indicator': VaLoadingIndicatorProps;
+    'va-segmented-progress-bar': VaSegmentedProgressBarProps;
     defaultLoadingSpinner: unknown;
   }
 }

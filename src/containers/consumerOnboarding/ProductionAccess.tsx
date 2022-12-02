@@ -364,7 +364,6 @@ const ProductionAccess: FC = () => {
             <Form noValidate>
               {activeStep === 0 ? (
                 <>
-                  {/* @ts-ignore */}
                   <va-segmented-progress-bar
                     current={1}
                     total={4}
@@ -384,7 +383,6 @@ const ProductionAccess: FC = () => {
                 </>
               ) : (
                 <>
-                  {/* @ts-ignore */}
                   <va-segmented-progress-bar current={activeStep + 1} total={steps.length} />
                   <h2
                     id={STEP_HEADING_ID}

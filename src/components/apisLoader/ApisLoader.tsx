@@ -17,7 +17,6 @@ const ApisLoader: React.FunctionComponent<ApisLoaderProps> = (props): JSX.Elemen
     case apiLoadingState.LOADED:
       return props.children ?? <div />;
     case apiLoadingState.IN_PROGRESS:
-      // @ts-ignore
       return props.hideSpinner ? <div /> : <va-loading-indicator {...defaultLoadingProps()} />;
     case apiLoadingState.ERROR:
       return props.hideError ? (
