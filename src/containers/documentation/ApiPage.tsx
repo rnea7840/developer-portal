@@ -65,6 +65,8 @@ const VeteranRedirectAlertMessage = ({
   veteranRedirect: VeteranRedirectMessage;
 }): JSX.Element => (
   <va-alert
+    background-only
+    show-icon
     status="info"
     key={api.urlFragment}
     className={classNames('vads-u-margin-bottom--2', 'vads-u-padding-y--1')}

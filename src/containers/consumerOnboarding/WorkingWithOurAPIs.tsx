@@ -18,7 +18,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       and more.
     </p>
     <h2 id="versioning">Versioning</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="Thoughtful, consistent versioning to reduce the impact of changes.">
         <p>
           Breaking changes to published API versions can be disruptive to using APIs, so our policy
@@ -39,7 +39,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       </va-accordion-item>
     </va-accordion>
     <h2 id="deprecation-and-deactivation">Deprecation and deactivation</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="The right notifications at the right time about deprecated functionality.">
         <p>
           We occasionally deactivate features and versions of APIs based on updates and new
@@ -50,7 +50,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       </va-accordion-item>
     </va-accordion>
     <h2 id="rate-limiting">Rate limiting</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="Consistent rate limiting at 60 requests per minute.">
         <p>
           We enforce rate limiting per consumer so that there is a limit across all APIs we provide.
@@ -73,7 +73,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       </va-accordion-item>
     </va-accordion>
     <h2 id="environments">Environments</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="Testing and production environments with robust uptime SLAs.">
         <h3 id="sandbox">Sandbox</h3>
         <p>
@@ -102,7 +102,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       </va-accordion-item>
     </va-accordion>
     <h2 id="status-alerts">Status alerts, uptime, and issue reporting</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="Alerts and notifications when you need them most.">
         <p>
           We post status updates about scheduled maintenance, unscheduled downtime, and more on our{' '}
@@ -134,7 +134,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       </va-accordion-item>
     </va-accordion>
     <h2 id="support">Support</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="We’re here for you whenever you have questions.">
         <p>
           If you find an issue that may impact an API’s status, let us know through our{' '}
@@ -158,7 +158,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       </va-accordion-item>
     </va-accordion>
     <h2 id="managing-feature-requests">Managing feature requests</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="Improving your experience and getting you the functionality you need.">
         <p>
           We look to our consumers for feature requests, such as suggestions for improvements to
@@ -173,7 +173,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       </va-accordion-item>
     </va-accordion>
     <h2 id="auditing-process">Auditing process and guidelines</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="Robust and secure auditing to protect you and VA data.">
         <p>
           We periodically perform auditing to remove inactive API keys and OAuth credentials, and to
@@ -193,7 +193,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       </va-accordion-item>
     </va-accordion>
     <h2 id="security">Security</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="The highest security standards based on industry best practices.">
         <p>
           Lighthouse has full authorization to operate (ATO) at the FISMA Moderate level. We also
@@ -238,7 +238,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       </va-accordion-item>
     </va-accordion>
     <h2 id="api-documentation-standards">API Documentation Standards</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="Consistent and thorough API documentation.">
         <p>
           To be added to Lighthouse, an API needs reference material in the form of{' '}
@@ -251,7 +251,7 @@ const WorkingWithOurAPIs = (): JSX.Element => (
       </va-accordion-item>
     </va-accordion>
     <h2 id="authentication-and-authorization">Authentication and authorization</h2>
-    <va-accordion>
+    <va-accordion open-single>
       <va-accordion-item header="Methods of authentication and authorization for all your consumers’ needs.">
         <p>
           Unifying API access through the API Gateway benefits our API providers and those who
