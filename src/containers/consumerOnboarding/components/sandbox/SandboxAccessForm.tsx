@@ -2,8 +2,6 @@ import React, { FC, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
-
 import { useCookies } from 'react-cookie';
 import { Form, Formik } from 'formik';
 import { HttpErrorResponse, makeRequest, ResponseType } from '../../../../utils/makeRequest';
@@ -172,22 +170,21 @@ const SandboxAccessForm: FC<SandboxAccessFormProps> = ({ onSuccess }) => {
           }}
         </Formik>
         {submissionHasError && (
-          <AlertBox
-            status="error"
-            headline="We encountered a server error while saving your form. Please try again later."
-            content={
-              <span>
-                Need assistance? Create an issue through our <Link to="/support">Support page</Link>
-                {submissionErrors.length > 0 && (
-                  <ul>
-                    {submissionErrors.map((item: string) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                )}
-              </span>
-            }
-          />
+          <va-alert status="error" visible>
+            <h2 slot="headline">
+              We encountered a server error while saving your form. Please try again later.
+            </h2>
+            <span>
+              Need assistance? Create an issue through our <Link to="/support">Support page</Link>
+              {submissionErrors.length > 0 && (
+                <ul>
+                  {submissionErrors.map((item: string) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </span>
+          </va-alert>
         )}
       </div>
     </div>

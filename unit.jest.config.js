@@ -11,14 +11,15 @@ module.exports = {
     '!src/registerServiceWorker.ts',
     '!src/visualRegressionTest.ts',
     '!src/containers/consumerOnboarding/validationSchema.ts',
+    '!src/App.test.tsx',
   ],
   coverageThreshold: {
     global: {
       branches: 65,
       functions: 74,
       lines: 85,
-      statements: 85
-    }
+      statements: 85,
+    },
   },
   setupFiles: [
     '<rootDir>/config/polyfills.js',
@@ -29,7 +30,7 @@ module.exports = {
     '<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)',
     '<rootDir>/src/**/?(*.)(spec|test).(j|t)s?(x)',
   ],
-  testPathIgnorePatterns: [],
+  testPathIgnorePatterns: ['src/App.test.tsx'],
   testEnvironment: 'jsdom',
   testURL: process.env.TEST_HOST || 'http://localhost:4444',
   transform: {

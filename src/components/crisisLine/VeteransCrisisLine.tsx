@@ -1,6 +1,5 @@
 import * as React from 'react';
-
-import Modal from '@department-of-veterans-affairs/component-library/Modal';
+import { VaModal } from '@department-of-veterans-affairs/component-library/dist/react-bindings';
 import classNames from 'classnames';
 
 import rightArrow from '../../assets/arrow-right-white.svg';
@@ -50,14 +49,14 @@ const VeteransCrisisLine = (): JSX.Element => {
           />
         </span>
       </button>
-      <Modal
+      <VaModal
         id="crisis-line-modal"
         visible={modalVisible}
-        onClose={(): void => setModalVisible(false)}
+        onCloseEvent={(): void => setModalVisible(false)}
         initialFocusSelector="li > a"
       >
         <VeteransCrisisLinePanel />
-      </Modal>
+      </VaModal>
     </div>
   );
 };

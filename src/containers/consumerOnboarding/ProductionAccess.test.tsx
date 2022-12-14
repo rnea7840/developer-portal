@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { FlagsProvider, getFlags } from '../../flags';
 import store from '../../store';
@@ -10,7 +11,9 @@ describe('ProductionAccess', () => {
     render(
       <Provider store={store}>
         <FlagsProvider flags={getFlags()}>
-          <ProductionAccess />
+          <Router>
+            <ProductionAccess />{' '}
+          </Router>
         </FlagsProvider>
       </Provider>,
     );

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import LoadingIndicator from '@department-of-veterans-affairs/component-library/LoadingIndicator';
 import { connect } from 'react-redux';
 import { getApisLoadedState } from '../../apiDefs/query';
 import { defaultLoadingProps } from '../../utils/loadingHelper';
@@ -18,7 +17,7 @@ const ApisLoader: React.FunctionComponent<ApisLoaderProps> = (props): JSX.Elemen
     case apiLoadingState.LOADED:
       return props.children ?? <div />;
     case apiLoadingState.IN_PROGRESS:
-      return props.hideSpinner ? <div /> : <LoadingIndicator {...defaultLoadingProps()} />;
+      return props.hideSpinner ? <div /> : <va-loading-indicator {...defaultLoadingProps()} />;
     case apiLoadingState.ERROR:
       return props.hideError ? (
         <div />

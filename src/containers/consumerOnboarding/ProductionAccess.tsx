@@ -6,9 +6,7 @@ import { useCookies } from 'react-cookie';
 import { Formik, Form, FormikHelpers } from 'formik';
 import classNames from 'classnames';
 import { faAngleDoubleLeft, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
-import Modal from '@department-of-veterans-affairs/component-library/Modal';
-import SegmentedProgressBar from '@department-of-veterans-affairs/component-library/SegmentedProgressBar';
-import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
+import { VaModal } from '@department-of-veterans-affairs/component-library/dist/react-bindings';
 import { Link, useHistory } from 'react-router-dom';
 // import Icon508 from '../../assets/508-compliant.svg';
 import { NavHashLink } from 'react-router-hash-link';
@@ -371,10 +369,10 @@ const ProductionAccess: FC = () => {
             <Form noValidate>
               {activeStep === 0 ? (
                 <>
-                  <SegmentedProgressBar
+                  <va-segmented-progress-bar
                     current={1}
                     total={4}
-                    ariaLabel="Step 1. There will be 1 to 3 more steps depending on the APIs you select."
+                    label="Step 1. There will be 1 to 3 more steps depending on the APIs you select."
                   />
                   <h2
                     id={STEP_HEADING_ID}
@@ -390,7 +388,7 @@ const ProductionAccess: FC = () => {
                 </>
               ) : (
                 <>
-                  <SegmentedProgressBar current={activeStep + 1} total={steps.length} />
+                  <va-segmented-progress-bar current={activeStep + 1} total={steps.length} />
                   <h2
                     id={STEP_HEADING_ID}
                     className={classNames(
@@ -451,58 +449,51 @@ const ProductionAccess: FC = () => {
               </div>
             </Form>
           </Formik>
-          <Modal
+          <VaModal
             id="cancellation-modal"
-            title="Are you sure you want to leave?"
+            modalTitle="Are you sure you want to leave?"
             visible={modal1Visible}
-            onClose={(): void => setModal1Visible(false)}
-            primaryButton={{
-              action: (): void => history.push(CONSUMER_PROD_PATH),
-              text: 'Yes, leave',
-            }}
-            secondaryButton={{
-              action: (): void => setModal1Visible(false),
-              text: 'No, stay on form',
-            }}
+            onCloseEvent={(): void => setModal1Visible(false)}
+            primaryButtonText="Yes, leave"
+            onPrimaryButtonClick={(): void => history.push(CONSUMER_PROD_PATH)}
+            secondaryButtonText="No, stay on form"
+            onSecondaryButtonClick={(): void => setModal1Visible(false)}
           >
             The information you entered will not be saved.
-          </Modal>
-          <Modal
+          </VaModal>
+          <VaModal
             id="non-us-based-modal"
-            title="Thank you for your interest!"
+            modalTitle="Thank you for your interest!"
             visible={modal2Visible}
-            onClose={(): void => setModal2Visible(false)}
-            primaryButton={{
-              action: (): void => history.goBack(),
-              text: 'Close form',
-            }}
-            classNames={['vads-u-text-align--center']}
+            onCloseEvent={(): void => setModal2Visible(false)}
+            primaryButtonText="Close form"
+            onPrimaryButtonClick={(): void => history.goBack()}
           >
-            <img
-              src={vaLogo}
-              width={220}
-              alt="Department of Veterans Affairs logo"
-              aria-label="Department of Veterans Affairs logo"
-            />
+            <div className="vads-u-text-align--center">
+              <img
+                src={vaLogo}
+                width={220}
+                alt="Department of Veterans Affairs logo"
+                aria-label="Department of Veterans Affairs logo"
+              />
+            </div>
             <p>
               We currently only grant access to US-based companies. You may{' '}
               <NavHashLink to={SUPPORT_CONTACT_PATH}>contact us</NavHashLink> if you have any
               questions.
             </p>
-          </Modal>
+          </VaModal>
           {/* <Modal508Compliant /> */}
-          <Modal
+          <VaModal
             id="submission-complete-modal"
-            title="Thanks for submitting!"
+            modalTitle="Thanks for submitting!"
             visible={modal4Visible}
-            onClose={(): void => {
+            onCloseEvent={(): void => {
               setModal4Visible(false);
               history.goBack();
             }}
-            primaryButton={{
-              action: (): void => history.goBack(),
-              text: 'Close',
-            }}
+            primaryButtonText="Close"
+            onPrimaryButtonClick={(): void => history.goBack()}
           >
             <img
               src={hiFive}
@@ -518,18 +509,17 @@ const ProductionAccess: FC = () => {
               <br />
               We’ll be in touch with the next steps or required changes.
             </p>
-          </Modal>
+          </VaModal>
           {submissionError && (
-            <AlertBox
-              status="error"
-              headline="We encountered a server error while saving your form. Please try again later."
-              content={
-                <span>
-                  Need assistance? Create an issue through our{' '}
-                  <Link to="/support">Support page.</Link>
-                </span>
-              }
-            />
+            <va-alert status="error" visible>
+              <h2 slot="headline">
+                We encountered a server error while saving your form. Please try again later.
+              </h2>
+              <span>
+                Need assistance? Create an issue through our{' '}
+                <Link to="/support">Support page.</Link>
+              </span>
+            </va-alert>
           )}
         </div>
       </div>

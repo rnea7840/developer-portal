@@ -58,30 +58,22 @@ describe('Production Access Form', () => {
     cy.get('#apisFormFieldapikeyappeals').click();
     cy.get('#termsOfServiceFormField').click();
     cy.get('button.usa-button[type=submit]').click();
-    cy.get('#non-us-based-modal-title').should('be.visible');
-
-    cy.get('.va-modal-close').click();
-    cy.get('#non-us-based-modal-title').should('not.exist');
-
+    cy.get('#non-us-based-modal').should('be.visible');
+    cy.get('#non-us-based-modal').shadow().find('.va-modal-close').click();
+    cy.get('#non-us-based-modal').should('not.be.visible');
     cy.get('button.usa-button[type=submit]').click();
-    cy.get('#non-us-based-modal-title').should('be.visible');
-
-    cy.get('#non-us-based-modal .usa-button').click();
-    cy.get('.vads-c-action-link--green').should('be.visible');
+    cy.get('#non-us-based-modal').should('be.visible');
   });
 
   it('Form cancellation modal works', () => {
     cy.get('#main .va-api-button-default').click();
-    cy.get('#cancellation-modal').should('be.be.visible');
-
-    cy.get('#cancellation-modal .usa-button-secondary').click();
-    cy.get('#cancellation-modal').should('not.exist');
-
+    cy.get('#cancellation-modal').should('be.visible');
+    cy.get('#cancellation-modal').shadow().find('button').contains('No, stay on form').click();
+    cy.get('#cancellation-modal').should('not.be.visible');
     cy.get('#main .va-api-button-default').click();
-    cy.get('#cancellation-modal').should('be.be.visible');
-
-    cy.get('#cancellation-modal .usa-button').click();
-    cy.get('.vads-c-action-link--green').should('be.visible');
+    cy.get('#cancellation-modal').should('be.visible');
+    cy.get('#cancellation-modal').shadow().find('.va-modal-close').click();
+    cy.get('#cancellation-modal').should('not.be.visible');
   });
 
   it('Form validation works on step 1', () => {
@@ -121,9 +113,6 @@ describe('Production Access Form', () => {
     cy.get('#main button[type="submit"]').click();
 
     cy.get('#submission-complete-modal').should('be.visible');
-    cy.get('#submission-complete-modal .usa-button').click();
-    cy.get('#submission-complete-modal').should('not.exist');
-    cy.get('.vads-c-action-link--green').should('be.visible');
   });
 
   it('Form works for 3 step flow (Clinical Health)', () => {
@@ -156,9 +145,6 @@ describe('Production Access Form', () => {
     cy.get('#main button[type="submit"]').click();
 
     cy.get('#submission-complete-modal').should('be.visible');
-    cy.get('#submission-complete-modal .usa-button').click();
-    cy.get('#submission-complete-modal').should('not.exist');
-    cy.get('.vads-c-action-link--green').should('be.visible');
   });
 
   it('Form works for 4 step flow (Benefits Claims)', () => {
@@ -196,8 +182,5 @@ describe('Production Access Form', () => {
     cy.get('#main button[type="submit"]').click();
 
     cy.get('#submission-complete-modal').should('be.visible');
-    cy.get('#submission-complete-modal .usa-button').click();
-    cy.get('#submission-complete-modal').should('not.exist');
-    cy.get('.vads-c-action-link--green').should('be.visible');
   });
 });

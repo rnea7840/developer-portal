@@ -1,4 +1,3 @@
-import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { Redirect, useLocation, useParams } from 'react-router-dom';
@@ -65,16 +64,17 @@ const VeteranRedirectAlertMessage = ({
   api: APIDescription;
   veteranRedirect: VeteranRedirectMessage;
 }): JSX.Element => (
-  <AlertBox
+  <va-alert
     status="info"
     key={api.urlFragment}
     className={classNames('vads-u-margin-bottom--2', 'vads-u-padding-y--1')}
+    visible
   >
     <div>
       {veteranRedirect.message}&nbsp;
       <a href={veteranRedirect.linkUrl}>{veteranRedirect.linkText}</a>.
     </div>
-  </AlertBox>
+  </va-alert>
 );
 
 const ApiPage = (): JSX.Element => {

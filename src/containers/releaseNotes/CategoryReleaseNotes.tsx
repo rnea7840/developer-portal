@@ -1,4 +1,3 @@
-import AlertBox from '@department-of-veterans-affairs/component-library/AlertBox';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
@@ -74,9 +73,10 @@ const APIReleaseNote = ({
         {api.name}
       </h2>
       {api.deactivationInfo && isApiDeactivated(api) && (
-        <AlertBox headline="Deactivated API" status="info">
+        <va-alert status="info" visible>
+          <h2 slot="headline">Deactivated API</h2>
           <ReactMarkdown>{api.deactivationInfo.deactivationContent}</ReactMarkdown>
-        </AlertBox>
+        </va-alert>
       )}
       <div className="release-notes-wrapper">
         <ReactMarkdown>{api.releaseNotes}</ReactMarkdown>
@@ -103,9 +103,9 @@ const ReleaseNotesCollection: React.FunctionComponent<ReleaseNotesCollectionProp
       </Helmet>
       <PageHeader halo={props.apiCategory?.name} header="Release Notes" />
       {props.alertText && (
-        <AlertBox status="info" className="vads-u-padding-y--2">
+        <va-alert status="info" className="vads-u-padding-y--2" visible>
           {props.alertText}
-        </AlertBox>
+        </va-alert>
       )}
       {props.apiCategory && (
         <>
