@@ -29,9 +29,10 @@ describe('FAQ page tests', () => {
       .should('have.attr', 'aria-expanded', 'false');
     cy.get('va-accordion-item p').first().should('not.be.visible');
   });
+  // General accordion group
   it('Expand/Collapse all test', () => {
     cy.get('va-accordion').shadow().find('button').first().click();
-    cy.get('va-accordion-item[open="true"]').should('have.length', '6');
+    cy.get('va-accordion-item[open="true"]').should('have.length', '3');
     cy.get('va-accordion').shadow().find('button').first().click();
     cy.get('va-accordion-item[open="true"]').should('have.length', '0');
   });
