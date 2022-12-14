@@ -28,8 +28,8 @@ interface VaAlertProps {
   closeable?: boolean;
   status: 'info' | 'success' | 'error' | 'warning' | 'continue';
   visible: boolean;
-  className?: string;
   key?: string;
+  class?: string;
 }
 
 interface VaLoadingIndicatorProps {

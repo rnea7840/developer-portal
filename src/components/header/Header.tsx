@@ -108,7 +108,7 @@ const Header = (): JSX.Element => {
         </div>
         <NavBar isMobileMenuVisible={mobileNavVisible} onMobileNavClose={toggleMenuVisible} />
         <Flag name={[FLAG_PLATFORM_OUTAGE]}>
-          <va-alert status="error" className="vads-u-margin-top--0" visible>
+          <va-alert status="error" class="vads-u-margin-top--0" visible>
             <section aria-label="Network issue alert">
               {/* message written for specific issue on 8/25/21, update next time it needs to be used */}
               There were recent network issues affecting all VA sites and usage of VA Lighthouse

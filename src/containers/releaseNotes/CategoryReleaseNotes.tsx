@@ -103,7 +103,7 @@ const ReleaseNotesCollection: React.FunctionComponent<ReleaseNotesCollectionProp
       </Helmet>
       <PageHeader halo={props.apiCategory?.name} header="Release Notes" />
       {props.alertText && (
-        <va-alert status="info" className="vads-u-padding-y--2" visible>
+        <va-alert status="info" class="vads-u-padding-y--2" visible>
           {props.alertText}
         </va-alert>
       )}

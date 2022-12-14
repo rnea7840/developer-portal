@@ -69,7 +69,7 @@ const VeteranRedirectAlertMessage = ({
     show-icon
     status="info"
     key={api.urlFragment}
-    className={classNames('vads-u-margin-bottom--2', 'vads-u-padding-y--1')}
+    class={classNames('vads-u-margin-bottom--2', 'vads-u-padding-y--1')}
     visible
   >
     <div>
