@@ -96,8 +96,6 @@ export interface OAuthInfo {
 
 export interface ACGInfo {
   readonly baseAuthPath: string;
-  readonly sandboxAud?: string;
-  readonly productionAud?: string;
   readonly scopes: string[];
 }
 
