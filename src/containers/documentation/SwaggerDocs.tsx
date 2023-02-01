@@ -149,8 +149,8 @@ const SwaggerDocs = (props: SwaggerDocsProps): JSX.Element => {
       <API
         apiDescriptionUrl="https://api.va.gov/internal/docs/fhir/v0-r4/openapi.json"
         layout="stacked"
+        hideExport
       />
-      <h1>Docs go here</h1>
     </React.Fragment>
   );
 };
