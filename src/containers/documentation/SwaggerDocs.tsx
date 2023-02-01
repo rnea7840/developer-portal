@@ -147,7 +147,7 @@ const SwaggerDocs = (props: SwaggerDocsProps): JSX.Element => {
     <React.Fragment>
       {apiIntro !== undefined && <ReactMarkdown>{apiIntro}</ReactMarkdown>}
       <API
-        apiDescriptionUrl="https://api.va.gov/internal/docs/appeals-status/v0/openapi.json"
+        apiDescriptionUrl="https://api.va.gov/internal/docs/fhir/v0-r4/openapi.json"
         layout="stacked"
       />
       <h1>Docs go here</h1>
