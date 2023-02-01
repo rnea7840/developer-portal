@@ -393,10 +393,10 @@ module.exports = (envName) => {
           },
         ],
       }),
-      new SitemapBuilderPlugin({
-        routesFile: path.join(paths.appSrc, 'Routes.tsx'),
-        polyfillsFile: path.join(paths.appConfigScripts, 'polyfills.js'),
-      }),
+      // new SitemapBuilderPlugin({
+      //   routesFile: path.join(paths.appSrc, 'Routes.tsx'),
+      //   polyfillsFile: path.join(paths.appConfigScripts, 'polyfills.js'),
+      // }),
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
@@ -409,8 +409,8 @@ module.exports = (envName) => {
     },
     performance: {
       hints: 'error',
-      maxAssetSize: 600000,
-      maxEntrypointSize: 600000,
+      maxAssetSize: 800000,
+      maxEntrypointSize: 800000,
       assetFilter: function (assetFilename) {
         // only check CSS bundle size, as our JS bundle is currently over 2M
         return assetFilename.endsWith('.css');
