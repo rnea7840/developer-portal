@@ -143,7 +143,12 @@ const SwaggerDocs = (props: SwaggerDocsProps): JSX.Element => {
     <React.Fragment>
       {apiIntro !== undefined && <ReactMarkdown>{apiIntro}</ReactMarkdown>}
       <div id="swagger-ui" />
-      <h1>Docs go here</h1>
+      <rapi-doc
+        spec-url="https://api.va.gov/internal/docs/appeals-status/v0/openapi.json"
+        theme="light"
+        render-style="view"
+        show-header="false"
+      />
     </React.Fragment>
   );
 };

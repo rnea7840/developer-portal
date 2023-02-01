@@ -7,6 +7,12 @@ declare global {
     axe: typeof axe;
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
   }
+  /* eslint-disable @typescript-eslint/no-namespace */
+  namespace JSX {
+    interface IntrinsicElements {
+      'rapi-doc': unknown;
+    }
+  }
 }
 
 export interface APINameParam {
