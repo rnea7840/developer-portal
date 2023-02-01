@@ -1,4 +1,6 @@
+/* eslint-disable react/jsx-pascal-case */
 import * as Sentry from '@sentry/browser';
+import { API } from '@stoplight/elements';
 import { History } from 'history';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +19,8 @@ import { APIDocSource } from '../../apiDefs/schema';
 import { getDocURL, getVersion, getVersionNumber } from '../../reducers/apiVersioning';
 import { APIMetadata, RootState, VersionMetadata } from '../../types';
 import { CURRENT_VERSION_IDENTIFIER } from '../../types/constants';
+
+import '@stoplight/elements/styles.min.css';
 
 interface SwaggerDocsProps {
   apiName: string;
@@ -142,7 +146,10 @@ const SwaggerDocs = (props: SwaggerDocsProps): JSX.Element => {
   return (
     <React.Fragment>
       {apiIntro !== undefined && <ReactMarkdown>{apiIntro}</ReactMarkdown>}
-      <div id="swagger-ui" />
+      <API
+        apiDescriptionUrl="https://api.va.gov/internal/docs/appeals-status/v0/openapi.json"
+        layout="stacked"
+      />
       <h1>Docs go here</h1>
     </React.Fragment>
   );
