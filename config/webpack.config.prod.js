@@ -180,6 +180,7 @@ module.exports = envName => {
       },
     },
     resolve: {
+      fallback: { stream: require.resolve('stream-browserify') },
       // This allows you to set a fallback for where Webpack should look for modules.
       // We placed these paths second because we want `node_modules` to "win"
       // if there are any conflicts. This matches Node resolution mechanism.
@@ -380,38 +381,6 @@ module.exports = envName => {
                     // disable type checker - we will use it in fork plugin
                     transpileOnly: true,
                     configFile: paths.appTsProdConfig(envName),
-                  },
-                },
-              ],
-            },
-            // Load .mdx files as components
-            {
-              test: /\.mdx$/,
-              include: paths.appSrc,
-              use: [
-                'babel-loader',
-                {
-                  loader: 'markdown-component-loader',
-                  options: {
-                    enabledMarkdownItRules: ['smartquotes', 'table'],
-                    markdownItPlugins: [
-                      [
-                        require('markdown-it-attrs'),
-                        {
-                          allowedAttributes: ['id', 'tabIndex', 'class'],
-                        },
-                      ],
-                      [
-                        require('markdown-it-anchor'),
-                        {
-                          level: 2,
-                          slugify: s =>
-                            encodeURIComponent(
-                              String(s).trim().toLowerCase().replace(',', '').replace(/\s+/g, '-'),
-                            ),
-                        },
-                      ],
-                    ],
                   },
                 },
               ],

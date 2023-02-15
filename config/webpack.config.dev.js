@@ -9,7 +9,7 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');;
+const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
@@ -117,6 +117,7 @@ module.exports = {
     level: 'none',
   },
   resolve: {
+    fallback: { stream: require.resolve('stream-browserify') },
     // This allows you to set a fallback for where Webpack should look for modules.
     // We placed these paths second because we want `node_modules` to "win"
     // if there are any conflicts. This matches Node resolution mechanism.
@@ -334,38 +335,6 @@ module.exports = {
                   sassOptions: {
                     includePaths: [paths.appNodeModules],
                   },
-                },
-              },
-            ],
-          },
-          // Load .mdx files as components
-          {
-            test: /\.mdx$/,
-            include: paths.appSrc,
-            use: [
-              'babel-loader',
-              {
-                loader: 'markdown-component-loader',
-                options: {
-                  enabledMarkdownItRules: ['smartquotes', 'table'],
-                  markdownItPlugins: [
-                    [
-                      require('markdown-it-attrs'),
-                      {
-                        allowedAttributes: ['id', 'tabIndex', 'class'],
-                      },
-                    ],
-                    [
-                      require('markdown-it-anchor'),
-                      {
-                        level: 2,
-                        slugify: s =>
-                          encodeURIComponent(
-                            String(s).trim().toLowerCase().replace(',', '').replace(/\s+/g, '-'),
-                          ),
-                      },
-                    ],
-                  ],
                 },
               },
             ],
