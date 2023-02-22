@@ -113,6 +113,9 @@ module.exports = {
       tsconfig: [paths.appTsConfig].filter(f => fs.existsSync(f)),
     },
   },
+  ignoreWarnings: [
+    /Failed to parse source map/
+  ],
   infrastructureLogging: {
     level: 'none',
   },
