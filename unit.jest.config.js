@@ -33,7 +33,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   testURL: process.env.TEST_HOST || 'http://localhost:4444',
   transform: {
-    '^.+\\.(js|jsx|mjs)$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.(js|jsx|mjs)$': ['babel-jest', { configFile: './babel.config.js' }],
     '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.css$': '<rootDir>/config/jest/cssTransform.js',
     '^.+\\.ya?ml$': '<rootDir>/config/jest/yamlTransform.js',
