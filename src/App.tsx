@@ -3,15 +3,20 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Route, Router } from 'react-router-dom';
 import { useDispatch, connect } from 'react-redux';
-import { applyPolyfills, defineCustomElements } from 'web-components/loader';
+import {
+  applyPolyfills,
+  defineCustomElements,
+} from '@department-of-veterans-affairs/component-library';
 import { LPB_PROVIDERS_URL } from './types/constants';
 import { setApiLoadingError, SetAPIs, setApis } from './actions';
 import { APICategories } from './apiDefs/schema';
 import { Footer, Header, PageContent } from './components';
-import { FlagsProvider, getFlags } from './flags';
+import { FlagBackendProvider, getFlags } from './flags';
 import { history } from './store';
 import { RootState } from './types';
+import 'core-js/features/promise';
 
+import '@department-of-veterans-affairs/component-library/dist/main.css';
 import 'highlight.js/styles/atom-one-dark-reasonable.css';
 import './styles/atom-one-dark-reasonable-overrides.scss';
 import './styles/base.scss';
@@ -43,7 +48,7 @@ const App = (): JSX.Element => {
   }, []);
 
   return (
-    <FlagsProvider flags={getFlags()}>
+    <FlagBackendProvider flags={getFlags()}>
       <Router history={history}>
         <div className="vads-u-display--flex">
           <div
@@ -60,7 +65,7 @@ const App = (): JSX.Element => {
           </div>
         </div>
       </Router>
-    </FlagsProvider>
+    </FlagBackendProvider>
   );
 };
 
