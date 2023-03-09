@@ -56,14 +56,19 @@ const SideNavCategoryEntry = (props: SideNavCategoryEntryProps): JSX.Element => 
   );
 
   return (
-    <Flag name={[FLAG_CATEGORIES, categoryKey]} key={categoryKey}>
-      <SideNavEntry to={`/release-notes/${categoryKey}`} name={apiCategory.name}>
-        {apis.length > 1 &&
-          apis.map(api => (
-            <SideNavAPIEntry api={api} key={api.urlFragment} categoryKey={categoryKey} />
-          ))}
-      </SideNavEntry>
-    </Flag>
+    <Flag
+      defaultValue={false}
+      key={categoryKey}
+      keyPath={[FLAG_CATEGORIES, categoryKey]}
+      render={() => (
+        <SideNavEntry to={`/release-notes/${categoryKey}`} name={apiCategory.name}>
+          {apis.length > 1 &&
+            apis.map(api => (
+              <SideNavAPIEntry api={api} key={api.urlFragment} categoryKey={categoryKey} />
+            ))}
+        </SideNavEntry>
+      )}
+    />
   );
 };
 

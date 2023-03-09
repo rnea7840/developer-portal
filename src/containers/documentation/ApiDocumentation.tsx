@@ -42,20 +42,29 @@ const ApiDocumentation = (props: ApiDocumentationProps): JSX.Element => {
    * RENDER
    */
   return (
-    <Flag name={[FLAG_HOSTED_APIS, apiDefinition.urlFragment]}>
-      {(apiDefinition.urlFragment === 'veteran_verification' ||
-        apiDefinition.urlFragment === 'fhir') && (
-        <div role="region" aria-labelledby="oauth-info-heading" className="api-docs-oauth-link">
-          <h2 id="oauth-info-heading" className="usa-alert-heading">
-            Authentication and Authorization
-          </h2>
-          <Link to={`/explore/authorization?api=${apiDefinition.urlFragment}`}>
-            View our OAuth documentation
-          </Link>
-        </div>
+    <Flag
+      defaultValue={false}
+      keyPath={[FLAG_HOSTED_APIS, apiDefinition.urlFragment]}
+      render={() => (
+        <>
+          {(apiDefinition.urlFragment === 'veteran_verification' ||
+            apiDefinition.urlFragment === 'fhir') && (
+            <div role="region" aria-labelledby="oauth-info-heading" className="api-docs-oauth-link">
+              <h2 id="oauth-info-heading" className="usa-alert-heading">
+                Authentication and Authorization
+              </h2>
+              <Link to={`/explore/authorization?api=${apiDefinition.urlFragment}`}>
+                View our OAuth documentation
+              </Link>
+            </div>
+          )}
+          <SwaggerDocs
+            docSource={apiDefinition.docSources[0]}
+            apiName={apiDefinition.urlFragment}
+          />
+        </>
       )}
-      <SwaggerDocs docSource={apiDefinition.docSources[0]} apiName={apiDefinition.urlFragment} />
-    </Flag>
+    />
   );
 };
 

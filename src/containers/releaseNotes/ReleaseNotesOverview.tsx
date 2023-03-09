@@ -37,15 +37,20 @@ const ReleaseNotesOverview = (): JSX.Element => {
             {getApiCategoryOrder().map((apiCategoryKey: string) => {
               const { name, content } = apiDefs[apiCategoryKey];
               return (
-                <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
-                  <CardLink
-                    name={name}
-                    url={`/release-notes/${apiCategoryKey}`}
-                    callToAction={`View release notes for the ${name}`}
-                  >
-                    {content.shortDescription}
-                  </CardLink>
-                </Flag>
+                <Flag
+                  defaultValue={false}
+                  key={apiCategoryKey}
+                  keyPath={[FLAG_CATEGORIES, apiCategoryKey]}
+                  render={() => (
+                    <CardLink
+                      name={name}
+                      url={`/release-notes/${apiCategoryKey}`}
+                      callToAction={`View release notes for the ${name}`}
+                    >
+                      {content.shortDescription}
+                    </CardLink>
+                  )}
+                />
               );
             })}
             {deactivatedCategory.apis.length > 0 && (

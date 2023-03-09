@@ -111,11 +111,16 @@ const ErrorPage: React.FunctionComponent<ErrorPageProps> = (props: ErrorPageProp
                   {apiCategoryOrder.map((apiCategoryKey: string) => {
                     const { name } = apiDefinitions[apiCategoryKey];
                     return (
-                      <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
-                        <li>
-                          <a href={`/explore/${apiCategoryKey}`}>{name}</a>
-                        </li>
-                      </Flag>
+                      <Flag
+                        defaultValue={false}
+                        key={apiCategoryKey}
+                        keyPath={[FLAG_CATEGORIES, apiCategoryKey]}
+                        render={() => (
+                          <li>
+                            <a href={`/explore/${apiCategoryKey}`}>{name}</a>
+                          </li>
+                        )}
+                      />
                     );
                   })}
                 </>
@@ -148,11 +153,16 @@ const ErrorPage: React.FunctionComponent<ErrorPageProps> = (props: ErrorPageProp
                   {apiCategoryOrder.map((apiCategoryKey: string) => {
                     const { name } = apiDefinitions[apiCategoryKey];
                     return (
-                      <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
-                        <li>
-                          <a href={`/release-notes/${apiCategoryKey}`}>{name}</a>
-                        </li>
-                      </Flag>
+                      <Flag
+                        defaultValue={false}
+                        key={apiCategoryKey}
+                        keyPath={[FLAG_CATEGORIES, apiCategoryKey]}
+                        render={() => (
+                          <li>
+                            <a href={`/release-notes/${apiCategoryKey}`}>{name}</a>
+                          </li>
+                        )}
+                      />
                     );
                   })}
                 </>

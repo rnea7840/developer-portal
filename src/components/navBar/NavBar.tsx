@@ -157,15 +157,20 @@ const NavBar = (props: NavBarProps): JSX.Element => {
                 Authorization
               </SubNavEntry>
               {apiCategoryOrder.map(apiKey => (
-                <Flag name={[FLAG_CATEGORIES, apiKey]} key={apiKey}>
-                  <SubNavEntry
-                    onClick={props.onMobileNavClose}
-                    to={`/explore/${apiKey}`}
-                    id={apiKey}
-                  >
-                    {apiDefs[apiKey].name}
-                  </SubNavEntry>
-                </Flag>
+                <Flag
+                  defaultValue={false}
+                  key={apiKey}
+                  keyPath={[FLAG_CATEGORIES, apiKey]}
+                  render={() => (
+                    <SubNavEntry
+                      onClick={props.onMobileNavClose}
+                      to={`/explore/${apiKey}`}
+                      id={apiKey}
+                    >
+                      {apiDefs[apiKey].name}
+                    </SubNavEntry>
+                  )}
+                />
               ))}
             </SubNav>
           </li>

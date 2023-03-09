@@ -33,15 +33,20 @@ const DocumentationOverview = (): JSX.Element => {
           {apiCategoryOrder.map((apiCategoryKey: string) => {
             const { name, content } = apiDefinitions[apiCategoryKey];
             return (
-              <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
-                <CardLink
-                  name={name}
-                  url={`/explore/${apiCategoryKey}`}
-                  callToAction={`View the ${name}`}
-                >
-                  {content.shortDescription}
-                </CardLink>
-              </Flag>
+              <Flag
+                defaultValue={false}
+                key={apiCategoryKey}
+                keyPath={[FLAG_CATEGORIES, apiCategoryKey]}
+                render={() => (
+                  <CardLink
+                    name={name}
+                    url={`/explore/${apiCategoryKey}`}
+                    callToAction={`View the ${name}`}
+                  >
+                    {content.shortDescription}
+                  </CardLink>
+                )}
+              />
             );
           })}
         </div>

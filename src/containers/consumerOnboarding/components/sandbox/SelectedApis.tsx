@@ -44,32 +44,37 @@ const ApiCheckboxList = ({ apiCheckboxes, authType }: APICheckboxListProps): JSX
             api.vaInternalOnly &&
             api.vaInternalOnly === VaInternalOnly.AdditionalDetails;
           return (
-            <Flag name={[FLAG_HOSTED_APIS, api.urlFragment]} key={api.urlFragment}>
-              <div
-                className={classNames(
-                  internalApiSelected ? 'vads-u-border-left--4px' : '',
-                  internalApiSelected ? 'vads-u-border-color--primary-alt-light' : '',
-                )}
-              >
-                <CheckboxRadioField
-                  type="checkbox"
-                  name="apis"
-                  label={
-                    <>
-                      <span>{api.name}</span>
-                      <span className="vads-u-display--inline-block vads-u-margin-left--1">
-                        <ApiTags openData={api.openData} vaInternalOnly={api.vaInternalOnly} />
-                      </span>
-                    </>
-                  }
-                  value={`${authType}/${apiCheckboxName}`}
-                  className="vads-u-padding-left--1p5"
-                />
-                {/* Request model will need an update to support multiple internal only APIs
-              with separate VA info when we add the next internal only api */}
-                {internalApiSelected && <InternalOnlyInfo />}
-              </div>
-            </Flag>
+            <Flag
+              defaultValue={false}
+              key={api.urlFragment}
+              keyPath={[FLAG_HOSTED_APIS, api.urlFragment]}
+              render={() => (
+                <div
+                  className={classNames(
+                    internalApiSelected ? 'vads-u-border-left--4px' : '',
+                    internalApiSelected ? 'vads-u-border-color--primary-alt-light' : '',
+                  )}
+                >
+                  <CheckboxRadioField
+                    type="checkbox"
+                    name="apis"
+                    label={
+                      <>
+                        <span>{api.name}</span>
+                        <span className="vads-u-display--inline-block vads-u-margin-left--1">
+                          <ApiTags openData={api.openData} vaInternalOnly={api.vaInternalOnly} />
+                        </span>
+                      </>
+                    }
+                    value={`${authType}/${apiCheckboxName}`}
+                    className="vads-u-padding-left--1p5"
+                  />
+                  {/* Request model will need an update to support multiple internal only APIs
+            with separate VA info when we add the next internal only api */}
+                  {internalApiSelected && <InternalOnlyInfo />}
+                </div>
+              )}
+            />
           );
         })}
     </>

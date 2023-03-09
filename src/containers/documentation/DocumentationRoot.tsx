@@ -22,22 +22,27 @@ import QuickstartPage from './QuickstartPage';
 import './Documentation.scss';
 
 const SideNavApiEntry = (apiCategoryKey: string, api: APIDescription): JSX.Element => (
-  <Flag key={api.urlFragment} name={[FLAG_HOSTED_APIS, api.urlFragment]}>
-    <SideNavEntry
-      key={api.urlFragment}
-      exact
-      to={`/explore/${apiCategoryKey}/docs/${api.urlFragment}?version=${CURRENT_VERSION_IDENTIFIER}`}
-      name={
-        <>
-          {api.name}
-          {api.vaInternalOnly && (
-            <small className="vads-u-display--block">Internal VA use only.</small>
-          )}
-        </>
-      }
-      subNavLevel={1}
-    />
-  </Flag>
+  <Flag
+    defaultValue={false}
+    key={api.urlFragment}
+    keyPath={[FLAG_HOSTED_APIS, api.urlFragment]}
+    render={() => (
+      <SideNavEntry
+        key={api.urlFragment}
+        exact
+        to={`/explore/${apiCategoryKey}/docs/${api.urlFragment}?version=${CURRENT_VERSION_IDENTIFIER}`}
+        name={
+          <>
+            {api.name}
+            {api.vaInternalOnly && (
+              <small className="vads-u-display--block">Internal VA use only.</small>
+            )}
+          </>
+        }
+        subNavLevel={1}
+      />
+    )}
+  />
 );
 
 const ExploreSideNav = (): JSX.Element => {
@@ -70,24 +75,29 @@ const ExploreSideNav = (): JSX.Element => {
       {apiCategoryOrder.map((categoryKey: string) => {
         const apiCategory: APICategory = apiDefinitions[categoryKey];
         return (
-          <Flag name={[FLAG_CATEGORIES, categoryKey]} key={categoryKey}>
-            <SideNavEntry
-              to={`/explore/${categoryKey}`}
-              id={`side-nav-category-link-${categoryKey}`}
-              className="side-nav-category-link"
-              name={apiCategory.name}
-            >
-              {apiCategory.content.quickstart && (
-                <SideNavEntry
-                  exact
-                  to={`/explore/${categoryKey}/docs/quickstart`}
-                  name="Quickstart"
-                  subNavLevel={1}
-                />
-              )}
-              {apiCategory.apis.map((api: APIDescription) => SideNavApiEntry(categoryKey, api))}
-            </SideNavEntry>
-          </Flag>
+          <Flag
+            defaultValue={false}
+            key={categoryKey}
+            keyPath={[FLAG_CATEGORIES, categoryKey]}
+            render={() => (
+              <SideNavEntry
+                to={`/explore/${categoryKey}`}
+                id={`side-nav-category-link-${categoryKey}`}
+                className="side-nav-category-link"
+                name={apiCategory.name}
+              >
+                {apiCategory.content.quickstart && (
+                  <SideNavEntry
+                    exact
+                    to={`/explore/${categoryKey}/docs/quickstart`}
+                    name="Quickstart"
+                    subNavLevel={1}
+                  />
+                )}
+                {apiCategory.apis.map((api: APIDescription) => SideNavApiEntry(categoryKey, api))}
+              </SideNavEntry>
+            )}
+          />
         );
       })}
     </>
@@ -123,8 +133,16 @@ const DocumentationRoot = (): JSX.Element => (
           <Redirect key={routes.from} exact from={routes.from} to={routes.to} />
         ))}
         <Route path="/explore/authorization" component={AuthorizationDocs} exact />
-        <Route path="/explore/authorization/docs/authorization-code" component={AuthorizationCodeGrantDocs} exact />
-        <Route path="/explore/authorization/docs/client-credentials" component={ClientCredentialsGrantDocs} exact />
+        <Route
+          path="/explore/authorization/docs/authorization-code"
+          component={AuthorizationCodeGrantDocs}
+          exact
+        />
+        <Route
+          path="/explore/authorization/docs/client-credentials"
+          component={ClientCredentialsGrantDocs}
+          exact
+        />
         <Route exact path="/explore/" component={DocumentationOverview} />
         <Route exact path="/explore/:apiCategoryKey" component={CategoryPage} />
         <Route exact path="/explore/:apiCategoryKey/docs/authorization">

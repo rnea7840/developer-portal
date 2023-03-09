@@ -36,16 +36,21 @@ const CategoryPage = (): JSX.Element => {
     const apiCards = apis.map((apiDesc: APIDescription) => {
       const { description, name, urlFragment, vaInternalOnly, openData } = apiDesc;
       return (
-        <Flag key={name} name={[FLAG_HOSTED_APIS, urlFragment]}>
-          <CardLink
-            name={name}
-            subhead={<ApiTags {...{ openData, vaInternalOnly }} />}
-            url={`/explore/${apiCategoryKey}/docs/${urlFragment}`}
-            callToAction={`View the ${name}`}
-          >
-            {description}
-          </CardLink>
-        </Flag>
+        <Flag
+          defaultValue={false}
+          key={name}
+          keyPath={[FLAG_HOSTED_APIS, urlFragment]}
+          render={() => (
+            <CardLink
+              name={name}
+              subhead={<ApiTags {...{ openData, vaInternalOnly }} />}
+              url={`/explore/${apiCategoryKey}/docs/${urlFragment}`}
+              callToAction={`View the ${name}`}
+            >
+              {description}
+            </CardLink>
+          )}
+        />
       );
     });
 
