@@ -1,17 +1,20 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { FlagsProvider, getFlags } from '../../flags';
+import { StaticBackend } from 'flag';
+import { AppFlags, FlagBackendProvider, getFlags } from '../../flags';
 import store from '../../store';
 import ProductionAccess from './ProductionAccess';
 
 describe('ProductionAccess', () => {
+  const backend = new StaticBackend<AppFlags>(getFlags());
+
   beforeEach(() => {
     render(
       <Provider store={store}>
-        <FlagsProvider flags={getFlags()}>
+        <FlagBackendProvider backend={backend}>
           <ProductionAccess />
-        </FlagsProvider>
+        </FlagBackendProvider>
       </Provider>,
     );
   });

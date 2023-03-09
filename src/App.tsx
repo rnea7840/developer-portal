@@ -11,7 +11,8 @@ import { LPB_PROVIDERS_URL } from './types/constants';
 import { setApiLoadingError, SetAPIs, setApis } from './actions';
 import { APICategories } from './apiDefs/schema';
 import { Footer, Header, PageContent } from './components';
-import { FlagBackendProvider, getFlags } from './flags';
+import { StaticBackend } from 'flag';
+import { AppFlags, getFlags, FlagBackendProvider } from './flags';
 import { history } from './store';
 import { RootState } from './types';
 import 'core-js/features/promise';
@@ -33,6 +34,8 @@ void applyPolyfills().then(() => {
  * if the parent of a flex container is also a flex container.
  */
 const App = (): JSX.Element => {
+  const backend = new StaticBackend<AppFlags>(getFlags());
+
   const dispatch: React.Dispatch<SetAPIs> = useDispatch();
   const apisRequest = (): Promise<void> =>
     fetch(LPB_PROVIDERS_URL)
@@ -48,7 +51,7 @@ const App = (): JSX.Element => {
   }, []);
 
   return (
-    <FlagBackendProvider flags={getFlags()}>
+    <FlagBackendProvider backend={backend}>
       <Router history={history}>
         <div className="vads-u-display--flex">
           <div

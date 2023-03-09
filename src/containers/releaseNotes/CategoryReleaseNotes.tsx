@@ -69,20 +69,26 @@ const APIReleaseNote = ({
   const dashUrlFragment = api.urlFragment.replace('_', '-');
 
   return (
-    <Flag name={[flagName, api.urlFragment]}>
-      <h2 id={dashUrlFragment} tabIndex={-1}>
-        {api.name}
-      </h2>
-      {api.deactivationInfo && isApiDeactivated(api) && (
-        <AlertBox headline="Deactivated API" status="info">
-          <ReactMarkdown>{api.deactivationInfo.deactivationContent}</ReactMarkdown>
-        </AlertBox>
+    <Flag
+      defaultValue={false}
+      keyPath={[flagName, api.urlFragment]}
+      render={() => (
+        <>
+          <h2 id={dashUrlFragment} tabIndex={-1}>
+            {api.name}
+          </h2>
+          {api.deactivationInfo && isApiDeactivated(api) && (
+            <AlertBox headline="Deactivated API" status="info">
+              <ReactMarkdown>{api.deactivationInfo.deactivationContent}</ReactMarkdown>
+            </AlertBox>
+          )}
+          <div className="release-notes-wrapper">
+            <ReactMarkdown>{api.releaseNotes}</ReactMarkdown>
+          </div>
+          <hr />
+        </>
       )}
-      <div className="release-notes-wrapper">
-        <ReactMarkdown>{api.releaseNotes}</ReactMarkdown>
-      </div>
-      <hr />
-    </Flag>
+    />
   );
 };
 

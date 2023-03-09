@@ -7,20 +7,22 @@ import { Provider } from 'react-redux';
 import { fakeAPIs, fakeCategories, fakeCategoryOrder } from '../../__mocks__/fakeCategories';
 import * as apiQueries from '../../apiDefs/query';
 import { APICategories, APIDescription } from '../../apiDefs/schema';
-import { FlagsProvider, getFlags } from '../../flags';
+import { StaticBackend } from 'flag';
+import { AppFlags, FlagBackendProvider, getFlags } from '../../flags';
 import store from '../../store';
 import { apiLoadingState } from '../../types/constants';
 import ReleaseNotesOverview from './ReleaseNotesOverview';
 
 const renderComponent = async (): Promise<void> => {
+  const backend = new StaticBackend<AppFlags>(getFlags());
   await waitFor(() => cleanup()); // clean up beforeEach render if we're testing a different page
   render(
     <Provider store={store}>
-      <FlagsProvider flags={getFlags()}>
+      <FlagBackendProvider backend={backend}>
         <MemoryRouter>
           <ReleaseNotesOverview />
         </MemoryRouter>
-      </FlagsProvider>
+      </FlagBackendProvider>
     </Provider>,
   );
 };

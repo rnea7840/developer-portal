@@ -1,17 +1,20 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import { FlagsProvider, getFlags } from '../../../../flags';
+import { StaticBackend } from 'flag';
+import { AppFlags, FlagBackendProvider, getFlags } from '../../../../flags';
 import { PublishingExpectations } from './PublishingExpectations';
 
 describe('PublishingExpectations', () => {
+  const backend = new StaticBackend<AppFlags>(getFlags());
+
   beforeEach(() => {
     render(
-      <FlagsProvider flags={getFlags()}>
+      <FlagBackendProvider backend={backend}>
         <MemoryRouter initialEntries={['/api-publishing/expectations']}>
           <PublishingExpectations />
         </MemoryRouter>
-      </FlagsProvider>,
+      </FlagBackendProvider>,
     );
   });
 

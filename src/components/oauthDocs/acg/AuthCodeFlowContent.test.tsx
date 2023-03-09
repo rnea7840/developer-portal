@@ -2,7 +2,8 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { FlagsProvider, getFlags } from '../../../flags';
+import { StaticBackend } from 'flag';
+import { AppFlags, FlagBackendProvider, getFlags } from '../../../flags';
 
 import { getActiveAuthCodeApis, lookupApiByFragment } from '../../../apiDefs/query';
 import store from '../../../store';
@@ -12,6 +13,7 @@ import { AuthCodeFlowContent } from './AuthCodeFlowContent';
 
 describe('Auth Flow Content', () => {
   store.dispatch(setApis(fakeCategories));
+  const backend = new StaticBackend<AppFlags>(getFlags());
 
   beforeEach(() => {
     const selectedOption = 'armageddon';
@@ -20,11 +22,11 @@ describe('Auth Flow Content', () => {
 
     render(
       <Provider store={store}>
-        <FlagsProvider flags={getFlags()}>
+        <FlagBackendProvider backend={backend}>
           <MemoryRouter>
             <AuthCodeFlowContent apiDef={apiDef} options={defs} selectedOption={selectedOption} />
           </MemoryRouter>
-        </FlagsProvider>
+        </FlagBackendProvider>
       </Provider>,
     );
   });

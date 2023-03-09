@@ -1,4 +1,4 @@
-import createFlags from 'flag';
+import { createFlags } from 'flag';
 import { getDeactivatedFlags } from './apiDefs/deprecated';
 import { getCategoryFlags, getEnvFlags } from './apiDefs/env';
 import { getAllApis } from './apiDefs/query';
@@ -12,18 +12,19 @@ import {
   FLAG_SHOW_TESTING_NOTICE,
 } from './types/constants';
 
-export interface AppFlags {
-  categories: { [categoryId: string]: boolean };
+export type AppFlags = {
+  categories: {
+    [categoryId: string]: boolean;
+  };
   deactivated_apis: { [apiId: string]: boolean };
   enabled: { [apiId: string]: boolean };
   hosted_apis: { [apiId: string]: boolean };
   show_testing_notice: boolean;
   platform_outage: boolean;
-}
+};
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
-const { Flag, FlagsProvider, useFlag } = createFlags<AppFlags>();
-const getFlags = (): AppFlags => {
+export const getFlags = (): AppFlags => {
   const deactivatedFlags = getDeactivatedFlags();
   const envFlags = getEnvFlags();
   const apiCategories = getCategoryFlags();
@@ -51,4 +52,4 @@ const getFlags = (): AppFlags => {
   };
 };
 
-export { Flag, FlagsProvider, getFlags, useFlag };
+export const { Flag, FlagBackendProvider, useFlag } = createFlags<AppFlags>();

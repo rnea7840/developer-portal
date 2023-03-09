@@ -6,7 +6,8 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import * as openAPIData from '../../__mocks__/openAPIData/openAPIData.test.json';
 import { APIDescription, ProdAccessFormSteps } from '../../apiDefs/schema';
-import { AppFlags, FlagsProvider, getFlags } from '../../flags';
+import { StaticBackend } from 'flag';
+import { AppFlags, FlagBackendProvider, getFlags } from '../../flags';
 import store, { history } from '../../store';
 import ApiDocumentation from './ApiDocumentation';
 
@@ -60,13 +61,15 @@ describe('ApiDocumentation', () => {
     hosted_apis: { my_api: true },
   };
 
+  const backend = new StaticBackend<AppFlags>(defaultFlags);
+
   beforeAll(() => server.listen());
   beforeEach(() => {
     render(
       <Provider store={store}>
-        <FlagsProvider flags={defaultFlags}>
+        <FlagBackendProvider backend={backend}>
           <ApiDocumentation apiDefinition={api} location={history.location} />
-        </FlagsProvider>
+        </FlagBackendProvider>
       </Provider>,
     );
   });

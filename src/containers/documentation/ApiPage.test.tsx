@@ -4,7 +4,8 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route } from 'react-router';
 import { Provider } from 'react-redux';
 import { APICategory } from '../../apiDefs/schema';
-import { AppFlags, FlagsProvider, getFlags } from '../../flags';
+import { StaticBackend } from 'flag';
+import { AppFlags, FlagBackendProvider, getFlags } from '../../flags';
 import { fakeCategories, unmetDeactivationInfo } from '../../__mocks__/fakeCategories';
 import * as apiDefs from '../../apiDefs/query';
 import store from '../../store';
@@ -33,17 +34,19 @@ const renderApiPage = async (
   initialRoute: string,
   componentPath?: string,
 ): Promise<void> => {
+  const backend = new StaticBackend<AppFlags>(flags);
+
   await waitFor(() => cleanup());
   render(
     <Provider store={store}>
-      <FlagsProvider flags={flags}>
+      <FlagBackendProvider backend={backend}>
         <MemoryRouter initialEntries={[initialRoute]}>
           <Route
             path={componentPath ? componentPath : '/explore/:apiCategoryKey/docs/:apiName'}
             component={ApiPage}
           />
         </MemoryRouter>
-      </FlagsProvider>
+      </FlagBackendProvider>
     </Provider>,
   );
 };

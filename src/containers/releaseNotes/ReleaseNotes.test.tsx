@@ -12,20 +12,22 @@ import {
 } from '../../__mocks__/fakeCategories';
 import * as apiQueries from '../../apiDefs/query';
 import { APIDescription } from '../../apiDefs/schema';
-import { FlagsProvider, getFlags } from '../../flags';
+import { StaticBackend } from 'flag';
+import { AppFlags, FlagBackendProvider, getFlags } from '../../flags';
 import store from '../../store';
 import { apiLoadingState } from '../../types/constants';
 import ReleaseNotes from './ReleaseNotes';
 
 const renderComponent = async (route = '/release-notes'): Promise<void> => {
+  const backend = new StaticBackend<AppFlags>(getFlags());
   await waitFor(() => cleanup()); // in case we're calling from a test, not beforeEach()
   render(
     <Provider store={store}>
-      <FlagsProvider flags={getFlags()}>
+      <FlagBackendProvider backend={backend}>
         <MemoryRouter initialEntries={[route]}>
           <ReleaseNotes />
         </MemoryRouter>
-      </FlagsProvider>
+      </FlagBackendProvider>
     </Provider>,
   );
 };

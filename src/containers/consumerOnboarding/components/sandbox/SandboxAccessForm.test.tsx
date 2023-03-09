@@ -9,12 +9,13 @@ import { Provider } from 'react-redux';
 import { makeRequest } from '../../../../utils/makeRequest';
 import * as apiQueries from '../../../../apiDefs/query';
 import * as rootApiQuery from '../../../../apiDefs/getApiDefinitions';
-import { FlagsProvider, getFlags } from '../../../../flags';
+import { AppFlags, FlagBackendProvider, getFlags } from '../../../../flags';
 import { fakeCategories } from '../../../../__mocks__/fakeCategories';
 import { APICategories, VaInternalOnly } from '../../../../apiDefs/schema';
 import { apiLoadingState } from '../../../../types/constants';
 import store from '../../../../store';
 import { SandboxAccessForm } from './SandboxAccessForm';
+import { StaticBackend } from 'flag';
 
 jest.mock('../../../../utils/makeRequest', () => ({
   ...jest.requireActual<Record<string, string>>('../../../../utils/makeRequest'),
@@ -25,14 +26,15 @@ const mockOnSuccess = jest.fn();
 const mockMakeRequest = makeRequest as jest.Mock;
 
 const renderComponent = async (): Promise<void> => {
+  const backend = new StaticBackend<AppFlags>(getFlags());
   await waitFor(() => cleanup()); // clean up beforeEach render if we're testing a different page
   render(
     <Provider store={store}>
-      <FlagsProvider flags={getFlags()}>
+      <FlagBackendProvider backend={backend}>
         <MemoryRouter>
           <SandboxAccessForm onSuccess={mockOnSuccess} />
         </MemoryRouter>
-      </FlagsProvider>
+      </FlagBackendProvider>
     </Provider>,
   );
 };

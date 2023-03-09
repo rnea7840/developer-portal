@@ -2,18 +2,20 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { FlagsProvider, getFlags } from '../../flags';
+import { StaticBackend } from 'flag';
+import { AppFlags, FlagBackendProvider, getFlags } from '../../flags';
 import { CONSUMER_SANDBOX_PATH } from '../../types/constants/paths';
 import { Header } from './Header';
 
 describe('Header', () => {
+  const backend = new StaticBackend<AppFlags>(getFlags());
   beforeEach(() => {
     render(
-      <FlagsProvider flags={getFlags()}>
+      <FlagBackendProvider backend={backend}>
         <Router>
           <Header />
         </Router>
-      </FlagsProvider>,
+      </FlagBackendProvider>,
     );
   });
 

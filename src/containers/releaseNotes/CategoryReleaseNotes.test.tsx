@@ -15,7 +15,8 @@ import * as apiQueries from '../../apiDefs/query';
 import { APICategories, APIDescription } from '../../apiDefs/schema';
 import store from '../../store';
 import { setApis } from '../../actions';
-import { FlagsProvider, getFlags } from '../../flags';
+import { StaticBackend } from 'flag';
+import { AppFlags, FlagBackendProvider, getFlags } from '../../flags';
 import { apiLoadingState } from '../../types/constants';
 import { CategoryReleaseNotes, DeactivatedReleaseNotes } from './CategoryReleaseNotes';
 
@@ -24,6 +25,8 @@ describe('ReleaseNotesCollection', () => {
 
   let apiDefsSpy: jest.SpyInstance<APICategories>;
   let allAPIsSpy: jest.SpyInstance<APIDescription[]>;
+  const backend = new StaticBackend<AppFlags>(getFlags());
+
   beforeEach(() => {
     jest.spyOn(apiQueries, 'getApiCategoryOrder').mockReturnValue(fakeCategoryOrder);
     apiDefsSpy = jest.spyOn(apiQueries, 'getApiDefinitions').mockReturnValue(fakeCategories);
@@ -36,11 +39,11 @@ describe('ReleaseNotesCollection', () => {
       await waitFor(() => cleanup()); // clean up beforeEach render if we're testing a different page
       render(
         <Provider store={store}>
-          <FlagsProvider flags={getFlags()}>
+          <FlagBackendProvider backend={backend}>
             <MemoryRouter initialEntries={[route]}>
               <Route path="/release-notes/:apiCategoryKey" component={CategoryReleaseNotes} />
             </MemoryRouter>
-          </FlagsProvider>
+          </FlagBackendProvider>
         </Provider>,
       );
     };
@@ -164,11 +167,11 @@ describe('ReleaseNotesCollection', () => {
       await waitFor(() => cleanup());
       render(
         <Provider store={store}>
-          <FlagsProvider flags={getFlags()}>
+          <FlagBackendProvider backend={backend}>
             <MemoryRouter initialEntries={['/release-notes/deactivated']}>
               <Route path="/release-notes/deactivated" component={DeactivatedReleaseNotes} />
             </MemoryRouter>
-          </FlagsProvider>
+          </FlagBackendProvider>
         </Provider>,
       );
     };
