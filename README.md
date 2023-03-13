@@ -1,9 +1,10 @@
+# Test change for IA branch protection rules
+
 # Developer Portal
 
 The Developer Portal is the documentation and help portal for the VA API Platform. The repo hosts the code base that the website is built on.
 
 ## IMPORTANT: Install Git LFS before cloning this repo
-
 
 **Before you clone this repo, [install Git LFS](https://github.com/git-lfs/git-lfs/wiki/Installation)!!!** If Git LFS isn't installed, you may have problems cloning the repo. If you attempt to clone the repo and see hundreds of files in a changed or staged state, check that you have Git LFS installed.
 
