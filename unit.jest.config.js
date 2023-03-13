@@ -11,6 +11,7 @@ module.exports = {
     '!src/registerServiceWorker.ts',
     '!src/visualRegressionTest.ts',
     '!src/containers/consumerOnboarding/validationSchema.ts',
+    '!src/setupProxy.js',
   ],
   coverageThreshold: {
     global: {
@@ -33,13 +34,13 @@ module.exports = {
   testEnvironment: 'jsdom',
   testURL: process.env.TEST_HOST || 'http://localhost:4444',
   transform: {
-    '^.+\\.(js|jsx|mjs)$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.(js|jsx|mjs)$': ['babel-jest', { configFile: './.babelrc' }],
     '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.css$': '<rootDir>/config/jest/cssTransform.js',
     '^.+\\.ya?ml$': '<rootDir>/config/jest/yamlTransform.js',
     '^(?!.*\\.(js|jsx|mjs|css|json)$)': '<rootDir>/config/jest/fileTransform.js',
   },
-  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$'],
+  transformIgnorePatterns: ['/node_modules/(?!(react-syntax-highlighter|swagger-ui|swagger-client)/).+\\.(js|jsx|mjs|ts|tsx)$'],
   moduleNameMapper: {
     '^react-native$': 'react-native-web',
     'content/news.yml': '<rootDir>/src/__mocks__/news.test.yml',

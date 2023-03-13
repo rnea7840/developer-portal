@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Switch } from 'react-router';
 import { Redirect, Route } from 'react-router-dom';
 
-import { getActiveApiDefinitions, getApiCategoryOrder, getApisLoadedState } from './apiDefs/query';
-import { MarkdownPage } from './components';
+import { getActiveApiDefinitions, getApisLoadedState } from './apiDefs/query';
 import ConsumerOnboardingRoot from './containers/consumerOnboarding/ConsumerOnboardingRoot';
 import DocumentationRoot from './containers/documentation/DocumentationRoot';
 import Home from './containers/Home';
@@ -11,8 +10,6 @@ import About from './containers/about/About';
 import News from './containers/about/News';
 import ReleaseNotes from './containers/releaseNotes/ReleaseNotes';
 import Support, { sections as supportSections, SupportSection } from './containers/support/Support';
-import TermsOfService from './content/termsOfService.mdx';
-import ProviderIntegrationGuide from './content/providers/integrationGuide.mdx';
 import { Publishing } from './containers/publishing';
 import {
   CONSUMER_APPLICATION_PATH,
@@ -24,6 +21,8 @@ import {
 import { buildApiDetailRoutes } from './utils/routesHelper';
 import ProductionAccess from './containers/consumerOnboarding/ProductionAccess';
 import ErrorPage404 from './containers/ErrorPage404';
+import TermsOfService from './containers/TermsOfService';
+import IntegrationGuide from './containers/providers/IntegrationGuide';
 import { apiLoadingState } from './types/constants';
 
 export const SiteRoutes: React.FunctionComponent = (): JSX.Element => {
@@ -43,7 +42,7 @@ export const SiteRoutes: React.FunctionComponent = (): JSX.Element => {
       <Route path="/oauth" render={(): JSX.Element => <Redirect to="/explore/authorization" />} />
 
       {/* Current routes: */}
-      <Route path="/terms-of-service" render={(): JSX.Element => MarkdownPage(TermsOfService)} />
+      <Route path="/terms-of-service" component={TermsOfService} />
 
       {/* API Documentation */}
       <Route exact path="/explore" component={DocumentationRoot} />
@@ -95,10 +94,7 @@ export const SiteRoutes: React.FunctionComponent = (): JSX.Element => {
       ))}
 
       {/* Integration Guide */}
-      <Route
-        path="/providers/integration-guide"
-        render={(): JSX.Element => MarkdownPage(ProviderIntegrationGuide)}
-      />
+      <Route path="/providers/integration-guide" component={IntegrationGuide} />
 
       {/* API Publishing */}
       {PUBLISHING_ROUTER_PATHS.map((path: string) => (
@@ -121,36 +117,4 @@ export const SiteRoutes: React.FunctionComponent = (): JSX.Element => {
       <Route component={ErrorPage404} />
     </Switch>
   );
-};
-
-interface SitemapConfig {
-  topLevelRoutes: React.FunctionComponent;
-  paramsConfig: Record<string, unknown>;
-  pathFilter: {
-    isValid: boolean;
-    rules: RegExp[];
-  };
-}
-
-/**
- * When a route is added to or removed from `topLevelRoutes` the sitemap will be automatically
- * updated during the next build. There are situations when the config for react-router-sitemap needs
- * to be updated for the sitemap to reflect the desired paths:
- * - a route is included in `topLevelRoutes` that should not be included in the sitemap needs to be added to `pathFilter`
- * - a route with dynamic subroutes (e.g. `/route/:param`) is added an array of the available params needs to be added to `paramsConfig`
- */
-
-export const sitemapConfig = (): SitemapConfig => {
-  const apiCategoryOrder = getApiCategoryOrder();
-  return {
-    paramsConfig: {},
-    pathFilter: {
-      isValid: false,
-      rules: [
-        /index.html|\/explore\/terms-of-service|\/applied|\/oauth/,
-        ...apiCategoryOrder.map((item): RegExp => new RegExp(`${item}\\\/docs\\\/:apiName`)),
-      ],
-    },
-    topLevelRoutes: SiteRoutes,
-  };
 };
