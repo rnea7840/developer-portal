@@ -65,7 +65,7 @@ jobs:
         with:
           install: false
           start: npm start
-          wait-on: http://localhost:3001
+          wait-on: http://0.0.0.0:3001
 
       - name: Upload failed screenshots
         uses: actions/upload-artifact@v2
@@ -137,7 +137,7 @@ jobs:
           install: false
           spec: cypress/integration/accessibility.spec.js
           start: npm start
-          wait-on: http://localhost:3001
+          wait-on: http://0.0.0.0:3001
 
       - name: Upload failed screenshots
         uses: actions/upload-artifact@v2
