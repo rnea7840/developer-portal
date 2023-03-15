@@ -65,6 +65,7 @@ jobs:
         with:
           install: false
           start: npm start
+          wait-on-timeout: 300
           wait-on: http://127.0.0.1:3001
 
       - name: Upload failed screenshots
@@ -138,6 +139,7 @@ jobs:
           spec: cypress/integration/accessibility.spec.js
           start: npm start
           wait-on: http://127.0.0.1:3001
+          wait-on-timeout: 300
 
       - name: Upload failed screenshots
         uses: actions/upload-artifact@v2
