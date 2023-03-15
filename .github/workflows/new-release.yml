@@ -2,7 +2,7 @@ name: Create new Developer Portal release package
 
 on:
   push:
-    branches: [master]
+    branches: [master, node-18-upgrade]
 
 jobs:
   install:
