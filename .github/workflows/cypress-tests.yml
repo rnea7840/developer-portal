@@ -54,7 +54,7 @@ jobs:
         if: |
           steps.cache_cypress_binary.outputs.cache-hit != 'true' ||
           steps.cache_node_modules.outputs.cache-hit != 'true'
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           runTests: false
 
@@ -62,7 +62,7 @@ jobs:
         run: ./scripts/fake_lpb.sh
 
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           install: false
           start: npm start
@@ -125,7 +125,7 @@ jobs:
         if: |
           steps.cache_cypress_binary.outputs.cache-hit != 'true' ||
           steps.cache_node_modules.outputs.cache-hit != 'true'
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           runTests: false
 
@@ -133,7 +133,7 @@ jobs:
         run: ./scripts/fake_lpb.sh
 
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           config: ignoreTestFiles=null
           install: false
