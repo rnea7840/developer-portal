@@ -8,7 +8,7 @@ on:
 jobs:
   install:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node18.12.0-chrome107
+    container: cypress/browsers:node12.18.3-chrome87-ff82
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -29,7 +29,7 @@ jobs:
 
   accessibility:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node18.12.0-chrome107
+    container: cypress/browsers:node12.18.3-chrome87-ff82
     needs: install
     strategy:
       fail-fast: false
