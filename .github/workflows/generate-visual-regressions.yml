@@ -48,15 +48,15 @@ jobs:
           echo $NODE_VERSION
           echo "::set-output name=node_version::$NODE_VERSION"
 
-      - id: cache_node_modules
-        name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-node-modules
-          node-version: ${{ steps.node_version.outputs.node_version }}
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      # - id: cache_node_modules
+      #   name: Cache node modules
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: developer-portal-node-modules
+      #     node-version: ${{ steps.node_version.outputs.node_version }}
+      #   with:
+      #     path: node_modules
+      #     key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Checkout LFS objects
         run: git lfs checkout
@@ -74,7 +74,7 @@ jobs:
           && sudo rm -rf /src/*.deb
 
       - name: Install dependencies
-        if: steps.cache_node_modules.outputs.cache-hit != 'true'
+        # if: steps.cache_node_modules.outputs.cache-hit != 'true'
         run: npm ci --legacy-peer-deps
 
       - name: Delete all old snapshots
