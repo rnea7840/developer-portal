@@ -53,7 +53,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache_node_modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
   visual:
     runs-on: ubuntu-latest
@@ -95,7 +95,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache_node_modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - id: visual_test
         name: Run test
