@@ -41,17 +41,17 @@ jobs:
       #     path: node_modules
       #     key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      - id: cache_cypress_binary
-        name: Cache Cypress binary
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-cypress-binary
-        with:
-          path: cypress/cache
-          key: ${{ runner.os }}-cypress-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      # - id: cache_cypress_binary
+      #   name: Cache Cypress binary
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: developer-portal-cypress-binary
+      #   with:
+      #     path: cypress/cache
+      #     key: ${{ runner.os }}-cypress-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install Cypress and Dependencies
-        if: steps.cache_cypress_binary.outputs.cache-hit != 'true'
+        # if: steps.cache_cypress_binary.outputs.cache-hit != 'true'
         # steps.cache_node_modules.outputs.cache-hit != 'true'
         uses: cypress-io/github-action@v5
         with:
@@ -113,17 +113,17 @@ jobs:
       #     path: node_modules
       #     key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      - id: cache_cypress_binary
-        name: Cache Cypress binary
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-cypress-binary
-        with:
-          path: cypress/cache
-          key: ${{ runner.os }}-cypress-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      # - id: cache_cypress_binary
+      #   name: Cache Cypress binary
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: developer-portal-cypress-binary
+      #   with:
+      #     path: cypress/cache
+      #     key: ${{ runner.os }}-cypress-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install Cypress and Dependencies
-        if: steps.cache_cypress_binary.outputs.cache-hit != 'true'
+        # if: steps.cache_cypress_binary.outputs.cache-hit != 'true'
         # steps.cache_node_modules.outputs.cache-hit != 'true'
         uses: cypress-io/github-action@v5
         with:
