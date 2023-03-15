@@ -13,19 +13,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Save build folder
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: build
-          if-no-files-found: error
-          path: build
-
       - name: Cypress install
         uses: cypress-io/github-action@v5.3.0
         with:
           # Disable running of tests within install job
           runTests: false
           build: npm run build
+
+      - name: Save build folder
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: build
+          if-no-files-found: error
+          path: build
 
   accessibility:
     runs-on: ubuntu-latest
