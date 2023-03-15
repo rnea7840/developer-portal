@@ -5,58 +5,59 @@ on:
     branches:
       - 'API-19692-update-cypress-tests-ci-infrastructure'
 
-env:
-  CYPRESS_CACHE_FOLDER: cypress/cache
-  REACT_APP_VETSGOV_SWAGGER_API: http://localhost:3001
-
 jobs:
-  cypress_install_and_run:
+  install:
     runs-on: ubuntu-latest
-    container: cypress/included:9.6.0
-    outputs:
-      hash: ${{ steps.githash.outputs.hash }}
-      pr_number: ${{ steps.pr_number.outputs.pr }}
-      node_version: ${{ steps.node_version.outputs.node_version }}
+    container: cypress/browsers:node12.18.3-chrome87-ff82
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v4
-      - id: node_version
-        name: Set Node Version to ENV
-        run: |
-          env
-          NODE_VERSION=$(node -v)
-          echo $NODE_VERSION
-          echo "::set-output name=node_version::$NODE_VERSION"
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - id: cache_node_modules
-        name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-node-modules
-          node-version: ${{ steps.node_version.outputs.node_version }}
+      - name: Save build folder
+        uses: actions/upload-artifact@v3.1.2
         with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          name: build
+          if-no-files-found: error
+          path: build
+
+      - name: Cypress install
+        uses: cypress-io/github-action@v5.3.0
+        with:
+          # Disable running of tests within install job
+          runTests: false
+          build: npm run build
+
+  accessibility:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node12.18.3-chrome87-ff82
+    needs: install
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download the build folders
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
 
       - name: Start Fake LPB Server
         run: ./scripts/fake_lpb.sh
 
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5.3.0
         with:
+          # we have already installed all dependencies above
           install: false
+          spec: cypress/integration/accessibility.spec.js
           start: npm start
           wait-on: http://localhost:3001
-
-      - name: Upload failed screenshots
-        uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-      - name: Upload failed videos
-        uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: cypress-videos
-          path: cypress/videos
+          wait-on-timeout: 120
+          browser: chrome
