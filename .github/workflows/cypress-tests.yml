@@ -31,15 +31,15 @@ jobs:
           echo $NODE_VERSION
           echo "::set-output name=node_version::$NODE_VERSION"
 
-      - id: cache_node_modules
-        name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-node-modules
-          node-version: ${{ steps.node_version.outputs.node_version }}
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      # - id: cache_node_modules
+      #   name: Cache node modules
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: developer-portal-node-modules
+      #     node-version: ${{ steps.node_version.outputs.node_version }}
+      #   with:
+      #     path: node_modules
+      #     key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - id: cache_cypress_binary
         name: Cache Cypress binary
@@ -52,8 +52,8 @@ jobs:
 
       - name: Install Cypress and Dependencies
         if: |
-          steps.cache_cypress_binary.outputs.cache-hit != 'true' ||
-          steps.cache_node_modules.outputs.cache-hit != 'true'
+          steps.cache_cypress_binary.outputs.cache-hit != 'true'
+        # steps.cache_node_modules.outputs.cache-hit != 'true'
         uses: cypress-io/github-action@v2
         with:
           runTests: false
@@ -102,15 +102,15 @@ jobs:
           echo $NODE_VERSION
           echo "::set-output name=node_version::$NODE_VERSION"
 
-      - id: cache_node_modules
-        name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-node-modules
-          node-version: ${{ steps.node_version.outputs.node_version }}
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      # - id: cache_node_modules
+      #   name: Cache node modules
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: developer-portal-node-modules
+      #     node-version: ${{ steps.node_version.outputs.node_version }}
+      #   with:
+      #     path: node_modules
+      #     key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - id: cache_cypress_binary
         name: Cache Cypress binary
@@ -123,8 +123,8 @@ jobs:
 
       - name: Install Cypress and Dependencies
         if: |
-          steps.cache_cypress_binary.outputs.cache-hit != 'true' ||
-          steps.cache_node_modules.outputs.cache-hit != 'true'
+          steps.cache_cypress_binary.outputs.cache-hit != 'true'
+        # steps.cache_node_modules.outputs.cache-hit != 'true'
         uses: cypress-io/github-action@v2
         with:
           runTests: false
