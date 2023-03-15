@@ -4,7 +4,6 @@ The Developer Portal is the documentation and help portal for the VA API Platfor
 
 ## IMPORTANT: Install Git LFS before cloning this repo
 
-
 **Before you clone this repo, [install Git LFS](https://github.com/git-lfs/git-lfs/wiki/Installation)!!!** If Git LFS isn't installed, you may have problems cloning the repo. If you attempt to clone the repo and see hundreds of files in a changed or staged state, check that you have Git LFS installed.
 
 We use Git LFS for the image snapshots used by the app's visual regression tests. For more information, see the [testing docs](docs/testing.md#visual-regression-testing).
@@ -71,4 +70,4 @@ Adding a new API to the apply page requires changes in a few different places. Y
 
 ## Running the Backend Locally
 
-[Lighthouse Platform Backend](https://github.com/department-of-veterans-affairs/lighthouse-platform-backend) serves as the backend for the Developer Portal. Clone the `lighthouse-platform-backend` repo and review startup procedures via it's [README](https://github.com/department-of-veterans-affairs/lighthouse-platform-backend/blob/master/README.md). LPB can be ran natively or using docker and has directions on starting the application natively, alongside a startup procedure for the DB, DynamoDB, Kong, and Elasticsearch containers.
+[Lighthouse Platform Backend](https://github.com/department-of-veterans-affairs/lighthouse-platform-backend) serves as the backend for the Developer Portal. Clone the `lighthouse-platform-backend` repo and review startup procedures via it's [README](https://github.com/department-of-veterans-affairs/lighthouse-platform-backend/blob/master/README.md). LPB can be ran natively or using docker and has directions on starting the application natively, alongside a startup procedure for the DB, DynamoDB, Kong, and Elasticsearch containers..
