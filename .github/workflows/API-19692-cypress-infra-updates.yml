@@ -6,6 +6,57 @@ on:
       - 'API-19692-update-cypress-tests-ci-infrastructure'
 
 jobs:
+  not-accessibility:
+    runs-on: ubuntu-latest
+    container: cypress/included:9.6.0
+    outputs:
+      node_version: ${{ steps.node_version.outputs.node_version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+
+      - id: node_version
+        name: Set Node Version to ENV
+        run: |
+          env
+          NODE_VERSION=$(node -v)
+          echo $NODE_VERSION
+          echo "::set-output name=node_version::$NODE_VERSION"
+
+      - name: Install python env
+        run: |
+          apt update && apt install python3 -y && ln -s /usr/bin/python3 /usr/bin/python
+
+      - name: Start Fake LPB Server
+        run: ./scripts/fake_lpb.sh
+
+      - id: cache_node_modules
+        name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: developer-portal-node-modules
+          node-version: ${{ steps.node_version.outputs.node_version }}
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Run an npm install
+        if: |
+          steps.cache_node_modules.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          install: false
+          start: npm start
+          wait-on: http://localhost:3001
+
   accessibility:
     runs-on: ubuntu-latest
     container: cypress/included:9.6.0
