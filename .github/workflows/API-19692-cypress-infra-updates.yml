@@ -18,13 +18,13 @@ jobs:
       #   with:
       #     python-version: '3.9'
 
-      - name: Set up Python 3.7
+      - name: Set up Python 3.9
         run: |
           apt update
           apt-get install -y software-properties-common 
           add-apt-repository -y ppa:deadsnakes/ppa
-          apt-get install -y python3.7
-          ln -s `which python3.7` /usr/local/bin/python
+          apt-get install -y python3.9
+          ln -s `which python3.9` /usr/local/bin/python
           python --version
 
       - name: Start Fake LPB Server
