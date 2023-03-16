@@ -6,18 +6,13 @@ on:
       - 'API-19692-update-cypress-tests-ci-infrastructure'
 
 jobs:
-  install:
+  accessibility:
     runs-on: ubuntu-latest
     container: cypress/included:9.6.0
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-  accessibility:
-    runs-on: ubuntu-latest
-    container: cypress/included:9.6.0
-    needs: install
-    steps:
       - name: Install Python
         uses: actions/setup-python@v4
         with:
