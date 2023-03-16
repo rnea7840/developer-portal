@@ -18,7 +18,6 @@ jobs:
         with:
           # Disable running of tests within install job
           runTests: false
-          build: run npm build
 
       - name: Save build folder
         uses: actions/upload-artifact@v3.1.2
