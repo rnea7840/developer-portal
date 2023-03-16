@@ -13,19 +13,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # - name: Install Python
-      #   uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.9'
-
-      - name: Set up Python 3.9
+      - name: Install python env
         run: |
-          apt update
-          apt-get install -y software-properties-common 
-          add-apt-repository -y ppa:deadsnakes/ppa
-          apt-get install -y python3.9
-          ln -s `which python3.9` /usr/local/bin/python
-          python --version
+          apt update && apt install python3 -y && ln -s /usr/bin/python3 /usr/bin/python
 
       - name: Start Fake LPB Server
         run: ./scripts/fake_lpb.sh
