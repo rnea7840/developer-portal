@@ -20,6 +20,9 @@ jobs:
       - name: Start Fake LPB Server
         run: ./scripts/fake_lpb.sh
 
+      - name: Run an npm install
+        run: npm install
+
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
