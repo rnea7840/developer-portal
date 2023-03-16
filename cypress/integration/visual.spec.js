@@ -36,13 +36,16 @@ const snapshotOptions = {
 };
 
 function testVisualRegressions(path, size) {
+  cy.wait(1000);
   cy.get('html').invoke('css', 'height', 'initial');
   cy.get('body').invoke('css', 'height', 'initial');
-  // /about/news
-  // visual-regression-test-ts-visual-regression-test-renders-about-news-properly-1-snap.png
+  cy.wait(1000);
   const strippedUrlPath = path.replace(/\//g, '-').substring(1);
   const formattedPath = strippedUrlPath ? strippedUrlPath : 'homepage';
   cy.get('#main');
+  cy.get('html').invoke('css', 'height', 'initial');
+  cy.get('body').invoke('css', 'height', 'initial');
+  cy.wait(1000);
   cy.matchImageSnapshot(`${formattedPath}-${size.count}`, snapshotOptions);
 }
 
