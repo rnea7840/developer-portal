@@ -13,12 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Cypress install
-        uses: cypress-io/github-action@v2
-        with:
-          # Disable running of tests within install job
-          runTests: false
-
       - name: Save build folder
         uses: actions/upload-artifact@v3.1.2
         with:
