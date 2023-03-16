@@ -57,6 +57,19 @@ jobs:
           start: npm start
           wait-on: http://localhost:3001
 
+      - name: Upload failed screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      - name: Upload failed videos
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
   accessibility:
     runs-on: ubuntu-latest
     container: cypress/included:9.6.0
@@ -111,3 +124,16 @@ jobs:
           start: npm start
           wait-on: http://localhost:3001
           wait-on-timeout: 120
+
+      - name: Upload failed screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      - name: Upload failed videos
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-videos
+          path: cypress/videos
