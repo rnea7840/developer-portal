@@ -1,6 +1,5 @@
 {
   "baseUrl": "http://localhost:3001",
-  "videoUploadOnPasses": false,
   "ignoreTestFiles": [
     "accessibility.spec.js",
     "smoketest.spec.js"
@@ -15,5 +14,8 @@
     "www.googletagmanager.com",
     "googleads.g.doubleclick.net",
     "www.youtube.com"
-  ]
+  ],
+  "trashAssetsBeforeRuns": false,
+  "updateSnapshots": false,
+  "video": false
 }

@@ -16,7 +16,8 @@
     "test:monitoring": "./node_modules/.bin/cypress run -s ./cypress/integration/App.spec.js",
     "test:accessibility": "./node_modules/.bin/cypress run --config ignoreTestFiles=null -s ./cypress/integration/accessibility.spec.js",
     "test:accessibility:ci": "./scripts/cypress_test.sh run --config ignoreTestFiles=null -s ./cypress/integration/accessibility.spec.js",
-    "test:visual": "./scripts/test.sh --projects=visual.jest.config.js --runInBand --ci",
+    "test:visual": "./node_modules/.bin/cypress run --config failOnSnapshotDiff=false --config ignoreTestFiles=null --reporter cypress-image-snapshot/reporter -s ./cypress/integration/visual.spec.js",
+    "test:visual:update": "./node_modules/.bin/cypress run --env updateSnapshots=true --config ignoreTestFiles=null -s ./cypress/integration/visual.spec.js",
     "test:coverage": "node scripts/test.js --coverage "
   },
   "dependencies": {
@@ -132,6 +133,7 @@
     "css-minimizer-webpack-plugin": "^3.4.1",
     "cypress": "^9.6.0",
     "cypress-axe": "^0.14.0",
+    "cypress-image-snapshot": "^4.0.1",
     "cypress-plugin-tab": "^1.0.5",
     "cypress-real-events": "^1.7.0",
     "dotenv": "^8.6.0",
