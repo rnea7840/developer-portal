@@ -9,7 +9,7 @@ env:
   REACT_APP_VETSGOV_SWAGGER_API: http://localhost:3001
 
 jobs:
-  not-accessibility:
+  end-to-end:
     runs-on: ubuntu-latest
     container: cypress/included:9.6.0
     outputs:
