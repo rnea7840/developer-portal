@@ -2,5 +2,5 @@
 
 cd ./public/data/
 # sudo kill -9 $(lsof -t -i:8080)
-python3 -m http.server 8080 &
+python -m http.server 8080 &
 cd ../../
