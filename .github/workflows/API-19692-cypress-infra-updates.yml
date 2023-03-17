@@ -11,7 +11,8 @@ env:
 jobs:
   end-to-end:
     runs-on: ubuntu-latest
-    container: cypress/included:9.6.0
+    container:
+      image: cypress/included:9.6.0
       ports:
         - 8080
     outputs:
