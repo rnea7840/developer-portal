@@ -15,7 +15,7 @@
     "googleads.g.doubleclick.net",
     "www.youtube.com"
   ],
-  "screenshotsFolder": "test/image_snapshots",
   "trashAssetsBeforeRuns": false,
+  "updateSnapshots": false,
   "video": false
 }

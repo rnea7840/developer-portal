@@ -93,14 +93,26 @@ jobs:
           && sudo apt-get purge --auto-remove -y curl
           && sudo rm -rf /src/*.deb
 
-      - name: Install dependencies
-        # if: steps.cache_node_modules.outputs.cache-hit != 'true'
-        run: npm ci --legacy-peer-deps
+      - name: Install Cypress and Dependencies
+        # if: steps.cache_cypress_binary.outputs.cache-hit != 'true'
+        # steps.cache_node_modules.outputs.cache-hit != 'true'
+        uses: cypress-io/github-action@v5
+        with:
+          install-command: npm ci --legacy-peer-deps
+          runTests: false
 
       - id: visual_test
-        name: Run test
-        run: npm run test:visual
         continue-on-error: true
+        name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          config: ignoreTestFiles=null
+          env: failOnSnapshotDiff=false
+          install: false
+          spec: cypress/integration/visual.spec.js
+          start: npm start
+          wait-on: http://127.0.0.1:3001
+          wait-on-timeout: 300
 
       - name: Add PR and hash to artifact
         if: steps.visual_test.outcome == 'failure'
@@ -108,17 +120,17 @@ jobs:
           COMMIT_HASH: ${{needs.install.outputs.hash}}
           PR_NUMBER: ${{needs.install.outputs.pr_number}}
         run: |
-          mkdir -p test/image_snapshots/__diff_output__;
-          echo $PR_NUMBER > test/image_snapshots/__diff_output__/pr.txt
-          echo $COMMIT_HASH > test/image_snapshots/__diff_output__/hash.txt
-          echo $GITHUB_HEAD_REF > test/image_snapshots/__diff_output__/branch.txt
+          mkdir -p test/image_snapshots/visual.spec.js/__diff_output__;
+          echo $PR_NUMBER > test/image_snapshots/visual.spec.js/__diff_output__/pr.txt
+          echo $COMMIT_HASH > test/image_snapshots/visual.spec.js/__diff_output__/hash.txt
+          echo $GITHUB_HEAD_REF > test/image_snapshots/visual.spec.js/__diff_output__/branch.txt
 
       - name: Upload failed screenshots
         if: steps.visual_test.outcome == 'failure'
         uses: actions/upload-artifact@v2
         with:
           name: visual-test-failures
-          path: test/image_snapshots/__diff_output__
+          path: test/image_snapshots/visual.spec.js/__diff_output__
 
       - name: Report Success/Failure
         if: steps.visual_test.outcome == 'failure'

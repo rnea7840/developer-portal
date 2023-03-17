@@ -73,22 +73,35 @@ jobs:
           && sudo apt-get purge --auto-remove -y curl
           && sudo rm -rf /src/*.deb
 
-      - name: Install dependencies
-        # if: steps.cache_node_modules.outputs.cache-hit != 'true'
-        run: npm ci --legacy-peer-deps
+      - name: Install Cypress and Dependencies
+        # if: steps.cache_cypress_binary.outputs.cache-hit != 'true'
+        # steps.cache_node_modules.outputs.cache-hit != 'true'
+        uses: cypress-io/github-action@v5
+        with:
+          install-command: npm ci --legacy-peer-deps
+          runTests: false
 
       - name: Delete all old snapshots
-        run: rm -f test/image_snapshots/visual-regression*
+        run: rm -f test/image_snapshots/visual-regression/visual.spec.js*
 
       - id: visual_test
+        continue-on-error: true
         name: Create new snapshots
-        run: npm run test:visual -- -u
+        uses: cypress-io/github-action@v5
+        with:
+          config: ignoreTestFiles=null
+          env: updateSnapshots=true
+          install: false
+          spec: cypress/integration/visual.spec.js
+          start: npm start
+          wait-on: http://127.0.0.1:3001
+          wait-on-timeout: 300
 
       - name: Commit new snapshots and push
         run: |
           # Change to a personal access token so that PR integration jobs run
           echo ${{ secrets.GIT_VISUAL_REGRESSIONS_COMMIT_TOKEN }} | gh auth login --with-token
-          git add test/image_snapshots/*
+          git add test/image_snapshots/visual.spec.js/*
           git config user.email "${{ secrets.GIT_USER_EMAIL }}"
           git config user.name "${{ secrets.GIT_USER_NAME }}"
           git commit -m "Updated visual snapshots via GitHub Actions job"
