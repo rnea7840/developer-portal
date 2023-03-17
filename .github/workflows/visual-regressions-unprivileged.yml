@@ -125,6 +125,11 @@ jobs:
           echo $COMMIT_HASH > test/image_snapshots/visual.spec.js/__diff_output__/hash.txt
           echo $GITHUB_HEAD_REF > test/image_snapshots/visual.spec.js/__diff_output__/branch.txt
 
+      - name: Add overview failure graphics to archive
+        if: steps.visual_test.outcome == 'failure'
+        run: |
+          cp cypress/screenshots/visual.spec.js/* test/image_snapshots/visual.spec.js/__diff_output__/
+
       - name: Upload failed screenshots
         if: steps.visual_test.outcome == 'failure'
         uses: actions/upload-artifact@v2
