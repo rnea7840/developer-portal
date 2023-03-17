@@ -11,10 +11,7 @@ env:
 jobs:
   end-to-end:
     runs-on: ubuntu-latest
-    container:
-      image: cypress/included:9.6.0
-      ports:
-        - 8080
+    container: cypress/included:9.6.0
     outputs:
       node_version: ${{ steps.node_version.outputs.node_version }}
     steps:
