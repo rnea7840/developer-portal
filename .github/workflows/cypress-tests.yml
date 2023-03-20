@@ -51,6 +51,7 @@ jobs:
           install-command: npm ci --legacy-peer-deps
           start: npm start
           wait-on: http://localhost:3001
+          wait-on-timeout: 180
 
       - name: Upload failed screenshots
         uses: actions/upload-artifact@v2
@@ -110,7 +111,7 @@ jobs:
           spec: cypress/integration/accessibility.spec.js
           start: npm start
           wait-on: http://localhost:3001
-          wait-on-timeout: 120
+          wait-on-timeout: 180
 
       - name: Upload failed screenshots
         uses: actions/upload-artifact@v2
