@@ -41,12 +41,12 @@ jobs:
       # - name: Run an npm ci
       #   if: |
       #     steps.cache_node_modules.outputs.cache-hit != 'true'
-      #   run: npm ci --legacy-peer-deps
+      #   run: npm install --legacy-peer-deps
 
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          install-command: npm ci --legacy-peer-deps
+          install-command: npm install --legacy-peer-deps
           start: npm start
           wait-on: http://localhost:3001
 
@@ -95,14 +95,14 @@ jobs:
       # - name: Run an npm ci
       #   if: |
       #     steps.cache_node_modules.outputs.cache-hit != 'true'
-      #   run: npm ci --legacy-peer-deps
+      #   run: npm install --legacy-peer-deps
 
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
           config: ignoreTestFiles=null
           # we have already installed all dependencies above
-          install-command: npm ci --legacy-peer-deps
+          install-command: npm install --legacy-peer-deps
           spec: cypress/integration/accessibility.spec.js
           start: npm start
           wait-on: http://localhost:3001
