@@ -64,6 +64,8 @@ jobs:
   accessibility:
     runs-on: ubuntu-latest
     container: cypress/included:12.8.1
+    env:
+      CYPRESS_SINGLE_SPEC: true
     outputs:
       node_version: ${{ steps.node_version.outputs.node_version }}
     steps:

@@ -1,6 +1,8 @@
 import { defineConfig } from 'cypress';
 
 let excludeSpecPattern = ['**/accessibility.cy.js', '**/smoketest.cy.js', '**/visual.cy.js'];
+// eslint-disable-next-line no-console
+console.log(process.env);
 if (process.env.CYPRESS_SINGLE_SPEC === 'true') {
   excludeSpecPattern = [];
 }
