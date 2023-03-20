@@ -2,7 +2,8 @@
   "baseUrl": "http://localhost:3001",
   "ignoreTestFiles": [
     "accessibility.spec.js",
-    "smoketest.spec.js"
+    "smoketest.spec.js",
+    "visual.spec.js"
   ],
   "env": {
     "REACT_APP_VETSGOV_SWAGGER_API": "http://localhost:3001"

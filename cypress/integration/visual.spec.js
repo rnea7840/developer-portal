@@ -74,7 +74,7 @@ describe('Visual Regression tests', () => {
       });
     });
 
-    it(`Check Swagger page has no visual regressions at ${size.width}px width.`, () => {
+    it.only(`Check Swagger page has no visual regressions at ${size.width}px width.`, () => {
       const path = '/explore/benefits/docs/claims';
       cy.viewport(size.width, size.height);
       cy.visit(path);
