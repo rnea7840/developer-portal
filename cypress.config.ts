@@ -1,5 +1,10 @@
 import { defineConfig } from 'cypress';
 
+let excludeSpecPattern = ['**/accessibility.cy.js', '**/smoketest.cy.js', '**/visual.cy.js'];
+if (process.env.CYPRESS_SINGLE_SPEC === 'true') {
+  excludeSpecPattern = [];
+}
+
 export default defineConfig({
   blockHosts: [
     'dap.digitalgov.gov',
@@ -11,7 +16,7 @@ export default defineConfig({
   ],
   e2e: {
     baseUrl: 'http://localhost:3001',
-    excludeSpecPattern: ['accessibility.spec.js', 'smoketest.spec.js', 'visual.spec.js'],
+    excludeSpecPattern,
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-var-requires
