@@ -3,7 +3,7 @@ name: API-19692 Cypress Infrastructure Updates
 on:
   push:
     branches:
-      - 'API-19692-update-cypress-tests-ci-infrastructure'
+      - 'api-19692/node-18-cypress-in-docker'
 
 env:
   REACT_APP_VETSGOV_SWAGGER_API: http://localhost:3001
