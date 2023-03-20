@@ -97,7 +97,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          env: CYPRESS_SINGLE_SPEC=true
           install-command: npm ci --legacy-peer-deps
           spec: cypress/e2e/accessibility.cy.js
           start: npm start

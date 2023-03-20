@@ -11,6 +11,10 @@ on:
 jobs:
   update_visual_regressions:
     runs-on: ubuntu-latest
+    container: cypress/included:12.8.1
+    env:
+      CYPRESS_SINGLE_SPEC: true
+      failOnSnapshotDiff: false
     outputs:
       branch_name: ${{ steps.pr_branch.outputs.branch_name }}
       node_version: ${{ steps.node_version.outputs.node_version }}
@@ -28,9 +32,7 @@ jobs:
           PR_BRANCH=${{ fromJson(steps.fetch_pr_branch.outputs.data).head.ref }}
           echo $PR_BRANCH;
           echo "::set-output name=branch_name::$PR_BRANCH";
-      - name: Check output works
-        run: echo ${{ steps.pr_branch.outputs.branch_name }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ steps.pr_branch.outputs.branch_name }}
           lfs: true
@@ -48,16 +50,6 @@ jobs:
           echo $NODE_VERSION
           echo "::set-output name=node_version::$NODE_VERSION"
 
-      # - id: cache_node_modules
-      #   name: Cache node modules
-      #   uses: actions/cache@v2
-      #   env:
-      #     cache-name: developer-portal-node-modules
-      #     node-version: ${{ steps.node_version.outputs.node_version }}
-      #   with:
-      #     path: node_modules
-      #     key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
       - name: Checkout LFS objects
         run: git lfs checkout
       - name: Update apt-get and install packages
@@ -73,35 +65,34 @@ jobs:
           && sudo apt-get purge --auto-remove -y curl
           && sudo rm -rf /src/*.deb
 
-      - name: Install Cypress and Dependencies
-        # if: steps.cache_cypress_binary.outputs.cache-hit != 'true'
-        # steps.cache_node_modules.outputs.cache-hit != 'true'
-        uses: cypress-io/github-action@v5
-        with:
-          install-command: npm ci --legacy-peer-deps
-          runTests: false
+      - name: Install python env
+        run: |
+          apt update && apt install python3 -y && ln -s /usr/bin/python3 /usr/bin/python
+      - name: Install bzip2
+        run: apt install bzip2
+
+      - name: Start Fake LPB Server
+        run: ./scripts/fake_lpb.sh
 
       - name: Delete all old snapshots
-        run: rm -f test/image_snapshots/visual-regression/visual.spec.js*
+        run: rm -f test/image_snapshots/visual-regression*
 
       - id: visual_test
         continue-on-error: true
-        name: Create new snapshots
+        name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          config: ignoreTestFiles=null
-          env: updateSnapshots=true
-          install: false
-          spec: cypress/integration/visual.spec.js
+          install-command: npm ci --legacy-peer-deps
+          spec: cypress/e2e/visual.cy.js
           start: npm start
-          wait-on: http://127.0.0.1:3001
-          wait-on-timeout: 300
+          wait-on: http://localhost:3001
+          wait-on-timeout: 180
 
       - name: Commit new snapshots and push
         run: |
           # Change to a personal access token so that PR integration jobs run
           echo ${{ secrets.GIT_VISUAL_REGRESSIONS_COMMIT_TOKEN }} | gh auth login --with-token
-          git add test/image_snapshots/visual.spec.js/*
+          git add test/image_snapshots/*
           git config user.email "${{ secrets.GIT_USER_EMAIL }}"
           git config user.name "${{ secrets.GIT_USER_NAME }}"
           git commit -m "Updated visual snapshots via GitHub Actions job"
