@@ -97,7 +97,7 @@ jobs:
         with:
           env: CYPRESS_SINGLE_SPEC=true
           install-command: npm ci --legacy-peer-deps
-          spec: cypress/integration/accessibility.cy.js
+          spec: cypress/e2e/accessibility.cy.js
           start: npm start
           wait-on: http://localhost:3001
           wait-on-timeout: 180
