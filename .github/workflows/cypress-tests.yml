@@ -38,23 +38,13 @@ jobs:
       - name: Start Fake LPB Server
         run: ./scripts/fake_lpb.sh
 
-      - id: cache_node_modules
-        name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-node-modules
-          node-version: ${{ steps.node_version.outputs.node_version }}
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Run an npm install
+      - name: Run an npm ci
         if: |
           steps.cache_node_modules.outputs.cache-hit != 'true'
-        run: npm install
+        run: npm ci --legacy-peer-deps
 
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           install: false
           start: npm start
@@ -102,23 +92,13 @@ jobs:
       - name: Start Fake LPB Server
         run: ./scripts/fake_lpb.sh
 
-      - id: cache_node_modules
-        name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-node-modules
-          node-version: ${{ steps.node_version.outputs.node_version }}
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Run an npm install
+      - name: Run an npm ci
         if: |
           steps.cache_node_modules.outputs.cache-hit != 'true'
-        run: npm install
+        run: npm ci --legacy-peer-deps
 
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           config: ignoreTestFiles=null
           # we have already installed all dependencies above
