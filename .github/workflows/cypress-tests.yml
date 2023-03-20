@@ -11,7 +11,7 @@ env:
 jobs:
   end-to-end:
     runs-on: ubuntu-latest
-    container: cypress/included:9.6.0
+    container: cypress/included:12.8.1
     outputs:
       node_version: ${{ steps.node_version.outputs.node_version }}
     steps:
@@ -65,7 +65,7 @@ jobs:
 
   accessibility:
     runs-on: ubuntu-latest
-    container: cypress/included:9.6.0
+    container: cypress/included:12.8.1
     outputs:
       node_version: ${{ steps.node_version.outputs.node_version }}
     steps:
