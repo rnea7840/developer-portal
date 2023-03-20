@@ -40,11 +40,6 @@ jobs:
       - name: Start Fake LPB Server
         run: ./scripts/fake_lpb.sh
 
-      # - name: Run an npm ci
-      #   if: |
-      #     steps.cache_node_modules.outputs.cache-hit != 'true'
-      #   run: npm ci --legacy-peer-deps
-
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
@@ -97,16 +92,10 @@ jobs:
       - name: Start Fake LPB Server
         run: ./scripts/fake_lpb.sh
 
-      # - name: Run an npm ci
-      #   if: |
-      #     steps.cache_node_modules.outputs.cache-hit != 'true'
-      #   run: npm ci --legacy-peer-deps
-
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          config: ignoreTestFiles=null
-          # we have already installed all dependencies above
+          env: CYPRESS_SINGLE_SPEC=true
           install-command: npm ci --legacy-peer-deps
           spec: cypress/integration/accessibility.spec.js
           start: npm start
