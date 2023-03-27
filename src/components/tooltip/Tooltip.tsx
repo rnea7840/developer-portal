@@ -11,7 +11,7 @@ import {
   useDismiss,
   useClick,
   Side,
-} from '@floating-ui/react-dom-interactions';
+} from '@floating-ui/react';
 
 import './Tooltip.scss';
 
@@ -55,9 +55,12 @@ export const Tooltip = ({ children, label, placement = 'top' }: TooltipProps): J
     top: 'bottom',
   }[finalPlacement.split('-')[0]];
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const props: React.HTMLProps<Element> = { ref: reference, ...children.props };
+
   return (
     <>
-      {cloneElement(children, getReferenceProps({ ref: reference, ...children.props }))}
+      {cloneElement(children, getReferenceProps(props))}
 
       {open && (
         <div
