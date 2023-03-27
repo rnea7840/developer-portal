@@ -5,25 +5,40 @@ on:
     - cron: '20 * * * *'
   workflow_dispatch:
 
+env:
+  CYPRESS_SINGLE_SPEC: true
+
 jobs:
   cypress_smoketest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: NPM Install
+        run: npm ci
 
       - name: Cypress run
-        run: |
-          docker run -t -v $PWD:/e2e -w /e2e cypress/included:9.6.0 --config supportFile=false,ignoreTestFiles=null,baseUrl=https://dev-developer.va.gov -s ./cypress/integration/smoketest.spec.js
+        uses: cypress-io/github-action@v5
+        with:
+          config: baseUrl=https://dev-developer.va.gov
+          install: false
+          spec: cypress/e2e/smoketest.cy.js
 
       - name: Upload failed screenshots
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: cypress-screenshots
           path: cypress/screenshots
 
       - name: Upload failed videos
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: cypress-videos
@@ -55,7 +70,7 @@ jobs:
           bundle exec ruby ./delete-smoketest-apps.rb $ccgClientId;
 
       - name: Send Slack notification for a failed signup
-        uses: slackapi/slack-github-action@v1.21.0
+        uses: slackapi/slack-github-action@v1.23.0
         if: failure()
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
