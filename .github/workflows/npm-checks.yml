@@ -17,7 +17,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 18
 
       - id: node_version
         name: Set Node Version to ENV
@@ -40,18 +40,7 @@ jobs:
           echo $GIT_HASH
           echo "::set-output name=hash::$GIT_HASH"
 
-      - id: cache_node_modules
-        name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-node-modules
-          node-version: ${{ steps.node_version.outputs.node_version }}
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
       - name: Install dependencies
-        if: steps.cache_node_modules.outputs.cache-hit != 'true'
         run: npm ci
 
   unit:
@@ -63,19 +52,9 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
-          node-version: 12
-      - id: cache_node_modules
-        name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-node-modules
-          node-version: ${{ needs.install.outputs.node_version }}
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          node-version: 18
 
       - name: Install dependencies
-        if: steps.cache_node_modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Run test
@@ -89,7 +68,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 18
 
       - name: Run test
         run: npm audit --production --audit-level high
@@ -103,19 +82,9 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
-          node-version: 12
-      - id: cache_node_modules
-        name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: developer-portal-node-modules
-          node-version: ${{ needs.install.outputs.node_version }}
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ env.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          node-version: 18
 
       - name: Install dependencies
-        if: steps.cache_node_modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Run test

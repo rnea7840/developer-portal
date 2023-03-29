@@ -9,9 +9,6 @@
         "docSources": [
           {
             "metadataUrl": "http://localhost:4444/internal/docs/appeals-status/metadata.json"
-          },
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/appeals-status/metadata.json"
           }
         ],
         "enabledByDefault": true,
@@ -30,9 +27,6 @@
         "altID": "decision_reviews",
         "description": "Allows submission, management, and retrieval of decision review requests and details such as statuses in accordance with the AMA.",
         "docSources": [
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/appeals-decision-reviews/metadata.json"
-          },
           {
             "metadataUrl": "http://localhost:4444/internal/docs/appeals-decision-reviews/metadata.json"
           }
@@ -66,9 +60,6 @@
         "altID": "claims",
         "description": "Submit and track claims",
         "docSources": [
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/benefits-claims/metadata.json"
-          },
           {
             "metadataUrl": "http://localhost:4444/internal/docs/benefits-claims/metadata.json"
           }
@@ -117,9 +108,6 @@
         "docSources": [
           {
             "metadataUrl": "http://localhost:4444/internal/docs/benefits-intake/metadata.json"
-          },
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/benefits-intake/metadata.json"
           }
         ],
         "enabledByDefault": true,
@@ -141,9 +129,6 @@
         "altID": "benefitsReferenceData",
         "description": "Look up data and codes for VA benefits claims",
         "docSources": [
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/benefits-reference-data/metadata.json"
-          },
           {
             "metadataUrl": "http://localhost:4444/internal/docs/benefits-reference-data/metadata.json"
           }
@@ -186,9 +171,6 @@
         "docSources": [
           {
             "metadataUrl": "http://localhost:4444/internal/docs/facilities/metadata.json"
-          },
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/facilities/metadata.json"
           }
         ],
         "enabledByDefault": true,
@@ -227,9 +209,6 @@
         "altID": "vaForms",
         "description": "Look up VA forms and check for new versions.",
         "docSources": [
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/forms/metadata.json"
-          },
           {
             "metadataUrl": "http://localhost:4444/internal/docs/forms/metadata.json"
           }
@@ -272,9 +251,6 @@
         "docSources": [
           {
             "metadataUrl": "http://localhost:4444/internal/docs/fhir-clinical-health/metadata.json"
-          },
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/fhir-clinical-health/metadata.json"
           }
         ],
         "enabledByDefault": true,
@@ -312,9 +288,6 @@
         "docSources": [
           {
             "metadataUrl": "http://localhost:4444/internal/docs/community-care-eligibility/metadata.json"
-          },
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/community-care-eligibility/metadata.json"
           }
         ],
         "enabledByDefault": true,
@@ -345,9 +318,6 @@
         "altID": "health",
         "description": "Use the OpenID Connect and SMART on FHIR standards to allow Veterans to authorize third-party applications to access data on their behalf.",
         "docSources": [
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/fhir/metadata.json"
-          },
           {
             "metadataUrl": "http://localhost:4444/internal/docs/fhir/metadata.json"
           }
@@ -420,9 +390,6 @@
         "docSources": [
           {
             "metadataUrl": "http://localhost:4444/internal/docs/provider-directory-r4/metadata.json"
-          },
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/provider-directory-r4/metadata.json"
           }
         ],
         "enabledByDefault": true,
@@ -476,9 +443,6 @@
         "docSources": [
           {
             "metadataUrl": "http://localhost:4444/internal/docs/lgy-remittance/metadata.json"
-          },
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/lgy-remittance/metadata.json"
           }
         ],
         "enabledByDefault": true,
@@ -509,9 +473,6 @@
         "altID": "loan_guaranty",
         "description": "Use the Loan Guaranty API to Manage VA Home Loans.",
         "docSources": [
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/loan_guaranty_property/metadata.json"
-          },
           {
             "metadataUrl": "http://localhost:4444/internal/docs/loan_guaranty_property/metadata.json"
           }
@@ -547,9 +508,6 @@
         "docSources": [
           {
             "metadataUrl": "http://localhost:4444/internal/docs/address-validation/metadata.json"
-          },
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/address-validation/metadata.json"
           }
         ],
         "enabledByDefault": true,
@@ -568,9 +526,6 @@
         "altID": "vaLetterGenerator",
         "description": "Generate documents and letters for proof of existing VA benefits and status.",
         "docSources": [
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/veteran-letters/metadata.json"
-          },
           {
             "metadataUrl": "http://localhost:4444/internal/docs/veteran-letters/metadata.json"
           }
@@ -604,9 +559,6 @@
         "docSources": [
           {
             "metadataUrl": "http://localhost:4444/internal/docs/veteran-confirmation/metadata.json"
-          },
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/veteran-confirmation/metadata.json"
           }
         ],
         "enabledByDefault": true,
@@ -624,9 +576,6 @@
         "altID": "verification",
         "description": "Confirm Veteran status for a given person, or get a Veteran’s service history or disability rating.",
         "docSources": [
-          {
-            "metadataUrl": "http://localhost:4444/internal/docs/veteran-verification/metadata.json"
-          },
           {
             "metadataUrl": "http://localhost:4444/internal/docs/veteran-verification/metadata.json"
           }
