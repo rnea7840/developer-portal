@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import highlight from 'rehype-highlight';
+import SyntaxHighlighter from 'react-syntax-highlighter';
 import { Tooltip } from '../index';
 
 import './CodeBlock.scss';
@@ -30,20 +30,23 @@ const CodeBlock = ({
     <div className="code-block">
       <CodeWrapper>
         <ReactMarkdown
-          rehypePlugins={[highlight]}
           components={{
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             code: ({ className, children, node, ...codeProps }): JSX.Element => (
-              <code className={className} {...codeProps}>
-                {children}
-              </code>
+              <SyntaxHighlighter
+                className={className}
+                language={language}
+                showLineNumbers
+                useInlineStyles={false}
+                tabIndex={0}
+              >
+                {String(children).replace(/\n$/, '')}
+              </SyntaxHighlighter>
             ),
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             pre: ({ children, node, ...preProps }): JSX.Element => (
-              // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-              <pre {...preProps} tabIndex={0}>
-                {children}
-              </pre>
+              // eslint-disable-next-line react/jsx-no-useless-fragment
+              <>{children}</>
             ),
           }}
         >
