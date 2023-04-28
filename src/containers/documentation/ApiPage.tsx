@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable complexity */
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { Redirect, useLocation, useParams } from 'react-router-dom';
@@ -11,7 +13,7 @@ import { APIDescription, VeteranRedirectMessage } from '../../apiDefs/schema';
 import { PageHeader } from '../../components';
 import { useFlag } from '../../flags';
 
-import { APINameParam } from '../../types';
+import { APIUrlFragment } from '../../types';
 import { FLAG_API_ENABLED_PROPERTY } from '../../types/constants';
 import ApisLoader from '../../components/apisLoader/ApisLoader';
 import ApiDocumentation from './ApiDocumentation';
@@ -79,13 +81,15 @@ const VeteranRedirectAlertMessage = ({
 
 const ApiPage = (): JSX.Element => {
   const location = useLocation();
-  const params = useParams<APINameParam>();
+  const params = useParams<APIUrlFragment>();
   const enabledApisFlags = useFlag([FLAG_API_ENABLED_PROPERTY]);
 
-  const api = getApi(params.apiName);
-  const category = lookupApiCategory(params.apiCategoryKey);
-
-  const veteranRedirect = api?.veteranRedirect ?? category?.content.veteranRedirect;
+  const api = getApi(params.urlFragment);
+  if (!api) {
+    return <h1>ApiPage.tsx 404</h1>;
+  }
+  const category = lookupApiCategory(api.categoryUrlFragment ?? '');
+  const veteranRedirect = api.veteranRedirect ?? category?.content.veteranRedirect;
 
   const tabsRegex = /tab=(r4|argonaut|dstu2)/;
   if (location.pathname === '/explore/health/docs/fhir' && tabsRegex.test(location.search)) {
@@ -108,7 +112,8 @@ const ApiPage = (): JSX.Element => {
     return <Redirect to={`/explore/health/docs/fhir?version=${apiVersion}`} />;
   }
 
-  if (api === null || !category?.apis.includes(api) || !enabledApisFlags[api.urlFragment]) {
+  // if (api === null || !category?.apis.includes(api) || !enabledApisFlags[api.urlFragment]) {
+  if (!enabledApisFlags[api.urlFragment]) {
     return (
       <ApisLoader>
         <ApiNotFoundPage />
@@ -121,7 +126,7 @@ const ApiPage = (): JSX.Element => {
       <Helmet>
         <title>{api.name} Documentation</title>
       </Helmet>
-      <PageHeader halo={category.name} header={api.name} />
+      <PageHeader halo={category?.name} header={api.name} />
       {veteranRedirect && (
         <VeteranRedirectAlertMessage api={api} veteranRedirect={veteranRedirect} />
       )}
