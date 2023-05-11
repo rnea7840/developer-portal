@@ -8,7 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import AlertBox from 'component-library-legacy/AlertBox';
 import { isApiDeactivated, isApiDeprecated } from '../../apiDefs/deprecated';
 
-import { lookupApiByFragment, lookupApiCategory } from '../../apiDefs/query';
+import { lookupApiCategory } from '../../apiDefs/query';
 import { APIDescription, VeteranRedirectMessage } from '../../apiDefs/schema';
 import { PageHeader } from '../../components';
 import { useFlag } from '../../flags';
@@ -18,6 +18,7 @@ import { FLAG_API_ENABLED_PROPERTY } from '../../types/constants';
 import ApisLoader from '../../components/apisLoader/ApisLoader';
 import ApiDocumentation from './ApiDocumentation';
 import ApiNotFoundPage from './ApiNotFoundPage';
+import { getApi } from './DocumentationRoot';
 
 const DeactivationMessage = ({ api }: { api: APIDescription }): JSX.Element | null => {
   /*
@@ -50,14 +51,6 @@ const DeactivationMessage = ({ api }: { api: APIDescription }): JSX.Element | nu
       </div>
     </div>
   );
-};
-
-const getApi = (apiName?: string): APIDescription | null => {
-  if (!apiName) {
-    return null;
-  }
-
-  return lookupApiByFragment(apiName);
 };
 
 const VeteranRedirectAlertMessage = ({
@@ -126,12 +119,16 @@ const ApiPage = (): JSX.Element => {
       <Helmet>
         <title>{api.name} Documentation</title>
       </Helmet>
-      <PageHeader halo={category?.name} header={api.name} />
+      <PageHeader header="Docs" subText={api.name} />
       {veteranRedirect && (
         <VeteranRedirectAlertMessage api={api} veteranRedirect={veteranRedirect} />
       )}
       <DeactivationMessage api={api} />
-      {!isApiDeactivated(api) && <ApiDocumentation apiDefinition={api} location={location} />}
+      {!isApiDeactivated(api) && (
+        <div className="sans-serif-headers">
+          <ApiDocumentation apiDefinition={api} location={location} />
+        </div>
+      )}
     </>
   );
 };

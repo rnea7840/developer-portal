@@ -1,7 +1,7 @@
-@import '../../styles/variables';
+@import '../../../styles/variables';
 
 @include media($medium-screen) {
-  .api-selector-container {
+  .version-selector-container {
     button {
       width: calc(100% - 2rem) !important;
     }
@@ -20,7 +20,7 @@
   }
 }
 
-.api-selector-container {
+.version-selector-container {
   &.theme-dark {
     background-color: $color-gray;
     border-radius: 6px 6px 0 0;
