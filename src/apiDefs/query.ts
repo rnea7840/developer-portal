@@ -100,6 +100,11 @@ const getAllQuickstartCategorySlugs = (): string[] =>
     .filter((item: [string, APICategory]) => !!item[1].content.quickstart)
     .map((item: [string, APICategory]) => item[0]);
 
+const lookupApiBySlug = (apiKey: string): APIDescription | null => {
+  const hasMatchingIdentifier = (apiDesc: APIDescription): boolean => apiDesc.urlSlug === apiKey;
+  const apiResult = getAllApis().find(hasMatchingIdentifier);
+  return apiResult ?? null;
+};
 const lookupApiByFragment = (apiKey: string): APIDescription | null => {
   const hasMatchingIdentifier = (apiDesc: APIDescription): boolean =>
     apiDesc.urlFragment === apiKey;
@@ -118,7 +123,7 @@ const apisFor = (
   const allApis = getAllApis();
   const searchedApiSet = new Set<string>(selectedApiList);
   return allApis.filter((api: APIDescription) => {
-    if (searchedApiSet.has(api.urlFragment) || searchedApiSet.has(api.altID ?? '')) {
+    if (searchedApiSet.has(api.urlSlug) || searchedApiSet.has(api.altID ?? '')) {
       return true;
     }
     return selectedApiList.some((item: string) => {
@@ -170,6 +175,7 @@ export {
   getApiDefinitions,
   getActiveApiDefinitions,
   lookupApiByFragment,
+  lookupApiBySlug,
   lookupApiCategory,
   includesOAuthAPI,
   includesAuthCodeAPI,
