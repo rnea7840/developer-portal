@@ -7,8 +7,8 @@ import { ContentWithNav, SideNavEntry } from '../../components';
 import { APIUrlSlug } from '../../types';
 import { apiLoadingState } from '../../types/constants';
 import ApisLoader from '../../components/apisLoader/ApisLoader';
-import { CategoryReleaseNotes } from '../releaseNotes/CategoryReleaseNotes';
-import RequestSandboxAccess from '../consumerOnboarding/RequestSandboxAccess';
+import { ReleaseNotes } from './ReleaseNotes';
+import RequestSandboxAccess from './RequestSandboxAccess';
 import ApiPage from './ApiPage';
 import { AuthorizationCodeGrantDocs } from './AuthorizationCodeGrant/AuthorizationCodeGrantDocs';
 import { ClientCredentialsGrantDocs } from './ClientCredentialsGrant/ClientCredentialsGrantDocs';
@@ -43,8 +43,8 @@ const ExploreSideNav = (props: ExploreSideNavProps): JSX.Element => {
       <SideNavEntry
         exact
         if={api.oAuthTypes?.includes('AuthorizationCodeGrant')}
+        name="Authorization Code Grant"
         to={`/explore/api/${api.urlSlug}/authorization-code`}
-        name="Authorization Code Flow"
         subNavLevel={1}
       />
       <SideNavEntry
@@ -104,11 +104,7 @@ const DocumentationRoot = (): JSX.Element => {
             path="/explore/api/:urlSlug/client-credentials"
             component={ClientCredentialsGrantDocs}
           />
-          <Route
-            exact
-            path="/explore/api/:urlSlug/release-notes"
-            component={CategoryReleaseNotes}
-          />
+          <Route exact path="/explore/api/:urlSlug/release-notes" component={ReleaseNotes} />
           <Route
             exact
             path="/explore/api/:urlSlug/sandbox-access"
