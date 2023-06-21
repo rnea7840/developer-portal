@@ -38,3 +38,4 @@ export * from './pill/Pill';
 export * from './breadCrumbs/BreadCrumbs';
 export * from './apiBreadcrumbs/ApiBreadcrumbs';
 export * from './apiAlerts/ApiAlerts';
+export * from './pill/Pill';
