@@ -23,9 +23,9 @@ describe('Pill', () => {
     expect(container.querySelector('.fa-key')).toBeTruthy();
   });
 
-  it('should render the cursor icon', () => {
+  it('should render the search icon', () => {
     const { container } = render(<Pill name="'claims'" onClick={onClick} type="search" />);
-    expect(container.querySelector('.fa-i-cursor')).toBeTruthy();
+    expect(container.querySelector('.fa-search')).toBeTruthy();
   });
 
   it('should render without an icon preceding the name', () => {
