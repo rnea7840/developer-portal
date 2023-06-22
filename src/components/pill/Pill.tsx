@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faICursor, faKey, faTag, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faKey, faSearch, faTag, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import './Pill.scss';
 
 type PillIconType = 'auth' | 'topic' | 'search';
@@ -16,7 +16,7 @@ const PillIcon = ({ type }: PillIconProps): JSX.Element | null => {
     case 'topic':
       return <FontAwesomeIcon className="vads-u-font-size--sm" icon={faTag} />;
     case 'search':
-      return <FontAwesomeIcon className="vads-u-font-size--sm" icon={faICursor} />;
+      return <FontAwesomeIcon className="vads-u-font-size--sm" icon={faSearch} />;
     default:
       return null;
   }
