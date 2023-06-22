@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Field, Form, Formik } from 'formik';
@@ -101,17 +102,16 @@ export const ExploreRoot = (): JSX.Element => {
         </div>
       </div>
       <ApisLoader>
-        <div data-cy="api-list" className="explore-main-container" role="list">
-          {apis.map(api => (
-            <ExploreApiCard
-              description={api.description}
-              filterTags={['PLACEHOLDER TAG']}
-              key={api.urlSlug}
-              name={api.name}
-              urlSlug={api.urlSlug}
-            />
-          ))}
-        </div>
+        <>
+          <div data-cy="api-list" className="explore-main-container" role="list">
+            {apis.map((api: APIDescription) => (
+              <ExploreApiCard key={api.urlSlug} api={api} />
+            ))}
+          </div>
+          <p className={classNames('explore-end-of-list', 'vads-u-color--gray-warm-dark')}>
+            End of list
+          </p>
+        </>
       </ApisLoader>
     </div>
   );
