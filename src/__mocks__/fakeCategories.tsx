@@ -15,6 +15,7 @@ export const fakeCategories: APICategories = {
       {
         altID: null,
         categoryUrlFragment: 'lotr',
+        categoryUrlSlug: 'lord-of-the-rings',
         description: 'One Ring to rule them all',
         docSources: [], // doesn't matter yet
         enabledByDefault: true,
@@ -33,6 +34,7 @@ export const fakeCategories: APICategories = {
       {
         altID: null,
         categoryUrlFragment: 'lotr',
+        categoryUrlSlug: 'lord-of-the-rings',
         deactivationInfo: {
           deactivationContent: 'Silmarils lost forever',
           deactivationDate: moment().subtract(1, 'year').format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
@@ -57,6 +59,7 @@ export const fakeCategories: APICategories = {
       {
         altID: null,
         categoryUrlFragment: 'lotr',
+        categoryUrlSlug: 'lord-of-the-rings',
         description: 'Hobbits of the Shire',
         docSources: [], // doesn't matter here
         enabledByDefault: true,
@@ -80,13 +83,14 @@ export const fakeCategories: APICategories = {
     },
     name: 'LOTR API',
     properName: 'Fancy LOTR API',
-    urlSlug: 'lotr',
+    urlSlug: 'lord-of-the-rings',
   },
   movies: {
     apis: [
       {
         altID: 'apollo13',
         categoryUrlFragment: 'nothing-of-importance',
+        categoryUrlSlug: 'importance',
         description: "When a trip to the moon doesn't go according to plan",
         docSources: [], // doesn't matter here
         enabledByDefault: true,
@@ -112,6 +116,7 @@ export const fakeCategories: APICategories = {
       {
         altID: 'armageddon',
         categoryUrlFragment: 'nothing-of-importance',
+        categoryUrlSlug: 'importance',
         description: 'Asteroid Dotty has earth directly in her path, time to call Bruce Willis.',
         docSources: [], // doesn't matter here
         enabledByDefault: true,
@@ -121,6 +126,8 @@ export const fakeCategories: APICategories = {
         oAuthInfo: {
           acgInfo: {
             baseAuthPath: '/oauth2/armageddon/v1',
+            productionAud: 'sample-productionAud',
+            sandboxAud: 'sample-sandboxAud',
             scopes: [],
           },
         },
@@ -136,6 +143,7 @@ export const fakeCategories: APICategories = {
       {
         altID: 'the_martian',
         categoryUrlFragment: 'nothing-of-importance',
+        categoryUrlSlug: 'importance',
         description:
           'Mark Watney (played by Matt Damon) is stranded on Mars forced to survive alone for over a year.',
         docSources: [], // doesn't matter here
@@ -169,6 +177,7 @@ export const fakeCategories: APICategories = {
       {
         altID: null,
         categoryUrlFragment: 'nothing-of-importance',
+        categoryUrlSlug: 'importance',
         description: 'stuff about hoops or whatever',
         docSources: [], // doesn't matter here
         enabledByDefault: true,
@@ -187,6 +196,7 @@ export const fakeCategories: APICategories = {
       {
         altID: null,
         categoryUrlFragment: 'nothing-of-importance',
+        categoryUrlSlug: 'importance',
         description: 'a slow summer game',
         docSources: [], // doesn't matter here
         enabledByDefault: false,
@@ -221,6 +231,7 @@ export const fakeAPIs: APIDescription[] = Object.values(fakeCategories).flatMap(
 export const extraAPI: APIDescription = {
   altID: null,
   categoryUrlFragment: 'nothing-of-importance',
+  categoryUrlSlug: 'importance',
   description: 'the beautiful game',
   docSources: [],
   enabledByDefault: true,
