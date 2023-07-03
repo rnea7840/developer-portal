@@ -18,14 +18,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install ssh-agent
-        run: apt install openssh-client
-
-      - name: Add private key for sandbox-access-form repo
-        uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SANDBOX_FORM_SSH_KEY }}
-
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -41,7 +33,13 @@ jobs:
 
       - name: Install python env
         run: |
-          apt update && apt install python3 -y && ln -s /usr/bin/python3 /usr/bin/python
+          apt update && apt install openssh-client python3 -y && ln -s /usr/bin/python3 /usr/bin/python
+
+      - name: Add private key for sandbox-access-form repo
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SANDBOX_FORM_SSH_KEY }}
+
       - name: Start Fake LPB Server
         run: ./scripts/fake_lpb.sh
 
@@ -77,14 +75,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install ssh-agent
-        run: apt install openssh-client
-
-      - name: Add private key for sandbox-access-form repo
-        uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SANDBOX_FORM_SSH_KEY }}
-
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -100,7 +90,13 @@ jobs:
 
       - name: Install python env
         run: |
-          apt update && apt install python3 -y && ln -s /usr/bin/python3 /usr/bin/python
+          apt update && apt install openssh-client python3 -y && ln -s /usr/bin/python3 /usr/bin/python
+
+      - name: Add private key for sandbox-access-form repo
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SANDBOX_FORM_SSH_KEY }}
+
       - name: Start Fake LPB Server
         run: ./scripts/fake_lpb.sh
 
