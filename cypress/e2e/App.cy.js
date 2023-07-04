@@ -37,11 +37,12 @@ describe('App wide tests', () => {
   });
 
   it('Sub pages should focus skip nav on tab after load', () => {
-    cy.visit('/explore');
+    cy.visit('/explore/api/claims');
     cy.get('body').tab();
     cy.focused().realHover().should('contain.text', 'Skip to main content').click();
     cy.focused().should('have.id', 'main');
-    cy.get('#main').realPress('Tab');
+    // Need lots of tab presses to get past the breadcrumbs
+    cy.get('#main').realPress('Tab').realPress('Tab').realPress('Tab').realPress('Tab');
     cy.focused().realHover().should('contain.text', 'Skip Page Navigation').click();
     cy.focused().should('have.id', 'page-header');
   });
