@@ -10,6 +10,7 @@ import { APIDescription } from '../../apiDefs/schema';
 import { useOutsideGroupClick } from '../../hooks';
 import { generateFilterPills } from '../../utils/generateFilterPills';
 import './ApiFilters.scss';
+import ApisLoader from '../apisLoader/ApisLoader';
 
 interface ExploreRootParams {
   categoryUrlSlugs?: string;
@@ -268,7 +269,11 @@ export const ApiFilters = ({ apis, setApis }: ApiFiltersProps): JSX.Element => {
           </div>
         </div>
       </div>
-      {hasFilterPill && <FilterPills clearAllFilters={clearAllFilters}>{pills}</FilterPills>}
+      {hasFilterPill && (
+        <ApisLoader hideSpinner>
+          <FilterPills clearAllFilters={clearAllFilters}>{pills}</FilterPills>
+        </ApisLoader>
+      )}
     </>
   );
 };
