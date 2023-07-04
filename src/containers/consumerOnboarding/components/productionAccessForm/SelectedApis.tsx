@@ -46,12 +46,7 @@ const SelectedAPIs = ({ selectedApis }: SelectedApisProps): JSX.Element => {
   return (
     <fieldset
       aria-labelledby="select-checkbox-api"
-      className={classNames(
-        containerClass,
-        'apply-api-select',
-        'vads-u-background-color--gray-lightest',
-        'vads-u-margin-top--2p5',
-      )}
+      className={classNames(containerClass, 'apply-api-select', 'vads-u-margin-top--2p5')}
     >
       <div className="vads-u-margin-top--2 apply-checkbox-labels">
         <legend

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { APIDescription } from '../../apiDefs/schema';
-import { CheckboxRadioField, ApiTags } from '../index';
+import { CheckboxRadioField } from '../index';
 import { Flag } from '../../flags';
 import { FLAG_HOSTED_APIS } from '../../types/constants';
 
 import './APICheckboxList.scss';
+import { ExploreApiTags } from '../exploreApiCard/ExploreApiTags';
 
 interface APICheckboxListProps {
   apis: APIDescription[];
@@ -21,9 +22,7 @@ const ApiCheckboxList = ({ apis, authType }: APICheckboxListProps): JSX.Element 
           label={
             <>
               <span>{api.name}</span>
-              <span className="vads-u-display--inline-block vads-u-margin-left--1">
-                <ApiTags openData={api.openData} vaInternalOnly={api.vaInternalOnly} />
-              </span>
+              <ExploreApiTags api={api} />
             </>
           }
           value={`${authType}/${api.altID ?? api.urlSlug}`}
