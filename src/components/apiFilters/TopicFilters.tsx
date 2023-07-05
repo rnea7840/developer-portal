@@ -8,6 +8,17 @@ import { getApiCategoryOrder, getApisLoaded, lookupApiCategory } from '../../api
 import { useOutsideGroupClick } from '../../hooks';
 import { TopicFilterValues } from './ApiFilters';
 
+const TOPIC_FILTER_NAMES = {
+  'Facilities API': 'Facilities',
+  'Facilities APIs': 'Facilities',
+  'Forms API': 'Forms',
+  'Forms APIs': 'Forms',
+  'Health APIs': 'Health',
+  'Loan Guaranty APIs': 'Loan Guaranty',
+  'VA Benefits': 'VA Benefits',
+  'Veteran Verification APIs': 'Verification',
+};
+
 interface TopicFiltersProps {
   handleTopicFilterSubmit: (values: TopicFilterValues) => void;
   topicFilter: string[];
@@ -86,7 +97,9 @@ export const TopicFilters = ({
                   return (
                     <CheckboxRadioField
                       key={category.urlSlug}
-                      label={`${category.name} (${category.apis.length})`}
+                      label={`${TOPIC_FILTER_NAMES[category.name] as string} (${
+                        category.apis.length
+                      })`}
                       name="topics"
                       type="checkbox"
                       value={category.urlSlug}
