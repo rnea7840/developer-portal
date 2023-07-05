@@ -208,6 +208,7 @@ phases:
         /explore/authorization|/explore
         /release-notes/deactivated|/explore
         /go-live|/onboarding/request-prod-access
+        /oauth|/explore
         REDIRECTS
         for env in ${ENVIRONMENTS}; do
           # 301 redirects related to IA updates
