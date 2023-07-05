@@ -82,6 +82,7 @@ export interface APIDescription {
   readonly oAuth: boolean;
   readonly oAuthTypes: string[] | null;
   readonly oAuthInfo: OAuthInfo | null;
+  readonly overviewPageContent: string;
   readonly releaseNotes: string;
   readonly deactivationInfo?: APIDeactivationInfo;
   readonly multiOpenAPIIntro?: string;
