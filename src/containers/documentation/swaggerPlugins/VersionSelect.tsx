@@ -1,8 +1,9 @@
-/* eslint-disable no-console */
 import * as React from 'react';
 import classNames from 'classnames';
 import { ResetVersioning, SetRequestedAPIVersion, SetVersioning } from '../../../actions';
 import { VersionMetadata } from '../../../types';
+
+import './VersionSelect.scss';
 
 export interface VersionSelectProps {
   dispatch: React.Dispatch<ResetVersioning | SetRequestedAPIVersion | SetVersioning>;
@@ -62,7 +63,8 @@ export default class VersionSelect extends React.PureComponent<
     this.setState(prevState => ({ ...prevState, selectedVersion: version }));
   }
 
-  public handleButtonClick(): void {
+  public handleButtonClick(e: React.MouseEvent<HTMLButtonElement>): void {
+    e.currentTarget.blur();
     this.setState(prevState => ({ ...prevState, currentVersion: this.state.selectedVersion }));
     this.props.handleVersionChange(this.props.dispatch)(this.state.selectedVersion);
   }
@@ -87,7 +89,7 @@ export default class VersionSelect extends React.PureComponent<
         return `${version} - ${status} ${internal_only ? '(Internal Only)' : ''}`;
       }
     };
-    const fhirRegex = /\/explore\/health\/docs\/(patient_health|fhir)/;
+    const fhirRegex = /\/explore\/api\/(patient_health|fhir)\/docs/;
     const selectorLabel = fhirRegex.test(location.pathname)
       ? 'Select a FHIR specification'
       : 'Select a version';
@@ -101,17 +103,17 @@ export default class VersionSelect extends React.PureComponent<
 
     return (
       <>
-        <div className="api-selector-container vads-l-grid-container theme-light">
+        <div className="version-selector-container vads-l-grid-container theme-light">
           <div className="vads-l-row">
             <label
-              htmlFor="api-selector-field"
+              htmlFor="version-selector-field"
               className={classNames('vads-l-col--12', 'medium-screen:vads-l-col--9')}
             >
               {selectorLabel}
               {/* eslint-disable-next-line jsx-a11y/no-onchange */}
               <select
-                id="api-selector-field"
-                name="api-selector-field"
+                id="version-selector-field"
+                name="version-selector-field"
                 aria-label={selectorLabel}
                 value={this.state.selectedVersion}
                 onChange={(e): void => this.handleSelectChange(e.target.value)}
@@ -130,29 +132,15 @@ export default class VersionSelect extends React.PureComponent<
                 'vads-u-text-align--center',
               )}
             >
-              <button onClick={(): void => this.handleButtonClick()} type="button">
+              <button onClick={(e): void => this.handleButtonClick(e)} type="button">
                 Update page
               </button>
             </div>
           </div>
         </div>
         {!!apiStatus && fhirRegex.test(location.pathname) && (
-          <h2
-            ref={this.versionHeadingElement}
-            className={classNames(
-              'vads-u-font-family--sans',
-              'vads-u-font-weight--normal',
-              'vads-u-font-size--base',
-              'vads-u-padding--0p5',
-              'vads-u-margin-y--1',
-            )}
-            tabIndex={-1}
-          >
-            {!this.state.initialRender && (
-              <>
-                Showing documentation for <b>{apiStatus}</b>.
-              </>
-            )}
+          <h2 ref={this.versionHeadingElement} tabIndex={-1} className="fhir-revision">
+            {apiStatus}
           </h2>
         )}
       </>

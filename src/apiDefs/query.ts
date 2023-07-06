@@ -39,23 +39,23 @@ const getApisLoaded = (): boolean => {
   return state.apiList.loaded;
 };
 
-const getApiCategoryOrder = (): string[] => Object.keys(rootGetApiDefinitions.getApiDefinitions());
+const lookupApiCategoryBySlug = (urlSlug: string): APICategory | null => {
+  const categories: APICategories = rootGetApiDefinitions.getApiDefinitions();
+  const hasMatchingIdentifier = (category: APICategory): boolean => category.urlSlug === urlSlug;
+  return Object.values(categories).find(hasMatchingIdentifier) ?? null;
+};
 
-const getActiveApiDefinitions = (): APICategories => {
-  const output: APICategories = {};
-  const definitions = rootGetApiDefinitions.getApiDefinitions();
-  Object.keys(definitions).forEach((key: string) => {
-    const apis: APIDescription[] = definitions[key].apis.filter(
-      (api: APIDescription) =>
-        isHostedApiEnabled(api.urlFragment, api.enabledByDefault) && !isApiDeactivated(api),
-    );
-    output[key] = {
-      ...definitions[key],
-      apis,
-    };
+const lookupApiCategory = (categoryKey: string): APICategory =>
+  rootGetApiDefinitions.getApiDefinitions()[categoryKey];
+
+const getApiCategoryOrder = (): string[] => {
+  // return the urlFragments of the categories sorted by category name
+  const urlFragments = Object.keys(rootGetApiDefinitions.getApiDefinitions());
+  return urlFragments.sort((a: string, b: string) => {
+    const cat1 = lookupApiCategory(a);
+    const cat2 = lookupApiCategory(b);
+    return cat1.name < cat2.name ? -1 : 0;
   });
-
-  return output;
 };
 
 const getAllApis = (): APIDescription[] =>
@@ -63,8 +63,9 @@ const getAllApis = (): APIDescription[] =>
     .flatMap((category: APICategory) => category.apis)
     .sort((a, b) => (a.name > b.name ? 1 : -1));
 const getActiveApis = (): APIDescription[] =>
-  getAllApis().filter((api: APIDescription) =>
-    isHostedApiEnabled(api.urlFragment, api.enabledByDefault),
+  getAllApis().filter(
+    (api: APIDescription) =>
+      isHostedApiEnabled(api.urlFragment, api.enabledByDefault) && !isApiDeactivated(api),
   );
 
 const getActiveKeyAuthApis = (): APIDescription[] =>
@@ -100,16 +101,17 @@ const getAllQuickstartCategorySlugs = (): string[] =>
     .filter((item: [string, APICategory]) => !!item[1].content.quickstart)
     .map((item: [string, APICategory]) => item[0]);
 
+const lookupApiBySlug = (urlSlug: string): APIDescription | null => {
+  const hasMatchingIdentifier = (apiDesc: APIDescription): boolean => apiDesc.urlSlug === urlSlug;
+  const apiResult = getAllApis().find(hasMatchingIdentifier);
+  return apiResult ?? null;
+};
 const lookupApiByFragment = (apiKey: string): APIDescription | null => {
   const hasMatchingIdentifier = (apiDesc: APIDescription): boolean =>
     apiDesc.urlFragment === apiKey;
   const apiResult = getAllApis().find(hasMatchingIdentifier);
   return apiResult ?? null;
 };
-
-const lookupApiCategory = (categoryKey: string): APICategory | null =>
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  rootGetApiDefinitions.getApiDefinitions()[categoryKey] ?? null;
 
 const apisFor = (
   selectedApiList: string[],
@@ -118,7 +120,7 @@ const apisFor = (
   const allApis = getAllApis();
   const searchedApiSet = new Set<string>(selectedApiList);
   return allApis.filter((api: APIDescription) => {
-    if (searchedApiSet.has(api.urlFragment) || searchedApiSet.has(api.altID ?? '')) {
+    if (searchedApiSet.has(api.urlSlug) || searchedApiSet.has(api.altID ?? '')) {
       return true;
     }
     return selectedApiList.some((item: string) => {
@@ -152,8 +154,15 @@ const onlyOpenDataAPIs = (apiList: string[]): boolean =>
 const includesOpenDataAPI = (apiList: string[]): boolean =>
   apisFor(apiList).some(api => api.openData);
 
+const isApiKeyApi = (api: APIDescription): boolean => !api.oAuth;
+const isAcgApi = (api: APIDescription): boolean =>
+  !!api.oAuthTypes?.includes('AuthorizationCodeGrant');
+const isCcgApi = (api: APIDescription): boolean =>
+  !!api.oAuthTypes?.includes('ClientCredentialsGrant');
+
 export {
   apisFor,
+  getActiveApis,
   getActiveKeyAuthApis,
   getActiveOauthApis,
   getApisLoadedState,
@@ -167,12 +176,16 @@ export {
   getAllQuickstartCategorySlugs,
   getApiCategoryOrder,
   getApiDefinitions,
-  getActiveApiDefinitions,
   lookupApiByFragment,
+  lookupApiBySlug,
   lookupApiCategory,
+  lookupApiCategoryBySlug,
   includesOAuthAPI,
   includesAuthCodeAPI,
   includesCcgAPI,
+  isApiKeyApi,
+  isAcgApi,
+  isCcgApi,
   getAllKeyAuthApis,
   includesInternalOnlyAPI,
   includesInternalSponsorshipAPI,

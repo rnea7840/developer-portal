@@ -9,9 +9,14 @@ declare global {
   }
 }
 
+export interface APIUrlSlug {
+  urlSlug: string;
+}
+
 export interface APINameParam {
   apiName?: string;
   apiCategoryKey: string;
+  urlFragment?: string;
 }
 
 export interface VersionMetadata {
@@ -52,7 +57,6 @@ export interface GeneralStore {
 }
 
 export interface RootState {
-  oAuthApiSelection: OAuthAPISelection;
   apiVersioning: APIVersioning;
   apiList: ApiList;
   generalStore: GeneralStore;

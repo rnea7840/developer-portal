@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { HashLink } from 'react-router-hash-link';
-import { getActiveAuthCodeApis, lookupApiByFragment } from '../../../apiDefs/query';
-import { RootState } from '../../../types';
-import { APISelector } from '../../index';
 
 import { SectionHeaderWrapper } from '../../sectionHeaderWrapper/SectionHeaderWrapper';
+import { ApiRequiredProps } from '../../../containers/documentation/DocumentationRoot';
 
 /*
  * This is designed to be a single place of truth for the scopes descriptions.
@@ -15,12 +12,9 @@ import { SectionHeaderWrapper } from '../../sectionHeaderWrapper/SectionHeaderWr
  * Scopes are listed in each API's respective file in apiDefs folder.
  */
 // eslint-disable-next-line complexity
-const ScopesContent = (): JSX.Element => {
-  const selector = (state: RootState): string => state.oAuthApiSelection.selectedOAuthApi;
-  const selectedOAuthApi = useSelector(selector);
-  const apiDef = lookupApiByFragment(selectedOAuthApi);
-  const scopes = apiDef?.oAuthInfo?.acgInfo?.scopes ?? ['profile', 'openid', 'offline_access'];
-  const options = getActiveAuthCodeApis();
+const ScopesContent = (props: ApiRequiredProps): JSX.Element => {
+  const { api } = props;
+  const scopes = api.oAuthInfo?.acgInfo?.scopes ?? ['profile', 'openid', 'offline_access'];
   const hasClaimScope = scopes.some(element => element.startsWith('claim.'));
   const hasPatientScope = scopes.some(element => element.startsWith('patient/'));
 
@@ -33,13 +27,6 @@ const ScopesContent = (): JSX.Element => {
         always request access to additional scopes if a Veteran or VSO needs the data while using
         your application.
       </p>
-      <APISelector
-        options={options}
-        selectedOption={selectedOAuthApi}
-        selectLabel="Select an API to show and describe the related scopes"
-        buttonText="Update page"
-        buttonSuccessMessage="Page updated!"
-      />
       <table>
         <thead>
           <tr>
@@ -62,8 +49,7 @@ const ScopesContent = (): JSX.Element => {
             </td>
             <td>
               This scope causes the authorization server to provide a refresh token when the{' '}
-              <HashLink to={{ ...location, hash: '#id-token' }}>access token</HashLink> is
-              requested.
+              <HashLink to="#id-token">access token</HashLink> is requested.
             </td>
           </tr>
           <tr>
@@ -83,147 +69,150 @@ const ScopesContent = (): JSX.Element => {
           <p>
             <strong>API-specific scopes:</strong>
           </p>
-          <table>
-            <thead>
-              <tr>
-                <th>Scope</th>
-                <th>Values and Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scopes.includes('fhirUser') && (
+          <div className="table-wrapper">
+            <table>
+              <thead>
                 <tr>
-                  <td>
-                    <code>fhirUser</code>
-                  </td>
-                  <td>
-                    This scope adds a <code>fhirUser</code> claim to the <code>id_token</code>. The
-                    value of the <code>fhirUser</code> claim is a URL of a FHIR resource
-                    representing the current user.
-                    <p>
-                      Learn more about the&nbsp;
-                      <a href="http://www.hl7.org/fhir/smart-app-launch/scopes-and-launch-context/index.html#scopes-for-requesting-identity-data">
-                        fhirUser scope
-                      </a>
-                      .
-                    </p>
-                  </td>
+                  <th>Scope</th>
+                  <th>Values and Description</th>
                 </tr>
-              )}
-              {scopes.includes('launch') && (
-                <tr>
-                  <td>
-                    <code>launch</code>
-                  </td>
-                  <td>
-                    This scope enables the SMART-on-FHIR launch context. This scope must be used
-                    with the&nbsp;
-                    <code>launch</code> parameter, as described in the table under&nbsp;
-                    <HashLink to={{ ...location, hash: '#requesting-authorization' }}>
-                      Requesting authorization
-                    </HashLink>
-                    .
-                  </td>
-                </tr>
-              )}
-              {scopes.includes('launch/patient') && (
-                <tr>
-                  <td>
-                    <code>launch/patient</code>
-                  </td>
-                  <td>
-                    A permission setting to obtain the patient&apos;s identifier in the token
-                    response when the app is launched from an EHR.
-                  </td>
-                </tr>
-              )}
-              {hasClaimScope && (
-                <tr>
-                  <td>
-                    <code>claim.*</code>
-                  </td>
-                  <td>
-                    <p>To view a user&apos;s VA health claims information, use the scopes below.</p>
-                    <ul>
-                      {scopes
-                        .filter(element => element.startsWith('claim.'))
-                        .map((scope: string) => (
-                          <li key={scope}>
-                            <code>{scope}</code>
-                          </li>
-                        ))}
-                    </ul>
-                  </td>
-                </tr>
-              )}
-              {hasPatientScope && (
-                <tr>
-                  <td>
-                    <code>patient/*</code>
-                  </td>
-                  <td>
-                    <p>
-                      View a user&apos;s VA Health records and patient information, see specific
-                      read only scopes below.
-                    </p>
-                    <ul>
-                      {scopes
-                        .filter(element => element.startsWith('patient/'))
-                        .map((scope: string) => (
-                          <li key={scope}>
-                            <code>{scope}</code>
-                          </li>
-                        ))}
-                    </ul>
-                  </td>
-                </tr>
-              )}
-              {scopes.includes('disability_rating.read') && (
-                <tr>
-                  <td>
-                    <code>disability_rating.read</code>
-                  </td>
-                  <td>
-                    View a Veteran&apos;s VA disability ratings and the effective date of the rating
-                  </td>
-                </tr>
-              )}
-              {scopes.includes('enrolled_benefits.read') && (
-                <tr>
-                  <td>
-                    <code>enrolled_benefits.read</code>
-                  </td>
-                  <td>Gets enrolled benefits information</td>
-                </tr>
-              )}
-              {scopes.includes('flashes.read') && (
-                <tr>
-                  <td>
-                    <code>flashes.read</code>
-                  </td>
-                  <td>Retrieve certain benefit flashes associated with a Veteran</td>
-                </tr>
-              )}
-              {scopes.includes('service_history.read') && (
-                <tr>
-                  <td>
-                    <code>service_history.read</code>
-                  </td>
-                  <td>
-                    View a Veteran&apos;s service history including deployments and discharge status
-                  </td>
-                </tr>
-              )}
-              {scopes.includes('veteran_status.read') && (
-                <tr>
-                  <td>
-                    <code>veteran_status.read</code>
-                  </td>
-                  <td>Confirm the Veteran status of an individual</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {scopes.includes('fhirUser') && (
+                  <tr>
+                    <td>
+                      <code>fhirUser</code>
+                    </td>
+                    <td>
+                      This scope adds a <code>fhirUser</code> claim to the <code>id_token</code>.
+                      The value of the <code>fhirUser</code> claim is a URL of a FHIR resource
+                      representing the current user.
+                      <p>
+                        Learn more about the&nbsp;
+                        <a href="http://www.hl7.org/fhir/smart-app-launch/scopes-and-launch-context/index.html#scopes-for-requesting-identity-data">
+                          fhirUser scope
+                        </a>
+                        .
+                      </p>
+                    </td>
+                  </tr>
+                )}
+                {scopes.includes('launch') && (
+                  <tr>
+                    <td>
+                      <code>launch</code>
+                    </td>
+                    <td>
+                      This scope enables the SMART-on-FHIR launch context. This scope must be used
+                      with the&nbsp;
+                      <code>launch</code> parameter, as described in the table under&nbsp;
+                      <HashLink to="#requesting-authorization">Requesting authorization</HashLink>.
+                    </td>
+                  </tr>
+                )}
+                {scopes.includes('launch/patient') && (
+                  <tr>
+                    <td>
+                      <code>launch/patient</code>
+                    </td>
+                    <td>
+                      A permission setting to obtain the patient&apos;s identifier in the token
+                      response when the app is launched from an EHR.
+                    </td>
+                  </tr>
+                )}
+                {hasClaimScope && (
+                  <tr>
+                    <td>
+                      <code>claim.*</code>
+                    </td>
+                    <td>
+                      <p>
+                        To view a user&apos;s VA health claims information, use the scopes below.
+                      </p>
+                      <ul>
+                        {scopes
+                          .filter(element => element.startsWith('claim.'))
+                          .map((scope: string) => (
+                            <li key={scope}>
+                              <code>{scope}</code>
+                            </li>
+                          ))}
+                      </ul>
+                    </td>
+                  </tr>
+                )}
+                {hasPatientScope && (
+                  <tr>
+                    <td>
+                      <code>patient/*</code>
+                    </td>
+                    <td>
+                      <p>
+                        View a user&apos;s VA Health records and patient information, see specific
+                        read only scopes below.
+                      </p>
+                      <ul>
+                        {scopes
+                          .filter(element => element.startsWith('patient/'))
+                          .map((scope: string) => (
+                            <li key={scope}>
+                              <code>{scope}</code>
+                            </li>
+                          ))}
+                      </ul>
+                    </td>
+                  </tr>
+                )}
+                {scopes.includes('disability_rating.read') && (
+                  <tr>
+                    <td>
+                      <code>disability_rating.read</code>
+                    </td>
+                    <td>
+                      View a Veteran&apos;s VA disability ratings and the effective date of the
+                      rating
+                    </td>
+                  </tr>
+                )}
+                {scopes.includes('enrolled_benefits.read') && (
+                  <tr>
+                    <td>
+                      <code>enrolled_benefits.read</code>
+                    </td>
+                    <td>Gets enrolled benefits information</td>
+                  </tr>
+                )}
+                {scopes.includes('flashes.read') && (
+                  <tr>
+                    <td>
+                      <code>flashes.read</code>
+                    </td>
+                    <td>Retrieve certain benefit flashes associated with a Veteran</td>
+                  </tr>
+                )}
+                {scopes.includes('service_history.read') && (
+                  <tr>
+                    <td>
+                      <code>service_history.read</code>
+                    </td>
+                    <td>
+                      View a Veteran&apos;s service history including deployments and discharge
+                      status
+                    </td>
+                  </tr>
+                )}
+                {scopes.includes('veteran_status.read') && (
+                  <tr>
+                    <td>
+                      <code>veteran_status.read</code>
+                    </td>
+                    <td>Confirm the Veteran status of an individual</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </>
       )}
     </section>

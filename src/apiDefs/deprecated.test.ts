@@ -9,15 +9,23 @@ import { APIDescription, ProdAccessFormSteps } from './schema';
 const urgentCareDeprecationNotice: string = fakeCategories.movies.apis[0].releaseNotes;
 describe('deprecated API module', () => {
   const apiValues: APIDescription = {
+    altID: null,
+    categoryUrlFragment: 'nothing-of-importance',
+    categoryUrlSlug: 'nothing-of-importance',
     description: "it's a fabulous API, you really must try it sometime",
     docSources: [],
     enabledByDefault: true,
     lastProdAccessStep: ProdAccessFormSteps.Three,
     name: 'My API',
     oAuth: false,
+    oAuthInfo: null,
+    oAuthTypes: null,
     openData: false,
+    overviewPageContent: '## Default overview page content',
     releaseNotes: urgentCareDeprecationNotice,
     urlFragment: 'my_api',
+    urlSlug: 'my-api',
+    veteranRedirect: null,
   };
   let oldEnv: NodeJS.ProcessEnv;
 

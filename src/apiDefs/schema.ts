@@ -72,19 +72,22 @@ export interface APIDescription {
   readonly name: string;
   readonly docSources: APIDocSource[];
   readonly urlFragment: string;
-  readonly categoryUrlFragment?: string;
+  readonly urlSlug: string;
+  readonly categoryUrlFragment: string;
+  readonly categoryUrlSlug: string;
   readonly description: string;
   readonly enabledByDefault: boolean;
   readonly vaInternalOnly?: VaInternalOnly;
   readonly openData: boolean;
-  readonly oAuth?: boolean;
-  readonly oAuthTypes?: string[];
-  readonly oAuthInfo?: OAuthInfo;
+  readonly oAuth: boolean;
+  readonly oAuthTypes: string[] | null;
+  readonly oAuthInfo: OAuthInfo | null;
+  readonly overviewPageContent: string;
   readonly releaseNotes: string;
   readonly deactivationInfo?: APIDeactivationInfo;
   readonly multiOpenAPIIntro?: string;
-  readonly veteranRedirect?: VeteranRedirectMessage;
-  readonly altID?: string;
+  readonly veteranRedirect: VeteranRedirectMessage | null;
+  readonly altID: string | null;
   readonly lastProdAccessStep: ProdAccessFormSteps;
   readonly versionSelectorLabel?: string;
 }
@@ -96,6 +99,8 @@ export interface OAuthInfo {
 
 export interface ACGInfo {
   readonly baseAuthPath: string;
+  readonly sandboxAud: string;
+  readonly productionAud: string;
   readonly scopes: string[];
 }
 
@@ -116,12 +121,14 @@ export const ApiDescriptionPropType = PropTypes.shape({
   oAuth: PropTypes.bool,
   releaseNotes: PropTypes.any.isRequired,
   urlFragment: PropTypes.string.isRequired,
+  urlSlug: PropTypes.string.isRequired,
 });
 
 export interface BaseAPICategory {
-  readonly apis: APIDescription[];
+  apis: APIDescription[];
   readonly properName: string;
   readonly name: string;
+  readonly urlSlug: string;
 }
 
 export interface APICategory extends BaseAPICategory {

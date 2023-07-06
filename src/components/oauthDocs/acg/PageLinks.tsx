@@ -1,79 +1,54 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import { AuthCodeFlowContentProps } from '../../../containers/documentation/AuthorizationCodeGrant/AuthorizationCodeGrantDocs';
 import { CONSUMER_PROD_PATH } from '../../../types/constants/paths';
-import { APISelector } from '../../apiSelector/APISelector';
-import ApisLoader from '../../apisLoader/ApisLoader';
 
-const PageLinks = (props: AuthCodeFlowContentProps): JSX.Element => (
+const PageLinks = (): JSX.Element => (
   <>
-    <p>
-      This page walks you through the steps toward authorization and authentication for using OAuth
-      APIs on the Lighthouse platform. We provide examples throughout this document that you can
-      copy and use to get started.
-    </p>
-    <p>
-      Select your API from the drop-downs to populate the examples with your API-specific URLs,
-      parameters, and scopes.
-    </p>
-    <ApisLoader hideSpinner />
-    <APISelector
-      options={props.options}
-      selectedOption={props.selectedOption}
-      buttonText="Update page"
-      buttonSuccessMessage="Page updated!"
-    />
     <h2 tabIndex={-1} id="on-this-page">
       On this Page:
     </h2>
     <ul>
       <li>
-        <HashLink to={{ ...location, hash: '#getting-started' }}>Getting Started</HashLink>
+        <HashLink to="#getting-started">Getting Started</HashLink>
       </li>
       <li>
-        <HashLink to={{ ...location, hash: '#building-oidc-apps' }}>
-          Building OpenID Connect Applications
-        </HashLink>
+        <HashLink to="#building-oidc-apps">Building OpenID Connect Applications</HashLink>
         <ul>
           <li>
-            <HashLink to={{ ...location, hash: '#authorization-code-flow' }}>
+            <HashLink to="#authorization-code-flow">
               Initiating the Authorization Code Flow
             </HashLink>
             <ul>
               <li>
-                <HashLink to={{ ...location, hash: '#requesting-authorization' }}>
-                  Requesting Authorization
-                </HashLink>
+                <HashLink to="#requesting-authorization">Requesting Authorization</HashLink>
               </li>
               <li>
-                <HashLink to={{ ...location, hash: '#requesting-a-token' }}>
+                <HashLink to="#requesting-a-token">
                   Requesting a Token with an Authorization Code Grant
                 </HashLink>
               </li>
               <li>
-                <HashLink to={{ ...location, hash: '#manage-account' }}>Manage Account</HashLink>
+                <HashLink to="#manage-account">Manage Account</HashLink>
               </li>
               <li>
-                <HashLink to={{ ...location, hash: '#revoking-tokens' }}>Revoking Tokens</HashLink>
+                <HashLink to="#revoking-tokens">Revoking Tokens</HashLink>
               </li>
               <li>
-                <HashLink to={{ ...location, hash: '#revoking-grants' }}>Revoking Grants</HashLink>
+                <HashLink to="#revoking-grants">Revoking Grants</HashLink>
               </li>
             </ul>
           </li>
           <li>
-            <HashLink to={{ ...location, hash: '#pkce-authorization' }}>
+            <HashLink to="#pkce-authorization">
               PKCE (Proof Key for Code Exchange) Authorization
             </HashLink>
             <ul>
               <li>
-                <HashLink to={{ ...location, hash: '#pkce-requesting-authorization' }}>
-                  Requesting Authorization
-                </HashLink>
+                <HashLink to="#pkce-requesting-authorization">Requesting Authorization</HashLink>
               </li>
               <li>
-                <HashLink to={{ ...location, hash: '#pkce-requesting-a-token' }}>
+                <HashLink to="#pkce-requesting-a-token">
                   Requesting a Token with an Authorization Code Grant
                 </HashLink>
               </li>
@@ -82,19 +57,19 @@ const PageLinks = (props: AuthCodeFlowContentProps): JSX.Element => (
         </ul>
       </li>
       <li>
-        <HashLink to={{ ...location, hash: '#scopes' }}>Scopes</HashLink>
+        <HashLink to="#scopes">Scopes</HashLink>
       </li>
       <li>
-        <HashLink to={{ ...location, hash: '#id-token' }}>ID Token</HashLink>
+        <HashLink to="#id-token">ID Token</HashLink>
       </li>
       <li>
-        <HashLink to={{ ...location, hash: '#test-users' }}>Test Users</HashLink>
+        <HashLink to="#test-users">Test Users</HashLink>
       </li>
       <li>
-        <HashLink to={{ ...location, hash: '#https' }}>HTTPS</HashLink>
+        <HashLink to="#https">HTTPS</HashLink>
       </li>
     </ul>
-    <h3>It&apos;s also good to know that:</h3>
+    <h3>It&apos;s good to know that:</h3>
     <ul>
       <li>
         The access credentials we supply are for the sandbox environment only and will not work in

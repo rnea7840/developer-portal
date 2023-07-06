@@ -13,13 +13,14 @@ export interface SideNavEntryProps extends NavHashLinkProps {
   subNavLevel?: number;
   sharedAnchors?: string[];
   forceAriaCurrent?: boolean;
+  if?: boolean;
 }
 
 /**
  * Constructs a NavHashLink in the sidebar that also takes into account the
  * hash when determining if it's active
  */
-const SideNavEntry = (props: SideNavEntryProps): JSX.Element => {
+const SideNavEntry = (props: SideNavEntryProps): JSX.Element | null => {
   /**
    * The isActive prop receives two arguments: a `match` object representing
    * the original determination, and the current location. The match algorithm
@@ -27,6 +28,9 @@ const SideNavEntry = (props: SideNavEntryProps): JSX.Element => {
    * include partial matches according to the https://github.com/pillarjs/path-to-regexp
    * implementation.
    */
+  if (props.if === false) {
+    return null;
+  }
   const navHashLinkIsActive = (pathMatch: Match | null, location: Location): boolean => {
     const withoutTrailingSlash = (path: string): string => path.replace(/\/$/, '');
 
@@ -85,24 +89,16 @@ const SideNavEntry = (props: SideNavEntryProps): JSX.Element => {
       )}
     >
       <NavHashLink
-        className={classNames(
-          'vads-u-padding--1p5',
-          'vads-u-color--base',
-          {
-            'vads-u-padding-left--4': subNavLevel === 1,
-            'vads-u-padding-left--7': subNavLevel === 2,
-          },
-          className,
-        )}
-        activeClassName={classNames('va-api-active-sidenav-link', 'vads-u-font-weight--bold', {
-          'vads-u-border-color--cool-blue': subNavLevel === 0,
-          'vads-u-border-left--5px': subNavLevel === 0,
-        })}
+        className={classNames(`va-api-nav-level-${subNavLevel ?? 0}`, className)}
+        activeClassName={classNames('va-api-active-sidenav-link', 'vads-u-font-weight--bold')}
         isActive={navHashLinkIsActive}
         aria-current={props.forceAriaCurrent || isHashLinkExact(props.to) ? 'page' : 'false'}
         {...navLinkProps}
       >
-        {name}
+        <>
+          {name}
+          <i className="fas fa-star" />
+        </>
       </NavHashLink>
       {props.children && (
         <ul

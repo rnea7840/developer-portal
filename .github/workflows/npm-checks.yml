@@ -2,7 +2,7 @@ name: NPM Checks
 
 on:
   pull_request:
-    branches: [master]
+    branches: [master, api-11566/information-architecture]
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
@@ -40,6 +40,11 @@ jobs:
           echo $GIT_HASH
           echo "hash=$GIT_HASH" >> $GITHUB_OUTPUT
 
+      - name: Add private key for sandbox-access-form repo
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SANDBOX_FORM_SSH_KEY }}
+
       - name: Install dependencies
         run: npm ci
 
@@ -53,6 +58,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
+      - name: Add private key for sandbox-access-form repo
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SANDBOX_FORM_SSH_KEY }}
 
       - name: Install dependencies
         run: npm ci
@@ -83,6 +93,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
+      - name: Add private key for sandbox-access-form repo
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SANDBOX_FORM_SSH_KEY }}
 
       - name: Install dependencies
         run: npm ci

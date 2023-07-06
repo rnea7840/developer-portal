@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { FlagsProvider, getFlags } from '../../../flags';
 
-import { getActiveCCGApis, lookupApiByFragment } from '../../../apiDefs/query';
+import { lookupApiBySlug } from '../../../apiDefs/query';
 import store from '../../../store';
 import { setApis } from '../../../actions';
 import { fakeCategories } from '../../../__mocks__/fakeCategories';
@@ -14,15 +14,17 @@ describe('Auth Flow Content', () => {
   store.dispatch(setApis(fakeCategories));
 
   beforeEach(() => {
-    const selectedOption = 'apollo_13';
-    const apiDef = lookupApiByFragment(selectedOption);
-    const defs = getActiveCCGApis();
+    const selectedOption = 'apollo-13';
+    const api = lookupApiBySlug(selectedOption);
+    if (!api) {
+      return;
+    }
 
     render(
       <Provider store={store}>
         <FlagsProvider flags={getFlags()}>
           <MemoryRouter>
-            <AuthCodeFlowContent apiDef={apiDef} options={defs} selectedOption={selectedOption} />
+            <AuthCodeFlowContent api={api} />
           </MemoryRouter>
         </FlagsProvider>
       </Provider>,

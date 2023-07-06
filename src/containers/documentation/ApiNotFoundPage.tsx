@@ -24,13 +24,13 @@ const ApiNotFoundPage = (): JSX.Element => {
           Try using the links below or the search bar to find your way forward.
         </p>
       </va-alert>
-      {category?.name && <PageHeader header={category.name} />}
+      {category.name && <PageHeader header={category.name} />}
       <ul>
-        {category?.apis
-          .filter((item: APIDescription) => !isApiDeactivated(item) && flags[item.urlFragment])
+        {category.apis
+          .filter((item: APIDescription) => !isApiDeactivated(item) && flags[item.urlSlug])
           .map((item: APIDescription) => (
-            <li key={item.urlFragment}>
-              <Link to={`/explore/${apiCategoryKey}/docs/${item.urlFragment}`}>{item.name}</Link>
+            <li key={item.urlSlug}>
+              <Link to={`/explore/api/${item.urlSlug}`}>{item.name}</Link>
             </li>
           ))}
       </ul>

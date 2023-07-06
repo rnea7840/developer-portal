@@ -9,18 +9,15 @@ import thunk from 'redux-thunk';
 import { ActionCreator, AnyAction, combineReducers } from 'redux';
 import * as constants from '../types/constants';
 import { RootState } from '../types';
-import { oAuthApiSelection } from '../reducers/oAuthApiSelection';
 import { apiVersioning } from '../reducers/apiVersioning';
 import { apiList } from '../reducers/apiList';
 import { generalStore } from '../reducers/generalStore';
 import {
   resetVersioning,
-  resetOAuthApiSelection,
   setApis,
   setGeneralStore,
   setVersioning,
   setRequestedApiVersion,
-  setOAuthApiSelection,
 } from '.';
 
 const middlewares = [thunk];
@@ -31,7 +28,6 @@ const store = mockStore(
     apiList,
     apiVersioning,
     generalStore,
-    oAuthApiSelection,
   }),
 );
 
@@ -71,16 +67,12 @@ describe('Redux Store test', () => {
       versions: undefined,
     });
   });
-  it('should call resetOAuthApiSelection', () => {
-    coreTest(resetOAuthApiSelection, constants.RESET_OAUTH_API_SELECTION_VALUE);
-  });
-  it('should call setOAuthApiSelection', () => {
-    coreTest(() => setOAuthApiSelection('cookie'), constants.SET_OAUTH_API_SELECTION_VALUE, {
-      selectedOAuthApi: 'cookie',
-    });
-  });
   it('should call setApis', () => {
-    coreTest(() => setApis({}), constants.SET_APIS_VALUE, { apis: {}, error: false, loaded: true });
+    coreTest(() => setApis({}), constants.SET_APIS_VALUE, {
+      apis: {},
+      error: false,
+      loaded: true,
+    });
   });
   it('should call SetGeneralStore', () => {
     coreTest(() => setGeneralStore(), constants.SET_GENERAL_STORE_VALUE);

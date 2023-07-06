@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/browser';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { getApiDefinitions } from '../apiDefs/getApiDefinitions';
 import { getApiCategoryOrder } from '../apiDefs/query';
 import errorImage400 from '../assets/400.svg';
@@ -99,21 +99,18 @@ const ErrorPage: React.FunctionComponent<ErrorPageProps> = (props: ErrorPageProp
         <ApisLoader hideSpinner />
         <div className="vads-l-row">
           <div className="list-wrapper">
-            <h3>
+            <h2>
               <a href="/explore">Documentation</a>
-            </h3>
+            </h2>
             <ul>
-              <li>
-                <Link to="/explore/authorization">Authorization</Link>
-              </li>
               <ApisLoader hideError>
                 <>
                   {apiCategoryOrder.map((apiCategoryKey: string) => {
-                    const { name } = apiDefinitions[apiCategoryKey];
+                    const { name, urlSlug } = apiDefinitions[apiCategoryKey];
                     return (
                       <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
                         <li>
-                          <a href={`/explore/${apiCategoryKey}`}>{name}</a>
+                          <a href={`/explore/${urlSlug}`}>{name}</a>
                         </li>
                       </Flag>
                     );
@@ -123,9 +120,9 @@ const ErrorPage: React.FunctionComponent<ErrorPageProps> = (props: ErrorPageProp
             </ul>
           </div>
           <div className="list-wrapper">
-            <h3>
+            <h2>
               <a href="/about/news">News</a>
-            </h3>
+            </h2>
             <ul>
               <li>
                 <a href="/about/news#News-releases">News Releases</a>
@@ -139,30 +136,9 @@ const ErrorPage: React.FunctionComponent<ErrorPageProps> = (props: ErrorPageProp
             </ul>
           </div>
           <div className="list-wrapper">
-            <h3>
-              <a href="/release-notes">Release Notes</a>
-            </h3>
-            <ul>
-              <ApisLoader hideError>
-                <>
-                  {apiCategoryOrder.map((apiCategoryKey: string) => {
-                    const { name } = apiDefinitions[apiCategoryKey];
-                    return (
-                      <Flag name={[FLAG_CATEGORIES, apiCategoryKey]} key={apiCategoryKey}>
-                        <li>
-                          <a href={`/release-notes/${apiCategoryKey}`}>{name}</a>
-                        </li>
-                      </Flag>
-                    );
-                  })}
-                </>
-              </ApisLoader>
-            </ul>
-          </div>
-          <div className="list-wrapper">
-            <h3>
+            <h2>
               <a href="/support">Support</a>
-            </h3>
+            </h2>
             <ul>
               <li>
                 <a href="/support/faq" role="button">
