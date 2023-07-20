@@ -5,6 +5,7 @@ import thunk, { ThunkMiddleware } from 'redux-thunk';
 import { apiVersioning } from './reducers/apiVersioning';
 import { apiList } from './reducers/apiList';
 import { generalStore } from './reducers/generalStore';
+import { scrollPosition } from './reducers/scrollPosition';
 import { RootState } from './types';
 
 export const history: History = createBrowserHistory({
@@ -19,6 +20,7 @@ const store = createStore(
     apiList,
     apiVersioning,
     generalStore,
+    scrollPosition,
   }),
   composeEnhancers(applyMiddleware(thunk as ThunkMiddleware<RootState>)),
 );

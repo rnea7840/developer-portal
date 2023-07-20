@@ -12,12 +12,14 @@ import { RootState } from '../types';
 import { apiVersioning } from '../reducers/apiVersioning';
 import { apiList } from '../reducers/apiList';
 import { generalStore } from '../reducers/generalStore';
+import { scrollPosition } from '../reducers/scrollPosition';
 import {
   resetVersioning,
   setApis,
   setGeneralStore,
   setVersioning,
   setRequestedApiVersion,
+  setScrollPosition,
 } from '.';
 
 const middlewares = [thunk];
@@ -28,6 +30,7 @@ const store = mockStore(
     apiList,
     apiVersioning,
     generalStore,
+    scrollPosition,
   }),
 );
 
@@ -76,5 +79,11 @@ describe('Redux Store test', () => {
   });
   it('should call SetGeneralStore', () => {
     coreTest(() => setGeneralStore(), constants.SET_GENERAL_STORE_VALUE);
+  });
+
+  it('should call setScrollPosition', () => {
+    coreTest(() => setScrollPosition(300), constants.SET_SCROLL_POSITION_VALUE, {
+      position: 300,
+    });
   });
 });
