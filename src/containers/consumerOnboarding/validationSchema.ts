@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable id-length */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
@@ -37,7 +38,11 @@ const validationSchema = [
       .when('apis', {
         is: (value: string[]) => includesCcgAPI(value),
         otherwise: yup.string().isNotATestString(),
-        then: yup.string().isNotATestString().required('Enter your oAuthPublicKey.'),
+        then: yup
+          .string()
+          .isNotATestString()
+          .isValidRSAJWK()
+          .required('Enter your oAuthPublicKey.'),
       }),
     oAuthRedirectURI: yup
       .string()
