@@ -53,9 +53,9 @@ jobs:
         name: Send Notification
         uses: slackapi/slack-github-action@v1.23.0
         if: |
-          needs.check_for_code_scanning_alerts.outputs.security_alert_exists == 'true' ||
-          needs.check_for_dependabot_alerts.outputs.security_alert_exists == 'true' ||
-          needs.check_for_secret_scanning_alerts.outputs.security_alert_exists == 'true'
+          needs.check.outputs.check_for_code_scanning_alerts.security_alert_exists == 'true' ||
+          needs.check.outputs.check_for_dependabot_alerts.security_alert_exists == 'true' ||
+          needs.check.outputs.check_for_secret_scanning_alerts.security_alert_exists == 'true'
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
