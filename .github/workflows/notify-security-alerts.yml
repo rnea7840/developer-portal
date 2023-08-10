@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: 0 15 * * 1-5
 jobs:
-  notify:
+  check:
     runs-on: ubuntu-latest
     name: Check for security alerts and notify team via Slack
     steps:
@@ -44,13 +44,18 @@ jobs:
           else
             echo "security_alert_exists='true'" >> $GITHUB_OUTPUT
           fi
-      - id: send_slack_message
-        name: Send Slack Message
+  notify:
+    needs: check
+    runs-on: ubuntu-latest
+    name: Send Slack Notification If Necessary
+    steps:
+      - id: send_slack_notification_if_necessary
+        name: Send Notification
         uses: slackapi/slack-github-action@v1.23.0
         if: |
-          steps.check_for_code_scanning_alerts.outputs.security_alert_exists == 'true' ||
-          steps.check_for_dependabot_alerts.outputs.security_alert_exists == 'true' ||
-          steps.check_for_secret_scanning_alerts.outputs.security_alert_exists == 'true'
+          needs.check_for_code_scanning_alerts.outputs.security_alert_exists == 'true' ||
+          needs.check_for_dependabot_alerts.outputs.security_alert_exists == 'true' ||
+          needs.check_for_secret_scanning_alerts.outputs.security_alert_exists == 'true'
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
