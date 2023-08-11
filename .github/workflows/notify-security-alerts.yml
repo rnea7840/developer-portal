@@ -52,34 +52,39 @@ jobs:
   send_slack_message:
     runs-on: ubuntu-latest
     needs: [check_code_scanning_alerts, check_dependabot_alerts, check_secret_scanning_alerts]
-    if: needs.check_code_scanning_alerts.outputs.result == 'true' || needs.check_dependabot_alerts.outputs.result == 'true' || needs.check_secret_scanning_alerts.outputs.result == 'true'
-    env:
-      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    # if: needs.check_code_scanning_alerts.outputs.result == 'true' || needs.check_dependabot_alerts.outputs.result == 'true' || needs.check_secret_scanning_alerts.outputs.result == 'true'
+    # env:
+    #   SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
     steps:
-      - id: send_slack_message
-        uses: slackapi/slack-github-action@v1.23.0
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        with:
-          # This ID is for #team-okapi-alerts in Lighthouse Slack
-          channel-id: C05HL4MTAFR
-          payload: |
-            {
-              "text": "Developer Portal Security Alerts Check",
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "A security vulnerability alert has been detected in the Developer Portal repository."
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "@teamokapi please investigate."
-                  }
-                }
-              ]
-            }
+        - id: test
+          run: |
+            echo "1st var :: ${{needs.check_code_scanning_alerts.outputs.result}}"
+            echo "2nd var :: ${{needs.check_dependabot_alerts.outputs.result}}"
+            echo "3rd var :: ${{needs.check_secret_scanning_alerts.outputs.result}}"
+      # - id: send_slack_message
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      #   with:
+      #     # This ID is for #team-okapi-alerts in Lighthouse Slack
+      #     channel-id: C05HL4MTAFR
+      #     payload: |
+      #       {
+      #         "text": "Developer Portal Security Alerts Check",
+      #         "blocks": [
+      #           {
+      #             "type": "section",
+      #             "text": {
+      #               "type": "mrkdwn",
+      #               "text": "A security vulnerability alert has been detected in the Developer Portal repository."
+      #             }
+      #           },
+      #           {
+      #             "type": "section",
+      #             "text": {
+      #               "type": "mrkdwn",
+      #               "text": "@teamokapi please investigate."
+      #             }
+      #           }
+      #         ]
+      #       }
