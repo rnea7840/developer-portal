@@ -32,15 +32,11 @@ const validationSchema = [
         otherwise: () => yup.string().isNotATestString(),
         then: () => yup.string().oneOf(['web', 'native']).required('Choose an option.'),
       }),
-    oAuthPublicKey: yup
-      .string()
-      .isNotATestString()
-      .when('apis', {
-        is: (value: string[]) => includesCcgAPI(value),
-        otherwise: () => yup.string().isNotATestString(),
-        then: () =>
-          yup.string().isNotATestString().isValidRSAJWK().required('Enter your oAuthPublicKey.'),
-      }),
+    oAuthPublicKey: yup.string().when('apis', {
+      is: (value: string[]) => includesCcgAPI(value),
+      otherwise: () => yup.string(),
+      then: () => yup.string().isValidRSAJWK().required('Enter your oAuthPublicKey.'),
+    }),
     oAuthRedirectURI: yup
       .string()
       .isNotATestString()
