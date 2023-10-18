@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import SwaggerUI from 'swagger-ui';
+import * as SwaggerUI from 'swagger-ui';
 import { usePrevious } from '../../hooks';
 import {
   resetVersioning,

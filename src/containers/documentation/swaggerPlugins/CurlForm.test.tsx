@@ -15,7 +15,7 @@ import {
   render,
   screen,
 } from '@testing-library/react';
-import SwaggerUI from 'swagger-ui';
+import * as SwaggerUI from 'swagger-ui';
 import * as React from 'react';
 import * as decisionReviews from '../../../__mocks__/openAPIData/decisionReviews.test.json';
 import * as fhirR4 from '../../../__mocks__/openAPIData/fhirR4.test.json';
