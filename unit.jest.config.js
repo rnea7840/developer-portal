@@ -45,7 +45,6 @@ module.exports = {
     '^react-native$': 'react-native-web',
     'content/news.yml': '<rootDir>/src/__mocks__/news.test.yml',
     '\\.(svg|png)': '<rootDir>/src/__mocks__/fakeImage.ts',
-    '^swagger-ui$': '<rootDir>/src/__mocks__/swagger-ui.js',
   },
   moduleFileExtensions: [
     'web.ts',
