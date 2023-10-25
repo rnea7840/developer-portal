@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from 'component-library-legacy/Modal';
+import { VaModal } from '@department-of-veterans-affairs/component-library/dist/react-bindings';
 import { useModalController } from '../../hooks';
 import { VeteranResourcesContent } from './VeteranResourcesContent';
 import './VeteranResources.scss';
@@ -19,18 +19,14 @@ export const VeteranResources = (): JSX.Element => {
       >
         Veteran resources
       </button>
-      <Modal
-        aria-describedby="veteran-resources-description"
-        aria-labelledby="veteran-resources-header"
-        clickToClose
-        cssClass="veteran-resources-modal"
-        onClose={handleModalClose}
-        role="dialog"
-        primaryButton={{ action: handleModalClose, text: 'Close' }}
+      <VaModal
+        modalTitle="Veteran resources"
+        onCloseEvent={handleModalClose}
+        onPrimaryButtonClose={handleModalClose}
         visible={modalVisible}
       >
         <VeteranResourcesContent />
-      </Modal>
+      </VaModal>
     </>
   );
 };
