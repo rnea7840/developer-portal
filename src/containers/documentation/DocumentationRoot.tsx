@@ -38,7 +38,15 @@ const ExploreSideNav = (props: ExploreSideNavProps): JSX.Element => {
       )}
       <SideNavEntry end name="Release notes" subNavLevel={1} to="release-notes" />
       {!api.blockSandboxForm && (
-        <SideNavEntry end name="Sandbox access" subNavLevel={1} to="sandbox-access" />
+        <>
+          <SideNavEntry end name="Sandbox access" subNavLevel={1} to="sandbox-access" />
+          <SideNavEntry
+            end
+            name="Production access"
+            subNavLevel={1}
+            to="/onboarding/request-prod-access"
+          />
+        </>
       )}
     </>
   );
