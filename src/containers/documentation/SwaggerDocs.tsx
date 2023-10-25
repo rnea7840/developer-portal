@@ -3,7 +3,8 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import SwaggerUI from 'swagger-ui';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import SwaggerUI from 'swagger-ui-react';
 import { usePrevious } from '../../hooks';
 import {
   resetVersioning,
@@ -14,10 +15,10 @@ import {
   SetRequestedAPIVersion,
 } from '../../actions';
 import { APIDocSource } from '../../apiDefs/schema';
-import { getDocURL, getVersion, getVersionNumber } from '../../reducers/apiVersioning';
+import { getDocURL, getVersion } from '../../reducers/apiVersioning';
 import { APIMetadata, RootState, VersionMetadata } from '../../types';
 import { CURRENT_VERSION_IDENTIFIER } from '../../types/constants';
-import { SwaggerPlugins, System } from './swaggerPlugins';
+import { SwaggerPlugins } from './swaggerPlugins';
 
 import 'swagger-ui-themes/themes/3.x/theme-muted.css';
 import VersionSelect from './swaggerPlugins/VersionSelect';
@@ -57,19 +58,25 @@ const handleVersionChange =
 const renderSwaggerUI = (
   defaultUrl: string,
   dispatch: React.Dispatch<SetRequestedAPIVersion>,
-  versionNumber: string,
-  versions: VersionMetadata[] | null,
-): void => {
+  // versionNumber: string,
+  // versions: VersionMetadata[] | null,
+): JSX.Element => {
   const plugins = SwaggerPlugins(handleVersionChange(dispatch));
-  const ui: System = SwaggerUI({
-    defaultModelExpandDepth: 99,
-    dom_id: '#swagger-ui',
-    layout: 'ExtendedLayout',
-    plugins: [plugins],
-    url: defaultUrl,
-  }) as System;
-  ui.versionActions.setApiVersion(versionNumber);
-  ui.versionActions.setVersionMetadata(versions);
+
+  // const ui: System = SwaggerUI({
+  //  ,
+  // }) as System;
+  // ui.versionActions.setApiVersion(versionNumber);
+  // ui.versionActions.setVersionMetadata(versions);
+
+  return (
+    <SwaggerUI
+      defaultModelExpandDepth={99}
+      layout="ExtendedLayout"
+      plugins={[plugins]}
+      url={defaultUrl}
+    />
+  );
 };
 
 const SwaggerDocs = (props: SwaggerDocsProps): JSX.Element => {
@@ -80,8 +87,8 @@ const SwaggerDocs = (props: SwaggerDocsProps): JSX.Element => {
   const defaultUrl = useSelector(defaultUrlSelector);
   const location = useLocation();
   const navigate = useNavigate();
-  const versionNumberSelector = (state: RootState): string => getVersionNumber(state.apiVersioning);
-  const versionNumber = useSelector(versionNumberSelector);
+  // const versionNumberSelector = (state: RootState): string => getVersionNumber(state.apiVersioning);
+  // const versionNumber = useSelector(versionNumberSelector);
   const versionsSelector = (state: RootState): VersionMetadata[] | null =>
     state.apiVersioning.versions;
   const versions = useSelector(versionsSelector);
@@ -149,15 +156,6 @@ const SwaggerDocs = (props: SwaggerDocsProps): JSX.Element => {
   }, [location.pathname, location.search, navigate, prevVersion, version]);
 
   /**
-   * TRIGGERS RENDER OF SWAGGER UI
-   */
-  React.useEffect(() => {
-    if (document.getElementById('swagger-ui') && defaultUrl) {
-      renderSwaggerUI(defaultUrl, dispatch, versionNumber, versions);
-    }
-  }, [defaultUrl, dispatch, versions, versionNumber]);
-
-  /**
    * RENDER
    */
   const { apiIntro } = props.docSource;
@@ -173,7 +171,8 @@ const SwaggerDocs = (props: SwaggerDocsProps): JSX.Element => {
           handleVersionChange={handleVersionChange}
         />
       )}
-      <div id="swagger-ui" />
+      {renderSwaggerUI(defaultUrl, dispatch)}
+      {/** renderSwaggerUI(defaultUrl, dispatch , versionNumber, versions */}
     </React.Fragment>
   );
 };
