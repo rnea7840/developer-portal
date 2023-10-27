@@ -87,9 +87,32 @@ const GettingStarted = (): JSX.Element => (
   </section>
 );
 
+// Using our own custom button
+const CustomButtonForSurveyModal = (): JSX.Element => {
+  React.useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://touchpoints.app.cloud.gov/touchpoints/4a9899d8.js';
+    script.defer = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <section>
+      <button id="hello-world" type="button">
+        My Custom Button
+      </button>
+    </section>
+  );
+};
+
 const Home = (): JSX.Element => (
   <div className="home vads-l-grid-container--full">
     <Hero />
+    <CustomButtonForSurveyModal />
     <GettingStarted />
     <ApiList />
   </div>
