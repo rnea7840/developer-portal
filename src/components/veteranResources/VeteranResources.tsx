@@ -20,6 +20,7 @@ export const VeteranResources = (): JSX.Element => {
         Veteran resources
       </button>
       <VaModal
+        clickToClose
         large
         modalTitle="Veteran resources"
         onCloseEvent={handleModalClose}
