@@ -12,7 +12,7 @@ describe('VeteranResources', () => {
     expect(modalButton).toHaveTextContent('Veteran resources');
   });
 
-  it('sets modal visible on button click', async () => {
+  it('sets modal visible on button click', () => {
     const { container } = render(<VeteranResources />);
 
     const modal = container.querySelector('va-modal') as HTMLElement;
