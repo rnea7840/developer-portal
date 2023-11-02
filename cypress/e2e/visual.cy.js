@@ -82,5 +82,13 @@ describe('Visual Regression tests', () => {
       cy.wait(5000); // Gives Swagger UI plenty of time to load
       testVisualRegressions(path, size);
     });
+
+    it(`Check Explore APIs page for visual regression at ${size.width}px width and 200px scroll offset `, () => {
+      const path = `/explore?auth=acg+ccg`;
+      cy.viewport(size.width, size.height);
+      cy.visit(path);
+      cy.scrollTo(0, 200);
+      testVisualRegressions(path, size);
+    });
   });
 });
