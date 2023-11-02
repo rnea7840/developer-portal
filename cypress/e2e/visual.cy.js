@@ -83,11 +83,11 @@ describe('Visual Regression tests', () => {
       testVisualRegressions(path, size);
     });
 
-    it(`Check Explore APIs page for visual regression at ${size.width}px width and 200px scroll offset `, () => {
+    it(`Check Explore APIs page for visual regression at ${size.width}px width and 400px scroll offset `, () => {
       const path = `/explore?auth=acg+ccg`;
       cy.viewport(size.width, size.height);
       cy.visit(path);
-      cy.scrollTo(0, 200);
+      cy.scrollTo(0, 400);
       testVisualRegressions(path, size);
     });
   });
