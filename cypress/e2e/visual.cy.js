@@ -40,15 +40,13 @@ const snapshotOptions = {
 };
 
 function testVisualRegressions(path, size, offset) {
-  cy.get('html, body').invoke('css', 'height', 'initial');
   const strippedUrlPath = path.replace(/\//g, '-').substring(1);
   const formattedPath = strippedUrlPath || 'homepage';
-
+  cy.get('html, body').invoke('css', 'height', 'initial');
   if (!offset) {
     cy.matchImageSnapshot(`${formattedPath}-${size.count}`, snapshotOptions);
     return;
   }
-
   cy.get('#main').scrollTo('0px', offset + 'px');
   cy.matchImageSnapshot(`${formattedPath}-${size.count}-${offset}`, {
     ...snapshotOptions,
