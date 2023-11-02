@@ -39,18 +39,21 @@ const snapshotOptions = {
   failureThresholdType: 'percent',
 };
 
-function testVisualRegressions(path, size) {
-  cy.wait(1000);
-  cy.get('html').invoke('css', 'height', 'initial');
-  cy.get('body').invoke('css', 'height', 'initial');
-  cy.wait(1000);
+function testVisualRegressions(path, size, offset) {
+  cy.get('html, body').invoke('css', 'height', 'initial');
   const strippedUrlPath = path.replace(/\//g, '-').substring(1);
-  const formattedPath = strippedUrlPath ? strippedUrlPath : 'homepage';
-  cy.get('#main');
-  cy.get('html').invoke('css', 'height', 'initial');
-  cy.get('body').invoke('css', 'height', 'initial');
-  cy.wait(1000);
-  cy.matchImageSnapshot(`${formattedPath}-${size.count}`, snapshotOptions);
+  const formattedPath = strippedUrlPath || 'homepage';
+
+  if (!offset) {
+    cy.matchImageSnapshot(`${formattedPath}-${size.count}`, snapshotOptions);
+    return;
+  }
+
+  cy.get('#main').scrollTo('0px', offset + 'px');
+  cy.matchImageSnapshot(`${formattedPath}-${size.count}-${offset}`, {
+    ...snapshotOptions,
+    capture: 'viewport',
+  });
 }
 
 describe('Visual Regression tests', () => {
@@ -85,10 +88,10 @@ describe('Visual Regression tests', () => {
 
     it(`Check Explore APIs page for visual regression at ${size.width}px width and 400px scroll offset `, () => {
       const path = `/explore?auth=acg+ccg`;
+      const offset = 400;
       cy.viewport(size.width, size.height);
       cy.visit(path);
-      cy.scrollTo(0, 400);
-      testVisualRegressions(path, size);
+      testVisualRegressions(path, size, offset);
     });
   });
 });
