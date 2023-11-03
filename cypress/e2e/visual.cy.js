@@ -42,16 +42,23 @@ const snapshotOptions = {
 function testVisualRegressions(path, size, offset) {
   const strippedUrlPath = path.replace(/\//g, '-').substring(1);
   const formattedPath = strippedUrlPath || 'homepage';
-  cy.get('html, body').invoke('css', 'height', 'initial');
   if (!offset) {
-    cy.matchImageSnapshot(`${formattedPath}-${size.count}`, snapshotOptions);
+    cy.get('html, body')
+      .invoke('css', 'height', 'initial')
+      .then(() => {
+        cy.matchImageSnapshot(`${formattedPath}-${size.count}`, snapshotOptions);
+      });
     return;
   }
-  cy.scrollTo(0, offset);
-  cy.matchImageSnapshot(`${formattedPath}-${size.count}-${offset}`, {
-    ...snapshotOptions,
-    capture: 'viewport',
-  });
+  cy.get('html, body')
+    .invoke('css', 'height', 'initial')
+    .scrollTo(0, offset)
+    .then(() => {
+      cy.matchImageSnapshot(`${formattedPath}-${size.count}-${offset}`, {
+        ...snapshotOptions,
+        capture: 'viewport',
+      });
+    });
 }
 
 describe('Visual Regression tests', () => {
