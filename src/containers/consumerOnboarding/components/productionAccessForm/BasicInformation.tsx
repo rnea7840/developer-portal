@@ -9,7 +9,11 @@ import {
   MultiEntryEmailField,
 } from '../../../../components';
 import { Values } from '../../ProductionAccess';
-import { includesInternalOnlyAPI, onlyOpenDataAPIs, includesOpenDataAPI } from '../../../../apiDefs/query';
+import {
+  includesInternalOnlyAPI,
+  onlyOpenDataAPIs,
+  includesOpenDataAPI,
+} from '../../../../apiDefs/query';
 
 const BasicInformation: FC = () => {
   const {
@@ -86,6 +90,39 @@ const BasicInformation: FC = () => {
           name="organization"
           required
           className="vads-u-margin-top--4 medium-screen:vads-l-col--10"
+        />
+        <TextField
+          className="vads-u-margin-top--4 medium-screen:vads-l-col--10"
+          label="Street address"
+          name="streetAddress"
+          required
+        />
+        <TextField
+          className="vads-u-margin-top--4 medium-screen:vads-l-col--10"
+          label="Street address line 2"
+          name="streetAddress2"
+        />
+        <TextField
+          className="vads-u-margin-top--4 medium-screen:vads-l-col--10"
+          label="Street address line 3"
+          name="streetAddress3"
+        />
+        <TextField
+          className="vads-u-margin-top--4 medium-screen:vads-l-col--10"
+          label="City"
+          name="city"
+          required
+        />
+        <TextField
+          className="vads-u-margin-top--4 medium-screen:vads-l-col--10"
+          label="State/Province/Region"
+          name="stateProvinceRegion"
+        />
+        <TextField
+          className="vads-u-margin-top--4 medium-screen:vads-l-col--10"
+          label="Postal code"
+          name="postalCode"
+          required
         />
         <TextField
           label="Phone number"

@@ -88,6 +88,12 @@ export interface Values {
   productionOrOAuthKeyCredentialStorage: string;
   privacyPolicyURL?: string;
   termsOfServiceURL?: string;
+  streetAddress: string;
+  streetAddress2?: string;
+  streetAddress3?: string;
+  city: string;
+  stateProvinceRegion?: string;
+  postalCode: string;
 }
 
 const initialValues: Values = {
@@ -97,6 +103,7 @@ const initialValues: Values = {
   breachManagementProcess: '',
   businessModel: '',
   centralizedBackendLog: '',
+  city: '',
   distributingAPIKeysToCustomers: '',
   exposeVeteranInformationToThirdParties: '',
   is508Compliant: '',
@@ -113,6 +120,7 @@ const initialValues: Values = {
   phoneNumber: '',
   piiStorageMethod: '',
   platforms: '',
+  postalCode: '',
   primaryContact: {
     email: '',
     firstName: '',
@@ -128,8 +136,12 @@ const initialValues: Values = {
     lastName: '',
   },
   signUpLink: '',
+  stateProvinceRegion: '',
   statusUpdateEmails: [''],
   storePIIOrPHI: '',
+  streetAddress: '',
+  streetAddress2: '',
+  streetAddress3: '',
   supportLink: '',
   termsOfService: false,
   termsOfServiceURL: '',
