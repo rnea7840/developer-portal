@@ -14,6 +14,7 @@ import {
   onlyOpenDataAPIs,
   includesOpenDataAPI,
 } from '../../../../apiDefs/query';
+import { countryCode, countryName } from '../../../../utils/countries';
 
 const BasicInformation: FC = () => {
   const {
@@ -91,6 +92,16 @@ const BasicInformation: FC = () => {
           required
           className="vads-u-margin-top--4 medium-screen:vads-l-col--10"
         />
+        <va-select label="Country" name="country" value="" required>
+          <>
+            <option value="" />
+            {countryName.map((country: string, index: number) => (
+              <option key={country} value={countryCode[index]}>
+                {country}
+              </option>
+            ))}
+          </>
+        </va-select>
         <TextField
           className="vads-u-margin-top--4 medium-screen:vads-l-col--10"
           label="Street address"

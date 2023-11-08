@@ -88,6 +88,7 @@ export interface Values {
   productionOrOAuthKeyCredentialStorage: string;
   privacyPolicyURL?: string;
   termsOfServiceURL?: string;
+  country: string;
   streetAddress: string;
   streetAddress2?: string;
   streetAddress3?: string;
@@ -104,6 +105,7 @@ const initialValues: Values = {
   businessModel: '',
   centralizedBackendLog: '',
   city: '',
+  country: '',
   distributingAPIKeysToCustomers: '',
   exposeVeteranInformationToThirdParties: '',
   is508Compliant: '',
