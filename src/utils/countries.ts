@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 export const countryName = [
   'Afghanistan',
   'Albania',
@@ -214,6 +215,7 @@ export const countryName = [
   'Ukraine',
   'United Arab Emirates',
   'United Kingdom',
+  'United States of America',
   'Uruguay',
   'Uzbekistan',
   'Vanuatu',
@@ -444,6 +446,7 @@ export const countryCode = [
   'UKR',
   'ARE',
   'GBR',
+  'USA',
   'URY',
   'UZB',
   'VUT',
