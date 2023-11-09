@@ -18,9 +18,15 @@ import { ProductionAccessRequest } from '../../types/forms/productionAccess';
 import { makeRequest, ResponseType } from '../../utils/makeRequest';
 import vaLogo from '../../assets/VaSeal.png';
 import hiFive from '../../assets/high-five.svg';
-import { LPB_FORGERY_TOKEN, LPB_PRODUCTION_ACCESS_URL, yesOrNoValues } from '../../types/constants';
+import {
+  ADDRESS_VALIDATION_API,
+  LPB_FORGERY_TOKEN,
+  LPB_PRODUCTION_ACCESS_URL,
+  yesOrNoValues,
+} from '../../types/constants';
 import { CONSUMER_PROD_PATH, SUPPORT_CONTACT_PATH } from '../../types/constants/paths';
 import {
+  AddressValidation,
   BasicInformation,
   PolicyGovernance,
   TechnicalInformation,
@@ -155,12 +161,12 @@ const initialValues: Values = {
   website: '',
 };
 
-const renderStepContent = (step: number): JSX.Element => {
+const renderStepContent = (step: number, showAddressValidation: boolean): JSX.Element => {
   switch (step) {
     case 0:
       return <Verification />;
     case 1:
-      return <BasicInformation />;
+      return showAddressValidation ? <AddressValidation /> : <BasicInformation />;
     case 2:
       return <TechnicalInformation />;
     case 3:
@@ -184,6 +190,8 @@ const ProductionAccess: FC = () => {
   const [submissionError, setSubmissionError] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [steps, setSteps] = useState(possibleSteps);
+  const [addressValidated, setAddressValidated] = useState(false);
+  const [showAddressValidation, setShowAddressValidation] = useState(false);
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
   const setCookie = useCookies(['CSRF-TOKEN'])[1];
@@ -338,6 +346,38 @@ const ProductionAccess: FC = () => {
         setSubmissionError(true);
       }
     } else {
+      if (activeStep === 1) {
+        try {
+          const validate = await makeRequest(`${ADDRESS_VALIDATION_API}/v1/validate`, {
+            body: JSON.stringify({
+              requestAddress: {
+                addressLine1: values.streetAddress,
+                addressLine2: values.streetAddress2,
+                addressLine3: values.streetAddress3,
+                addressPOU: 'RESIDENCE/CHOICE',
+                city: values.city,
+                internationalPostalCode: '', // TODO
+                requestCountry: {
+                  countryCode: values.country,
+                  countryName: '', // TODO
+                },
+                stateProvince: {
+                  code: values.stateProvinceRegion,
+                  name: '', // TODO
+                },
+                zipCode4: '', // TODO
+                zipCode5: values.postalCode,
+              },
+            }),
+          });
+          setAddressValidated(true);
+        } catch (error: unknown) {
+          setAddressValidated(false);
+          setShowAddressValidation(true);
+          return;
+        }
+      }
+
       if (values.isUSBasedCompany === yesOrNoValues.No) {
         setModal2Visible(true);
         return;
@@ -416,7 +456,7 @@ const ProductionAccess: FC = () => {
                   </h2>
                 </>
               )}
-              {renderStepContent(activeStep)}
+              {renderStepContent(activeStep, showAddressValidation)}
               <div className="vads-u-margin-y--5">
                 <button
                   className={classNames(
