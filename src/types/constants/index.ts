@@ -18,6 +18,10 @@ export const LPB_PRODUCTION_ACCESS_URL = `${LPB_BASE_URL}/v0/consumers/productio
 export const LPB_PROVIDERS_URL = `${LPB_BASE_URL}/v0/providers/transformations/legacy.json?environment=sandbox`;
 export const LPB_CONTACT_US_URL = `${LPB_BASE_URL}/v0/support/contact-us/requests`;
 
+export const ADDRESS_VALIDATION_API = `${
+  process.env.REACT_APP_API_URL as string
+}/services/address_validation`;
+
 export const APPLY_ACG_APIS = ['claims', 'communityCare', 'health', 'verification'];
 export const APPLY_CCG_APIS = ['claims', 'health', 'lgyGuarantyRemittance'];
 export const PAGE_HEADER_ID = 'page-header';
