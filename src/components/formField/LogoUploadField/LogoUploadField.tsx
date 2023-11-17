@@ -34,7 +34,6 @@ const LogoUploadField: FC<LogoUploadProps> = ({ className }) => {
 
   useEffect(() => {
     if (logoFile) {
-      // Logo file will only be set if a file was uploaded
       const reader = new FileReader();
 
       reader.onloadend = (): void => {
