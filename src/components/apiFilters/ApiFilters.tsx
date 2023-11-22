@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import Fuse from 'fuse.js';
@@ -11,6 +12,7 @@ import { useOutsideGroupClick } from '../../hooks';
 import { generateFilterPills } from '../../utils/generateFilterPills';
 import './ApiFilters.scss';
 import ApisLoader from '../apisLoader/ApisLoader';
+import { ScreenReaderFilters } from './ScreenReaderFilters';
 
 export interface TopicFilterValues {
   topics: string[];
@@ -158,6 +160,10 @@ export const ApiFilters = ({ apis, setApis }: ApiFiltersProps): JSX.Element => {
   });
 
   useEffect(() => {
+    if (!apisLoaded) {
+      return;
+    }
+
     let activeApis = getActiveApis();
     if (topicFilter.length > 0) {
       activeApis = activeApis.filter((api: APIDescription) =>
@@ -281,6 +287,12 @@ export const ApiFilters = ({ apis, setApis }: ApiFiltersProps): JSX.Element => {
           </div>
         </div>
       </div>
+      <ScreenReaderFilters
+        numOfApis={apis.length}
+        topics={topicFilter}
+        auth={authFilter}
+        search={search}
+      />
       <span aria-live="polite" className="sr-only">
         {topicFilter.length || authFilter.length
           ? `${topicFilter.length + authFilter.length} filters applied and API list updated`

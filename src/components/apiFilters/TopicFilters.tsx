@@ -13,7 +13,7 @@ import {
 import { useOutsideGroupClick } from '../../hooks';
 import { TopicFilterValues } from './ApiFilters';
 
-const TOPIC_FILTER_NAMES = {
+export const TOPIC_FILTER_NAMES = {
   'Facilities API': 'Facilities',
   'Facilities APIs': 'Facilities',
   'Forms API': 'Forms',
