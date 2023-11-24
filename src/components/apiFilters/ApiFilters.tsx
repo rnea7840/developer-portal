@@ -60,8 +60,36 @@ export const ApiFilters = ({ apis, setApis }: ApiFiltersProps): JSX.Element => {
     'filter-controls',
   );
 
+  const updateApis = (topics: string[], auth: string[], searchTerms: string): void => {
+    let activeApis = getActiveApis();
+    if (topics.length > 0) {
+      activeApis = activeApis.filter((api: APIDescription) => topics.includes(api.categoryUrlSlug));
+    }
+    if (auth.length > 0) {
+      activeApis = activeApis.filter((api: APIDescription) => {
+        if (auth.includes('acg') && isAcgApi(api)) {
+          return true;
+        }
+        if (auth.includes('ccg') && isCcgApi(api)) {
+          return true;
+        }
+        return false;
+      });
+    }
+    if (searchTerms) {
+      const fuse = new Fuse(activeApis, {
+        keys: ['name', 'description', 'releaseNotes', 'urlSlug', 'urlFragment'],
+      });
+      activeApis = fuse
+        .search<APIDescription>(searchTerms)
+        .map((api: Fuse.FuseResult<APIDescription>): APIDescription => api.item);
+    }
+    setApis(activeApis);
+  };
+
   const handleTopicFilterSubmit = (values: TopicFilterValues): void => {
     setTopicFilter(values.topics);
+    updateApis(values.topics, authFilter, search);
     if (values.topics.length > 0) {
       navigate(
         {
@@ -108,6 +136,7 @@ export const ApiFilters = ({ apis, setApis }: ApiFiltersProps): JSX.Element => {
     if (search) {
       data.q = search;
     }
+    updateApis(topicFilter, values.authTypes, search);
     setAuthFilter(values.authTypes);
     applyQueryStringFilters(data);
     window.scrollTo(0, 0);
@@ -124,6 +153,7 @@ export const ApiFilters = ({ apis, setApis }: ApiFiltersProps): JSX.Element => {
     if (values.search) {
       data.q = values.search;
     }
+    updateApis(topicFilter, authFilter, values.search);
     setSearch(values.search);
     applyQueryStringFilters(data);
     window.scrollTo(0, 0);
@@ -150,6 +180,7 @@ export const ApiFilters = ({ apis, setApis }: ApiFiltersProps): JSX.Element => {
     setTopicFilter([]);
     setAuthFilter([]);
     setSearch('');
+    updateApis([], [], '');
     applyQueryStringFilters({}, '/explore');
   };
 
@@ -190,7 +221,7 @@ export const ApiFilters = ({ apis, setApis }: ApiFiltersProps): JSX.Element => {
         .map((api: Fuse.FuseResult<APIDescription>): APIDescription => api.item);
     }
     setApis(activeApis);
-  }, [apisLoaded, authFilter, search, setApis, topicFilter]);
+  }, [apisLoaded, setApis]);
 
   useEffect(() => {
     localStorage.setItem('exploreApisPath', location.pathname + location.search);
