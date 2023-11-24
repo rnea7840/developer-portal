@@ -45,6 +45,7 @@ export const ScreenReaderFilters = ({
     return authFilterNames;
   };
 
+  // eslint-disable-next-line complexity
   const generateScreenReaderString = (): string => {
     let filterString = `Showing all ${numOfApis} items`;
     const topicFilterNames = generateTopicFilterNames();
@@ -73,7 +74,11 @@ export const ScreenReaderFilters = ({
       filterString += `search term ${search}`;
     }
 
-    return `${filterString} APIs`;
+    if (topicFilterNames || authFilterNames || search) {
+      filterString += ' APIs';
+    }
+
+    return filterString;
   };
 
   return (
