@@ -26,8 +26,10 @@ export const ScreenReaderFilters = ({
   const generateTopicFilterNames = (): string => {
     let topicFilterNames = '';
     topics.forEach((topic, index) => {
-      const category = lookupApiCategoryBySlug(topic) as APICategory;
-      topicFilterNames += TOPIC_FILTER_NAMES[category.name];
+      const category = lookupApiCategoryBySlug(topic);
+      if (category) {
+        topicFilterNames += TOPIC_FILTER_NAMES[category.name];
+      }
       if ((index === 0 && topics.length > 1) || index !== topics.length - 1) {
         topicFilterNames += ', ';
       }
