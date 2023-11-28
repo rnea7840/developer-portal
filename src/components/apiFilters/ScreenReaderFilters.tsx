@@ -1,5 +1,6 @@
 import React from 'react';
-import { getApisLoaded, lookupApiCategory } from '../../apiDefs/query';
+import { getApisLoaded, lookupApiCategoryBySlug } from '../../apiDefs/query';
+import { APICategory } from '../../apiDefs/schema';
 import { TOPIC_FILTER_NAMES } from './TopicFilters';
 import { getAuthTypeName } from './AuthFilters';
 
@@ -25,7 +26,7 @@ export const ScreenReaderFilters = ({
   const generateTopicFilterNames = (): string => {
     let topicFilterNames = '';
     topics.forEach((topic, index) => {
-      const category = lookupApiCategory(topic);
+      const category = lookupApiCategoryBySlug(topic) as APICategory;
       topicFilterNames += TOPIC_FILTER_NAMES[category.name];
       if ((index === 0 && topics.length > 1) || index !== topics.length - 1) {
         topicFilterNames += ', ';
