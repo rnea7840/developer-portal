@@ -1,6 +1,5 @@
 import React from 'react';
 import { getApisLoaded, lookupApiCategoryBySlug } from '../../apiDefs/query';
-import { APICategory } from '../../apiDefs/schema';
 import { TOPIC_FILTER_NAMES } from './TopicFilters';
 import { getAuthTypeName } from './AuthFilters';
 
