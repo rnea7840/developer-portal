@@ -88,8 +88,8 @@ export const ApiFilters = ({ apis, setApis }: ApiFiltersProps): JSX.Element => {
   };
 
   const handleTopicFilterSubmit = (values: TopicFilterValues): void => {
-    setTopicFilter(values.topics);
     updateApis(values.topics, authFilter, search);
+    setTopicFilter(values.topics);
     if (values.topics.length > 0) {
       navigate(
         {
