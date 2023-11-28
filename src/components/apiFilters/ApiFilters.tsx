@@ -221,6 +221,7 @@ export const ApiFilters = ({ apis, setApis }: ApiFiltersProps): JSX.Element => {
         .map((api: Fuse.FuseResult<APIDescription>): APIDescription => api.item);
     }
     setApis(activeApis);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apisLoaded, setApis]);
 
   useEffect(() => {
