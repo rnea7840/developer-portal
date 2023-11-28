@@ -60,7 +60,7 @@ const LogoUploadField: FC<LogoUploadProps> = ({ className }) => {
       throw new Error('Network response was not ok');
     }
 
-    return response.json() as Promise<AwsSigv4UploadEntity>;
+    return (await response.json()) as Promise<AwsSigv4UploadEntity>;
   };
 
   const uploadToS3 = async (file: File, uploadEntity: AwsSigv4UploadEntity): Promise<void> => {
