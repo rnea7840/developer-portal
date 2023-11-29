@@ -6,10 +6,15 @@ import {
   TextField,
   CheckboxRadioField,
   FieldSet,
+  LogoUploadField,
   MultiEntryEmailField,
 } from '../../../../components';
 import { Values } from '../../ProductionAccess';
-import { includesInternalOnlyAPI, onlyOpenDataAPIs, includesOpenDataAPI } from '../../../../apiDefs/query';
+import {
+  includesInternalOnlyAPI,
+  onlyOpenDataAPIs,
+  includesOpenDataAPI,
+} from '../../../../apiDefs/query';
 
 const BasicInformation: FC = () => {
   const {
@@ -273,6 +278,7 @@ const BasicInformation: FC = () => {
             required
           />
         )}
+        <LogoUploadField />
       </fieldset>
     </>
   );

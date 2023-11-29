@@ -88,6 +88,8 @@ export interface Values {
   productionOrOAuthKeyCredentialStorage: string;
   privacyPolicyURL?: string;
   termsOfServiceURL?: string;
+  logoIcon?: string;
+  logoLarge?: string;
 }
 
 const initialValues: Values = {
@@ -102,6 +104,8 @@ const initialValues: Values = {
   is508Compliant: '',
   isUSBasedCompany: '',
   listedOnMyHealthApplication: '',
+  logoIcon: '',
+  logoLarge: '',
   monitizationExplanation: '',
   monitizedVeteranInformation: '',
   multipleReqSafeguards: '',

@@ -1,1 +1,1 @@
-export { default } from './LogoUploadField';
+export { LogoUploadField } from './LogoUploadField';

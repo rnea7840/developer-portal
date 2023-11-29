@@ -1,7 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-
-import LogoUploadField from './LogoUploadField';
+import { LogoUploadField } from './LogoUploadField';
 
 describe('LogoUploadField', () => {
   let fetchMock: jest.Mock;

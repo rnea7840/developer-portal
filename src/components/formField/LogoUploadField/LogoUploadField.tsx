@@ -1,6 +1,8 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
+import { useFormikContext } from 'formik';
 import { LPB_LOGO_UPLOAD_POLICY_URL } from '../../../types/constants';
+import { Values } from '../../../containers/consumerOnboarding/ProductionAccess';
 import './LogoUploadField.scss';
 
 interface AwsSigv4UploadEntity {
@@ -24,22 +26,19 @@ export interface LogoUploadProps {
   className?: string;
 }
 
-const LogoUploadField: FC<LogoUploadProps> = ({ className }) => {
+export const LogoUploadField = ({ className }: LogoUploadProps): JSX.Element => {
   const [uploadStatus, setUploadStatus] = useState<string | null>(null);
-
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoData, setLogoData] = useState<string | null>(null);
-
   const fileInput = useRef<HTMLInputElement>(null);
+  const formik = useFormikContext<Values>();
 
   useEffect(() => {
     if (logoFile) {
       const reader = new FileReader();
-
       reader.onloadend = (): void => {
         setLogoData(reader.result as string);
       };
-
       reader.readAsDataURL(logoFile);
     }
   }, [logoFile]);
@@ -105,7 +104,11 @@ const LogoUploadField: FC<LogoUploadProps> = ({ className }) => {
       try {
         const uploadEntity = await getUploadEntity(file.name, file.type);
         await uploadToS3(file, uploadEntity);
+        await formik.setFieldValue('logoIcon', uploadEntity.logoUrls[0]);
+        await formik.setFieldValue('logoLarge', uploadEntity.logoUrls[1]);
       } catch (error: unknown) {
+        await formik.setFieldValue('logoIcon', '');
+        await formik.setFieldValue('logoLarge', '');
         setUploadStatus('Upload failed');
       }
 
@@ -147,5 +150,3 @@ const LogoUploadField: FC<LogoUploadProps> = ({ className }) => {
     </div>
   );
 };
-
-export default LogoUploadField;
