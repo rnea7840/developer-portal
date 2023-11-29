@@ -1,4 +1,5 @@
 import React from 'react';
+import { Formik } from 'formik';
 import { fireEvent, render } from '@testing-library/react';
 import { LogoUploadField } from './LogoUploadField';
 
@@ -15,12 +16,20 @@ describe('LogoUploadField', () => {
   });
 
   it('renders without crashing', () => {
-    const { getByLabelText } = render(<LogoUploadField />);
+    const { getByLabelText } = render(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <LogoUploadField />
+      </Formik>,
+    );
     expect(getByLabelText(/upload logo/i)).toBeInTheDocument();
   });
 
   it('handles file selection and shows preview', async () => {
-    const { getByLabelText, findByAltText } = render(<LogoUploadField />);
+    const { getByLabelText, findByAltText } = render(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <LogoUploadField />
+      </Formik>,
+    );
     const fileInput = getByLabelText(/upload logo/i);
     const file = new File(['(⌐□_□)'], 'logo.png', { type: 'image/png' });
 
@@ -40,7 +49,11 @@ describe('LogoUploadField', () => {
         ok: true,
       });
 
-    const { getByLabelText, findByText } = render(<LogoUploadField />);
+    const { getByLabelText, findByText } = render(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <LogoUploadField />
+      </Formik>,
+    );
     const fileInput = getByLabelText(/upload logo/i);
     const file = new File(['logo content'], 'logo.jpg', { type: 'image/jpeg' });
 
