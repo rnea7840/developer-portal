@@ -34,8 +34,8 @@ export const TopicFilters = ({
   topicFilter,
 }: TopicFiltersProps): JSX.Element => {
   const [isTopicOpen, setIsTopicOpen] = useState<boolean>(false);
-  const topicButtonRef = useRef(null);
-  const topicButtonRef2 = useRef(null);
+  const topicButtonRef = useRef<HTMLButtonElement | null>(null);
+  const topicButtonRef2 = useRef<HTMLButtonElement | null>(null);
   const topicContainerRef = useRef(null);
   const topics = getApiCategoryOrder();
 
@@ -57,6 +57,11 @@ export const TopicFilters = ({
   const handleFormSubmit = (values: TopicFilterValues): void => {
     toggleTopicOpen();
     handleTopicFilterSubmit(values);
+    if (topicButtonRef.current && topicButtonRef.current.style.display !== 'none') {
+      topicButtonRef.current.focus();
+    } else if (topicButtonRef2.current && topicButtonRef2.current.style.display !== 'none') {
+      topicButtonRef2.current.focus();
+    }
   };
 
   const topicFilterAriaLabel =

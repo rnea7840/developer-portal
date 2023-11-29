@@ -29,8 +29,8 @@ export const AuthFilters = ({
   authFilter,
   handleAuthTypeFilterSubmit,
 }: AuthFiltersProps): JSX.Element => {
-  const authButtonRef = useRef(null);
-  const authButtonRef2 = useRef(null);
+  const authButtonRef = useRef<HTMLButtonElement | null>(null);
+  const authButtonRef2 = useRef<HTMLButtonElement | null>(null);
   const authContainerRef = useRef(null);
   const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
 
@@ -52,6 +52,11 @@ export const AuthFilters = ({
   const handleFormSubmit = (values: AuthFilterValues): void => {
     toggleAuthOpen();
     handleAuthTypeFilterSubmit(values);
+    if (authButtonRef.current && authButtonRef.current.style.display !== 'none') {
+      authButtonRef.current.focus();
+    } else if (authButtonRef2.current && authButtonRef2.current.style.display !== 'none') {
+      authButtonRef2.current.focus();
+    }
   };
 
   const authFilterAriaLabel =
